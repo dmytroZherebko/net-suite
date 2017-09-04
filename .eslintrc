@@ -1,0 +1,19 @@
+{
+  "extends": "airbnb-base",
+  "globals": {
+    "window": true,
+    "fetch": true,
+    "FormData": true
+  },
+  "rules": {
+    "comma-dangle": "off",
+    "no-new": "off",
+    "operator-assignment": "off",
+    "no-param-reassign": "off",
+    "no-plusplus": "off",
+    "consistent-return": "off",
+    "linebreak-style": "off",
+    "max-len": "off",
+    "one-var": "off"
+  }
+}

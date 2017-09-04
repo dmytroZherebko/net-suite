@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>pdffiller widget</title>
+  </head>
+  <body>
+    <div id="app">
+      <router-view></router-view>
+    </div>
+    <script>
+      window.onload = function () {
+        window.pdffiller.init({
+          redirect_uri: 'https://730be48a.ngrok.io',
+          client_id: '393c5867612989cd',
+          client_secret: 'iFzq6s4ix0PGGhEuSwprxCSsjUc2Suzf',
+        });
+      }
+    </script>
+  </body>
+</html>
