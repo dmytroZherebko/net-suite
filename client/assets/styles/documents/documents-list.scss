@@ -1,0 +1,30 @@
+.document {
+  &__row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 7px 15px;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #e8e8e8;
+
+    &_active {
+      font-weight: bold;
+      border: 1px solid #ffa500;
+      background: #fffbf7;
+    }
+  }
+
+  &__name {
+    width: 80%;
+    padding-left: 25px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &__date {
+    width: 20%;
+  }
+}

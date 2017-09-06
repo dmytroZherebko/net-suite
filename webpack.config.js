@@ -65,7 +65,14 @@ module.exports = {
     port: 3000,
     allowedHosts: [
       '.ngrok.io'
-    ]
+    ],
+    proxy: {
+      "/v2": {
+        target: "https://api.pdffiller.com",
+        "secure": false,
+        "changeOrigin": false
+      },
+    }
   },
   performance: {
     hints: false

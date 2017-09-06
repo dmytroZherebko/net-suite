@@ -19,6 +19,12 @@ export default {
     state.isLoading = !state.isLoading;
   },
   [mutations.LOAD_DOCUMENTS]: (state, payload) => {
-    state.documents = payload;
+    state.documents.documentsList[state.documents.currentPage] = payload;
+  },
+  [mutations.SET_CURRENT_PAGE]: (state, payload) => {
+    state.documents.currentPage = payload;
+  },
+  [mutations.SET_TOTAL_DOCUMENTS]: (state, payload) => {
+    state.documents.total = payload;
   },
 };

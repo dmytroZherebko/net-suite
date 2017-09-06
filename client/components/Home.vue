@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div v-if="!authorize_process">
+        <div v-if="!authorize_process && !authorize">
             <authorize></authorize>
         </div>
         <div v-if="authorize">
-            <documents-list></documents-list>
+            <documents></documents>
         </div>
     </div>
 </template>
@@ -12,7 +12,7 @@
 <script>
   import { mapState } from 'vuex';
   import Authorize from './Authorize.vue';
-  import DocumentsList from './DocumentsList.vue';
+  import Documents from './Documents.vue';
 
   export default {
 
@@ -24,7 +24,7 @@
     },
     components: {
       Authorize,
-      DocumentsList
+      Documents
     }
   };
 </script>

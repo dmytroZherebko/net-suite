@@ -9,16 +9,20 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    documents: null,
+    documents: {
+      currentPage: null,
+      documentsList: {},
+      total: null
+    },
     isLoading: false,
     auth: {
       authorize_process: false,
       redirect_uri: null,
       client_id: null,
       client_secret: null,
-      access_token: null,
+      access_token: window.localStorage.getItem('token') || null,
       state: 'api-widget',
-      authorize: false
+      authorize: !!window.localStorage.getItem('token')
     }
   },
 

@@ -1,6 +1,6 @@
-export const getDocuments = (state) => { // eslint-disable-line
-  if (state.documents) {
-    return state.documents.items;
+export const getDocuments = (state) => (currentPage) => { // eslint-disable-line
+  if (state.documents.documentsList[currentPage]) {
+    return state.documents.documentsList[currentPage];
   }
   return null;
 };
