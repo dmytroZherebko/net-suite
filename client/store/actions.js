@@ -1,5 +1,5 @@
 import callApi from '../helpers/api';
-import { parseQueryString } from '../helpers/utils';
+import { parseQueryString, getDataFromTimeStamp } from '../helpers/utils';
 import constants from '../constants';
 
 const mutations = constants.mutations;
@@ -43,7 +43,7 @@ export const checkAuthCode = ({ state, commit }) => { // eslint-disable-line
           window.removeEventListener('message', codeMessageListener);
         }
       } catch (err) {
-        console.log(err); // eslint-disable
+        console.log(err); // eslint-disable-line
       }
     }
 
@@ -55,20 +55,30 @@ export const setClientCred = ({ commit }, payload) => {
   commit(mutations.SET_CLIENT_CRED, payload);
 };
 
-export const loadDocuments = ({ commit, state }, currentPage = 1) => {
+export const initPage = ({ commit, state }, currentPage = 1) => {
+  if (state.documents.documentsList[currentPage]) {
+    commit(mutations.SET_CURRENT_PAGE, currentPage);
+    return;
+  }
   commit(mutations.TOGGLE_LOADER);
   callApi(endpoints.DOCUMENTS, {
     query: {
-      page: currentPage
+      page: currentPage,
+      per_page: state.documents.perPage
     },
     headers: {
       Authorization: `Bearer ${state.auth.access_token}`
     }
   })
     .then((documents) => {
+      const documnetsWithFormatedDate = documents.items.map((doc) => {
+        doc.updated = getDataFromTimeStamp(doc.updated * 1000);
+        doc.created = getDataFromTimeStamp(doc.created * 1000);
+        return doc;
+      });
       commit(mutations.TOGGLE_LOADER);
       commit(mutations.SET_CURRENT_PAGE, currentPage);
       commit(mutations.SET_TOTAL_DOCUMENTS, documents.total);
-      commit(mutations.LOAD_DOCUMENTS, documents.items);
+      commit(mutations.LOAD_DOCUMENTS, documnetsWithFormatedDate);
     });
 };

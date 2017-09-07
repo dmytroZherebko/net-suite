@@ -8,3 +8,30 @@ body {
   box-sizing: border-box;
   font-family: Arial;
 }
+
+.button {
+  position: relative;
+  display: block;
+  width: 100px;
+  padding: 7px;
+  border-radius: 3px;
+  font-size: 12px;
+  text-align: center;
+  font-weight: bold;
+  text-transform: capitalize;
+  text-decoration: none;
+  line-height: 17px;
+  cursor: pointer;
+  border: 2px solid #ff9000;
+  background: #fff;
+
+  &:hover {
+    background: #ff9e21;
+    color: #fff;
+  }
+
+  &:disabled {
+    background: #f7f7f7;
+    border-color: #ccc;
+  }
+}

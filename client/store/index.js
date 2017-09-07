@@ -12,7 +12,8 @@ export default new Vuex.Store({
     documents: {
       currentPage: null,
       documentsList: {},
-      total: null
+      total: null,
+      perPage: 10
     },
     isLoading: false,
     auth: {

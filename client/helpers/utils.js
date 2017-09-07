@@ -12,3 +12,10 @@ export const parseQueryString = (queryString) => { // eslint-disable-line
   }
   return params;
 };
+
+export const getDataFromTimeStamp = (timestamp) => {
+  const date = new Date(timestamp);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return `${month < 10 ? `0${month}` : month}/${day < 10 ? `0${day}` : day}/${date.getFullYear()}`;
+};

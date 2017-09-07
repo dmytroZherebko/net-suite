@@ -1,0 +1,29 @@
+.nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  font-weight: bold;
+  background: #f9f9f9;
+
+  &__item {}
+
+  &__link {
+    position: relative;
+    display: flex;
+    width: 133px;
+    box-sizing: border-box;
+    padding: 15px;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #666;
+    text-transform: capitalize;
+    text-decoration: none;
+
+    &_active {
+      background: white;
+    }
+  }
+}

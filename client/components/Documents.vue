@@ -1,23 +1,43 @@
 <template>
-    <div>
-        <div class="document__row"
-             v-for="document in documents"
-             :class="{'document__row_active': document.id == currentDocument}"
-             v-on:click="changeCurrentDocument(document.id)"
-        >
-            <div class="document__name">
-                {{ document.name }}
+    <div class="documents-page">
+        <div class="documents">
+            <div class="documents-table">
+                <div class="documents__header">
+                    <div class="document__name">
+                        Name
+                    </div>
+                    <div class="document__date">
+                        Updated
+                    </div>
+                </div>
+                <div class="documents-list">
+                    <div class="document"
+                         v-for="document in documents"
+                         :class="currentDocumentClass(document.id)"
+                         v-on:click="changeCurrentDocument(document.id)"
+                    >
+                        <div class="document__name">
+                            {{ document.name }}
+                        </div>
+                        <div class="document__date">
+                            {{ document.updated }}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="document__date">
-                {{ document.updated }}
-            </div>
+            <pagination :current-page="currentPage"
+                        :items-per-page="perPage"
+                        :total-items="totalItems"
+                        @page-changed="pageChanged">
+            </pagination>
         </div>
-        <pagination :current-page="currentPage"
-                    :items-per-page="15"
-                    :total-items="total"
-                    @page-changed="pageChanged">
-        </pagination>
+        <div class="documents-aside">
+            <button class="button" :disabled="!currentDocument">
+                delete
+            </button>
+        </div>
     </div>
+
 </template>
 
 <script>
@@ -28,14 +48,15 @@
 
     data() {
       return {
-        currentDocument: ''
+        currentDocument: null
       }
     },
 
     computed: {
       ...mapState({
         currentPage: (state) => state.documents.currentPage,
-        total: (state) => state.documents.total,
+        totalItems: (state) => state.documents.total,
+        perPage: (state) => state.documents.perPage,
       }),
       documents() {
         return this.$store.getters.getDocuments(this.currentPage)
@@ -44,20 +65,24 @@
 
     mounted() {
       if (!this.documents) {
-        this.loadDocuments();
+        this.initPage();
       }
     },
 
     methods: {
+      currentDocumentClass(documentId){
+          return documentId === this.currentDocument ? 'document_active' : '';
+      },
       pageChanged(page) {
         if (page === this.currentPage) return;
-        this.loadDocuments(page);
+        this.initPage(page);
+        this.currentDocument = null;
       },
 
       changeCurrentDocument(id) {
         this.currentDocument = id;
       },
-      ...mapActions(['loadDocuments'])
+      ...mapActions(['initPage'])
     },
 
     components: {

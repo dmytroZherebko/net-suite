@@ -1,17 +1,39 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import Root from '../components/Root.vue';
+import store from '../store';
+import AuthorizePage from '../components/Authorize.vue';
+import Documents from '../components/Documents.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    component: Root
+    redirect: '/documents'
+  },
+  {
+    path: '/documents',
+    name: 'documents',
+    component: Documents
+  },
+  {
+    name: 'authorize',
+    path: '/authorize',
+    component: AuthorizePage
   }
 ];
 
-export default new VueRouter({
+const router = new VueRouter({
   routes
 });
+
+router.beforeEach((to, from, next) => {
+  if (!store.getters.checkAccessToPage(to.name)) {
+    next({ path: '/authorize', query: { redirect: to.fullPath } });
+  } else {
+    next();
+  }
+});
+
+export default router;

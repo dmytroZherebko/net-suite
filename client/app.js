@@ -5,6 +5,7 @@ import { sync } from 'vuex-router-sync';
 import router from './router';
 import store from './store';
 
+import Root from './components/Root.vue';
 // styles
 import './main.scss';
 
@@ -23,6 +24,10 @@ window.pdffiller = {
     new Vue({
       store,
       router,
+      components: {
+        Root
+      },
+      template: '<root></root>'
     }).$mount('#app');
   }
 };

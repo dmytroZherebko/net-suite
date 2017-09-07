@@ -1,18 +1,19 @@
 <template>
     <div>
-        <home></home>
+        <nav-menu></nav-menu>
         <loader></loader>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
   import Loader from './Loader.vue';
-  import Home from './Home.vue';
+  import NavMenu from './NavMenu.vue';
 
   export default {
     components: {
       Loader,
-      Home
+      NavMenu
     }
   };
 </script>

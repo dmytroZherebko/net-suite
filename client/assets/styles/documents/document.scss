@@ -1,0 +1,48 @@
+.document {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid #e8e8e8;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    border: 1px solid transparent;
+  }
+
+  &:hover {
+    cursor: pointer;
+    &::before {
+      border-color: #fec785;
+    }
+  }
+
+  &_active {
+    font-weight: bold;
+    background: rgba(255, 241, 222, .4);
+    &::before {
+      border-color: #ff9000;
+      z-index: 2;
+    }
+
+    &:hover::before {
+      border-color: #ff9000;
+    }
+  }
+
+  &__name {
+    width: 80%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &__date {
+    width: 20%;
+  }
+}
