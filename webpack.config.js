@@ -30,7 +30,15 @@ module.exports = {
       {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
-          use: ['css-loader?sourceMap', 'sass-loader?sourceMap'],
+          use: ['css-loader?sourceMap', {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+              config: {
+                path: path.resolve(__dirname, './postcss.config.js')
+              }
+            }
+          }, 'sass-loader?sourceMap'],
           fallback: 'style-loader'
         }),
       },

@@ -38,7 +38,6 @@ export const checkAuthCode = ({ state, commit }) => { // eslint-disable-line
       try {
         const code = JSON.parse(e.data).code;
         if (code) {
-          commit(mutations.SET_AUTH_PROCESS, true);
           getAuthToken(code, commit, state);
           window.removeEventListener('message', codeMessageListener);
         }
@@ -55,11 +54,24 @@ export const setClientCred = ({ commit }, payload) => {
   commit(mutations.SET_CLIENT_CRED, payload);
 };
 
-export const initPage = ({ commit, state }, currentPage = 1) => {
-  if (state.documents.documentsList[currentPage]) {
-    commit(mutations.SET_CURRENT_PAGE, currentPage);
-    return;
-  }
+export const deleteDocumentById = ({ commit, state, dispatch }, payload) => {
+  commit(mutations.TOGGLE_LOADER);
+  callApi(`${endpoints.DOCUMENTS}/${payload}`, {
+    headers: {
+      Authorization: `Bearer ${state.auth.access_token}`
+    },
+    method: 'DELETE'
+  })
+    .then((info) => {
+      commit(mutations.TOGGLE_LOADER);
+      commit(mutations.SET_TOTAL_DOCUMENTS, info.total);
+      const { documents } = state;
+      const page = documents.documentsList.length > 1 ? documents.currentPage : documents.currentPage - 1;
+      dispatch('getPageDocuments', page);
+    });
+};
+
+export const getPageDocuments = ({ commit, state }, currentPage = 1) => {
   commit(mutations.TOGGLE_LOADER);
   callApi(endpoints.DOCUMENTS, {
     query: {
@@ -71,7 +83,7 @@ export const initPage = ({ commit, state }, currentPage = 1) => {
     }
   })
     .then((documents) => {
-      const documnetsWithFormatedDate = documents.items.map((doc) => {
+      const documentsWithFormatedDate = documents.items.map((doc) => {
         doc.updated = getDataFromTimeStamp(doc.updated * 1000);
         doc.created = getDataFromTimeStamp(doc.created * 1000);
         return doc;
@@ -79,6 +91,6 @@ export const initPage = ({ commit, state }, currentPage = 1) => {
       commit(mutations.TOGGLE_LOADER);
       commit(mutations.SET_CURRENT_PAGE, currentPage);
       commit(mutations.SET_TOTAL_DOCUMENTS, documents.total);
-      commit(mutations.LOAD_DOCUMENTS, documnetsWithFormatedDate);
+      commit(mutations.LOAD_DOCUMENTS, documentsWithFormatedDate);
     });
 };

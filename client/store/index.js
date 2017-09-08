@@ -11,7 +11,7 @@ export default new Vuex.Store({
   state: {
     documents: {
       currentPage: null,
-      documentsList: {},
+      documentsList: null,
       total: null,
       perPage: 10
     },

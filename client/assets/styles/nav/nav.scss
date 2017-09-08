@@ -24,6 +24,15 @@
 
     &_active {
       background: white;
+
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        border-top: 2px solid #ff9009;
+      }
     }
   }
 }

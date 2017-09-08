@@ -1,6 +1,6 @@
-export const getDocuments = state => (currentPage) => {
-  if (state.documents.documentsList[currentPage]) {
-    return state.documents.documentsList[currentPage];
+export const getDocuments = (state) => {
+  if (state.documents.documentsList) {
+    return state.documents.documentsList;
   }
   return null;
 };

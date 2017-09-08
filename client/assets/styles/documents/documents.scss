@@ -10,7 +10,10 @@
     margin: 10px auto;
   }
 
-  &-table {}
+  &-table {
+    border: 2px solid #ddd;
+    border-radius: 3px;
+  }
 
   &-list {
     min-height: 370px;
@@ -29,5 +32,6 @@
     font-size: 15px;
     background: #fafafa;
     font-weight: bold;
+    border-bottom: 1px solid #ddd;
   }
 }

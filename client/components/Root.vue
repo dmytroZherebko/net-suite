@@ -7,8 +7,8 @@
 </template>
 
 <script>
-  import Loader from './Loader.vue';
-  import NavMenu from './NavMenu.vue';
+  import Loader from './common/Loader.vue';
+  import NavMenu from './NavMenu/NavMenu.vue';
 
   export default {
     components: {

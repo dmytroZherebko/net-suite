@@ -2,8 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import store from '../store';
-import AuthorizePage from '../components/Authorize.vue';
-import Documents from '../components/Documents.vue';
+import AuthorizePage from '../components/Auhtorize/Authorize.vue';
+import Documents from '../components/Documents/Documents.vue';
 
 Vue.use(VueRouter);
 

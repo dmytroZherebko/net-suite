@@ -4,10 +4,10 @@
             <div class="documents-table">
                 <div class="documents__header">
                     <div class="document__name">
-                        Name
+                        Document Name
                     </div>
                     <div class="document__date">
-                        Updated
+                        Last Modified
                     </div>
                 </div>
                 <div class="documents-list">
@@ -32,23 +32,25 @@
             </pagination>
         </div>
         <div class="documents-aside">
-            <button class="button" :disabled="!currentDocument">
-                delete
-            </button>
+            <delete-document
+                    :deleteDocument="deleteDocument"
+                    :buttonIsDisable="!currentDocumentId"
+            >
+            </delete-document>
         </div>
     </div>
-
 </template>
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex';
-  import Pagination from './Pagination.vue';
+  import Pagination from '../common/Pagination.vue';
+  import DeleteDocument from './Delete.vue'
 
   export default {
 
     data() {
       return {
-        currentDocument: null
+        currentDocumentId: null
       }
     },
 
@@ -58,35 +60,43 @@
         totalItems: (state) => state.documents.total,
         perPage: (state) => state.documents.perPage,
       }),
-      documents() {
-        return this.$store.getters.getDocuments(this.currentPage)
-      }
+      ...mapGetters({
+        documents: 'getDocuments'
+      })
     },
 
     mounted() {
       if (!this.documents) {
-        this.initPage();
+        this.getPageDocuments();
       }
     },
 
     methods: {
       currentDocumentClass(documentId){
-          return documentId === this.currentDocument ? 'document_active' : '';
+          return documentId === this.currentDocumentId ? 'document_active' : '';
       },
+
       pageChanged(page) {
         if (page === this.currentPage) return;
-        this.initPage(page);
-        this.currentDocument = null;
+        this.getPageDocuments(page);
+        this.currentDocumentId = null;
       },
 
       changeCurrentDocument(id) {
-        this.currentDocument = id;
+        this.currentDocumentId = id;
       },
-      ...mapActions(['initPage'])
+
+      deleteDocument() {
+        console.log(this);
+        this.deleteDocumentById(this.currentDocumentId);
+      },
+
+      ...mapActions(['getPageDocuments', 'deleteDocumentById'])
     },
 
     components: {
-      Pagination
+      Pagination,
+      DeleteDocument
     }
   };
 </script>
