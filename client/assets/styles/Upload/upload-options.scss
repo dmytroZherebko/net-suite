@@ -1,0 +1,25 @@
+.upload-options {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  list-style: none;
+  font-weight: bold;
+
+  &__item {
+    padding: 20px;
+    background: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 12px;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+
+    &_active {
+      border-right: none;
+      background: #fff;
+    }
+  }
+}

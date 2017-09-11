@@ -5,7 +5,13 @@
   padding: 0;
   font-size: 12px;
   font-weight: bold;
-  background: #f9f9f9;
+
+  &-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f9f9f9;
+  }
 
   &__item {}
 

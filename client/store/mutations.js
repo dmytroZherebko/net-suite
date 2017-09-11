@@ -29,4 +29,11 @@ export default {
       state.documents.total = payload;
     }
   },
+  [mutations.UPDATE_NAME]: (state, { name, documentId }) => {
+    state.documents.documentsList.forEach((document) => {
+      if (document.id === documentId) {
+        document.name = name;
+      }
+    });
+  },
 };

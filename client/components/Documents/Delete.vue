@@ -11,7 +11,7 @@
                 @modal-ok="onDelete"
                 @modal-cancel="onCancel"
         >
-            <div slot="modal-body">
+            <div slot="modal-body" class="modal-body">
                 <p class="text-center">
                     Are you sure you want to delete the document?
                 </p>
@@ -35,7 +35,7 @@
     data() {
       return {
         showModal: false
-      }
+      };
     },
 
     methods: {

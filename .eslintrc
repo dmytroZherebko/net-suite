@@ -1,5 +1,6 @@
 {
   "extends": "airbnb-base",
+  "plugins": ["vue"],
   "globals": {
     "window": true,
     "fetch": true,
@@ -14,6 +15,7 @@
     "consistent-return": "off",
     "linebreak-style": "off",
     "max-len": "off",
-    "one-var": "off"
+    "one-var": "off",
+    "no-mixed-operators": "off"
   }
 }

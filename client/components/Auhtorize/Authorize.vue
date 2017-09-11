@@ -8,6 +8,11 @@
   import { mapState } from 'vuex';
 
   export default {
+    data() {
+      return {
+        redirectPatch: this.$route.query.redirect || '/'
+      };
+    },
     computed: {
       ...mapState({
         id: state => state.auth.client_id,
@@ -18,16 +23,21 @@
       })
     },
 
-    beforeUpdate() {
+    created() {
       if (this.authorize) {
+        this.redirect();
+      }
+    },
+
+    watch: {
+      authorize() {
         this.redirect();
       }
     },
 
     methods: {
       redirect() {
-        const redirectPath = this.$route.query.redirect || '/';
-        this.$router.push(redirectPath);
+        this.$router.push(this.redirectPatch);
       }
     }
   };

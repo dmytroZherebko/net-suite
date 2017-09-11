@@ -10,7 +10,10 @@ const callApi = (url, params) => { // eslint-disable-line
     url = `${url}?${query}`;
   }
 
-  params.headers['Content-Type'] = 'application/json';
+  if (typeof params.body !== 'object') {
+    params.headers['Content-Type'] = 'application/json';
+  }
+
   params.headers.Accept = 'application/json';
   return fetch(url, {
     cache: 'no-store',

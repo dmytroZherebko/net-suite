@@ -51,27 +51,26 @@
       }
     },
 
-    data () {
+    data() {
       return {
         start: 1,
         lastVisible: 1
-      }
+      };
     },
 
     computed: {
-      lastPage () {
-        return this.totalItems % this.itemsPerPage === 0
-          ? this.totalItems / this.itemsPerPage
-          : Math.floor(this.totalItems / this.itemsPerPage) + 1;
+      lastPage() {
+        return Math.ceil(this.totalItems / this.itemsPerPage);
       },
 
-      paginationRange () {
+      paginationRange() {
+        /* eslint-disable */
         this.start = this.currentPage - this.visiblePages / 2 <= 0
           ? 1 : this.currentPage + this.visiblePages / 2 > this.lastPage
             ? this.lastPage - this.visiblePages + 1 >= 1 ? this.lastPage - this.visiblePages + 1 : 1
             : Math.ceil(this.currentPage - this.visiblePages / 2);
-
-        let range = [];
+        /* eslint-enable */
+        const range = [];
 
         for (let i = 0; i < this.visiblePages && i < this.lastPage; i++) {
           const pageNumber = this.start + i;
@@ -80,7 +79,7 @@
           }
         }
         this.lastVisible = range[range.length - 1];
-        return range
+        return range;
       }
     },
 
@@ -88,21 +87,21 @@
       checkLinkIsActive(link) {
         switch (link) {
           case 'prev':
-            return this.currentPage === 1 ? 'pagination__link_disable': '';
+            return this.currentPage === 1 ? 'pagination__link_disable' : '';
           case 'next':
-            return this.currentPage === this.lastPage ? 'pagination__link_disable': '';
+            return this.currentPage === this.lastPage ? 'pagination__link_disable' : '';
           default:
             return '';
         }
       },
 
-      pageChanged (pageNum) {
-        this.$emit('page-changed', pageNum)
+      pageChanged(pageNum) {
+        this.$emit('page-changed', pageNum);
       },
 
-      activePage (pageNum) {
-        return this.currentPage === pageNum ? 'pagination__link_active' : ''
+      activePage(pageNum) {
+        return this.currentPage === pageNum ? 'pagination__link_active' : '';
       }
     }
-  }
+  };
 </script>

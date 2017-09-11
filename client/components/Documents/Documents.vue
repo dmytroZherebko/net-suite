@@ -15,6 +15,7 @@
                          v-for="document in documents"
                          :class="currentDocumentClass(document.id)"
                          v-on:click="changeCurrentDocument(document.id)"
+                         v-on:dblclick="openEditNameModal(document.name)"
                     >
                         <div class="document__name">
                             {{ document.name }}
@@ -31,34 +32,49 @@
                         @page-changed="pageChanged">
             </pagination>
         </div>
-        <div class="documents-aside">
+        <div class="documents-aside column-aside">
             <delete-document
                     :deleteDocument="deleteDocument"
                     :buttonIsDisable="!currentDocumentId"
             >
             </delete-document>
         </div>
+        <modal
+                :showModal="showEditModal"
+                modalTitle="Edit Document Name"
+                modalType="confirm"
+                @modal-close="closeEditNameModal"
+                @modal-ok="onEditNameConfirm"
+                @modal-cancel="closeEditNameModal"
+        >
+            <div slot="modal-body" class="modal-body">
+                <input type="text" v-model="currentDocumentName" class="input">
+            </div>
+        </modal>
     </div>
 </template>
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex';
   import Pagination from '../common/Pagination.vue';
-  import DeleteDocument from './Delete.vue'
+  import DeleteDocument from './Delete.vue';
+  import Modal from '../common/Modal.vue';
 
   export default {
 
     data() {
       return {
-        currentDocumentId: null
-      }
+        currentDocumentId: null,
+        currentDocumentName: null,
+        showEditModal: false
+      };
     },
 
     computed: {
       ...mapState({
-        currentPage: (state) => state.documents.currentPage,
-        totalItems: (state) => state.documents.total,
-        perPage: (state) => state.documents.perPage,
+        currentPage: state => state.documents.currentPage,
+        totalItems: state => state.documents.total,
+        perPage: state => state.documents.perPage,
       }),
       ...mapGetters({
         documents: 'getDocuments'
@@ -72,8 +88,8 @@
     },
 
     methods: {
-      currentDocumentClass(documentId){
-          return documentId === this.currentDocumentId ? 'document_active' : '';
+      currentDocumentClass(documentId) {
+        return documentId === this.currentDocumentId ? 'document_active' : '';
       },
 
       pageChanged(page) {
@@ -87,16 +103,32 @@
       },
 
       deleteDocument() {
-        console.log(this);
         this.deleteDocumentById(this.currentDocumentId);
+        this.currentDocumentId = null;
+      },
+      openEditNameModal(name) {
+        this.currentDocumentName = name;
+        this.showEditModal = true;
+      },
+      closeEditNameModal() {
+        this.showEditModal = false;
+      },
+      onEditNameConfirm() {
+        this.closeEditNameModal();
+        this.updateDocumentName({
+          documentId: this.currentDocumentId,
+          newName: this.currentDocumentName
+        });
+        this.currentDocumentName = null;
       },
 
-      ...mapActions(['getPageDocuments', 'deleteDocumentById'])
+      ...mapActions(['getPageDocuments', 'deleteDocumentById', 'updateDocumentName'])
     },
 
     components: {
       Pagination,
-      DeleteDocument
+      DeleteDocument,
+      Modal
     }
   };
 </script>

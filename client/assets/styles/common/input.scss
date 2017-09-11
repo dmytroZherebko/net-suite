@@ -1,0 +1,31 @@
+.input {
+  display: block;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  position: relative;
+  padding: 5px 10px;
+  line-height: 20px;
+  color: #444;
+  font-size: 14px;
+  background: #fff;
+  transition: border-color .15s ease-in-out;
+  box-shadow: inset 1px 1px 1px 0 rgba(0,1,1,.07);
+  outline: none;
+
+  &:focus {
+    border-color: #aaa;
+    box-shadow: 0 0 3px 1px hsla(0,0%,67%,.5);
+  }
+
+  &_invalid {
+    color: #e74c3c;
+    border-color: #e74c3c;
+
+    &:focus {
+      box-shadow: 0 0 3px 1px rgba(231,76,60,.5);
+      color: #444;
+      border-color: #ef8378;
+    }
+  }
+}

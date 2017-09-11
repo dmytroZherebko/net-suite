@@ -1,5 +1,30 @@
-@import "common/main";
+//
+@import "common/common";
 
-@import "documents/main";
+@import "common/loader";
 
-@import "nav/main";
+@import "common/modal";
+
+@import "common/buttons";
+
+@import "common/input";
+
+@import "common/pagination";
+
+//
+
+@import "documents/documents";
+
+@import "documents/document";
+
+//
+
+@import "nav/nav";
+
+//
+
+@import "upload/uploader";
+
+@import "upload/upload-section";
+
+@import "upload/upload-options";

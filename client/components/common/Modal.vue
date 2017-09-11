@@ -1,6 +1,6 @@
 <template>
     <div v-if="showModal" class="modal-wrapper" v-on:click.self="onCloseClick">
-        <div class="modal">
+        <div class="modal" :class="modalClass">
             <div class="modal-header">
                 <h1 class="modal-header__title">
                     {{modalTitle || '&nbsp;'}}
@@ -9,10 +9,8 @@
                         v-on:click="onCloseClick">
                 </button>
             </div>
-            <div class="modal-body">
-                <slot name="modal-body"></slot>
-            </div>
-            <div class="modal-buttons">
+            <slot name="modal-body"></slot>
+            <div class="modal-buttons" v-if="showButtons">
                 <button class="button button_secondary" v-if="modalType === 'confirm'" v-on:click="onSecondaryClick">
                     {{ secondaryButton }}
                 </button>
@@ -29,6 +27,14 @@
     props: {
       showModal: Boolean,
       modalType: String,
+      modalClass: {
+        type: String,
+        default: ''
+      },
+      showButtons: {
+        type: Boolean,
+        default: true
+      },
       primaryButton: {
         type: String,
         default: 'OK'

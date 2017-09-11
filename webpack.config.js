@@ -23,7 +23,7 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.js$/,
+        test: /\.(js|vue)$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
       },

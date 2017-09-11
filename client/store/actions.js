@@ -19,7 +19,7 @@ const getAuthToken = (code, commit, state) => {
   })
     .then((data) => {
       commit(mutations.TOGGLE_LOADER);
-      commit('SET_ACCESS_TOKEN', data.access_token);
+      commit(mutations.SET_ACCESS_TOKEN, data.access_token);
       window.localStorage.setItem('token', data.access_token);
     });
 };
@@ -62,12 +62,45 @@ export const deleteDocumentById = ({ commit, state, dispatch }, payload) => {
     },
     method: 'DELETE'
   })
-    .then((info) => {
+    .then(() => {
       commit(mutations.TOGGLE_LOADER);
-      commit(mutations.SET_TOTAL_DOCUMENTS, info.total);
       const { documents } = state;
       const page = documents.documentsList.length > 1 ? documents.currentPage : documents.currentPage - 1;
       dispatch('getPageDocuments', page);
+    });
+};
+
+export const uploadDocument = ({ commit, state, dispatch }, file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  commit(mutations.TOGGLE_LOADER);
+  callApi(endpoints.DOCUMENTS, {
+    headers: {
+      Authorization: `Bearer ${state.auth.access_token}`
+    },
+    method: 'POST',
+    body: formData
+  })
+    .then(() => {
+      commit(mutations.TOGGLE_LOADER);
+      dispatch('getPageDocuments', state.documents.currentPage);
+    });
+};
+
+export const updateDocumentName = ({ commit, state }, { documentId, newName }) => {
+  commit(mutations.TOGGLE_LOADER);
+  callApi(`${endpoints.DOCUMENTS}/${documentId}`, {
+    headers: {
+      Authorization: `Bearer ${state.auth.access_token}`
+    },
+    method: 'PUT',
+    body: JSON.stringify({
+      name: newName
+    })
+  })
+    .then(({ name }) => {
+      commit(mutations.TOGGLE_LOADER);
+      commit(mutations.UPDATE_NAME, { name, documentId });
     });
 };
 

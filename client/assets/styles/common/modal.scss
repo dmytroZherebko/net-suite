@@ -6,6 +6,10 @@
   box-shadow: 0 2px 13px #444;
   font-family: Arial, sans-serif;
 
+  &_uploader {
+    width: 650px;
+  }
+
   &-wrapper {
     position: fixed;
     width: 100%;
