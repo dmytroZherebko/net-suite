@@ -48,7 +48,11 @@
                 @modal-cancel="closeEditNameModal"
         >
             <div slot="modal-body" class="modal-body">
-                <input type="text" v-model="currentDocumentName" class="input">
+                <input type="text"
+                       v-model="currentDocumentName"
+                       class="input"
+                       :class="checkDocumentNameInput()"
+                >
             </div>
         </modal>
     </div>
@@ -91,6 +95,9 @@
       currentDocumentClass(documentId) {
         return documentId === this.currentDocumentId ? 'document_active' : '';
       },
+      checkDocumentNameInput() {
+        return !this.currentDocumentName ? 'input_invalid' : '';
+      },
 
       pageChanged(page) {
         if (page === this.currentPage) return;
@@ -114,12 +121,14 @@
         this.showEditModal = false;
       },
       onEditNameConfirm() {
-        this.closeEditNameModal();
-        this.updateDocumentName({
-          documentId: this.currentDocumentId,
-          newName: this.currentDocumentName
-        });
-        this.currentDocumentName = null;
+        if (this.currentDocumentName) {
+          this.closeEditNameModal();
+          this.updateDocumentName({
+            documentId: this.currentDocumentId,
+            newName: this.currentDocumentName
+          });
+          this.currentDocumentName = null;
+        }
       },
 
       ...mapActions(['getPageDocuments', 'deleteDocumentById', 'updateDocumentName'])

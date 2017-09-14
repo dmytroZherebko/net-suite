@@ -41,7 +41,7 @@
                                 </p>
                                 <input
                                         type="file"
-                                        accept=".ppt, .pptx, .doc, .docx, .pdf, .txt, .rtf"
+                                        accept=".ppt, .pptx, .doc, .docx, .pdf"
                                         class="upload-section__input-file"
                                         v-on:change="onChooseFile"
                                 >
@@ -68,8 +68,10 @@
                                     <input
                                             type="text"
                                             class="input"
+                                            :class="checkUrlError()"
                                             placeholder="http://"
-                                            v-model="uploadFileUrl"
+                                            v-model.trim="uploadFileUrl.value"
+                                            v-on:input="onChangeUrlValue"
                                     >
                                     <button class="button button_primary upload-section__button">
                                         Upload
@@ -92,7 +94,10 @@
     data() {
       return {
         showModal: false,
-        uploadFileUrl: null,
+        uploadFileUrl: {
+          value: null,
+          error: false
+        },
         dragOnFileInput: false,
         uploadOptions: [
           {
@@ -110,6 +115,8 @@
     methods: {
       closeModal() {
         this.showModal = false;
+        this.uploadFileUrl.value = null;
+        this.uploadFileUrl.error = false;
       },
       openModal() {
         this.showModal = true;
@@ -120,17 +127,39 @@
       checkOptionIsActive(type) {
         return type === this.currentOption ? 'upload-options__item_active' : '';
       },
+      onChangeUrlValue() {
+        if (this.uploadFileUrl.value) {
+          this.uploadFileUrl.error = false;
+        }
+      },
+      checkUrlError() {
+        return this.uploadFileUrl.error ? 'input_invalid' : '';
+      },
       onUrlUploadSubmit() {
-        this.uploadDocument(this.uploadFileUrl);
-        this.uploadFileUrl = null;
-        this.closeModal();
+        if (this.validateFileFormat(this.uploadFileUrl.value)) {
+          this.uploadDocument(this.uploadFileUrl.value);
+          this.closeModal();
+        } else {
+          this.uploadFileUrl.error = true;
+        }
       },
       onChooseFile(e) {
-        this.closeModal();
-        this.uploadDocument(e.target.files[0]);
+        const file = e.target.files[0];
+        if (this.validateFileFormat(file.name)) {
+          this.closeModal();
+          this.uploadDocument(e.target.files[0]);
+        }
       },
       onDragEnter() {
         this.dragOnFileInput = true;
+      },
+      validateFileFormat(file) {
+        if (typeof file !== 'string') return false;
+        const format = file.split('.').pop();
+        if (/(ppt|pptx|doc|docx|pdf)/.test(format)) {
+          return true;
+        }
+        return false;
       },
       onDragLeave() {
         this.dragOnFileInput = false;

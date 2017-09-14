@@ -20,6 +20,24 @@ const callApi = (url, params) => { // eslint-disable-line
     method: 'GET',
     ...params
   })
+    .then((data) => {
+      if (data.status >= 400) {
+        return data.json()
+          .then((err) => {
+            let message = '';
+            if (err.error) {
+              message = `${err.hint || ''}\n${err.message}`;
+            } else {
+              err.errors.forEach((e) => {
+                message += `${e.message}${e.id || ''}\n`;
+              });
+            }
+
+            throw new Error(message);
+          });
+      }
+      return data;
+    })
     .then(data => data.json());
 };
 

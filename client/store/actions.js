@@ -21,6 +21,9 @@ const getAuthToken = (code, commit, state) => {
       commit(mutations.TOGGLE_LOADER);
       commit(mutations.SET_ACCESS_TOKEN, data.access_token);
       window.localStorage.setItem('token', data.access_token);
+    }).catch((err) => {
+      commit(mutations.TOGGLE_LOADER);
+      commit(mutations.SET_ERROR, err.message);
     });
 };
 
@@ -67,6 +70,9 @@ export const deleteDocumentById = ({ commit, state, dispatch }, payload) => {
       const { documents } = state;
       const page = documents.documentsList.length > 1 ? documents.currentPage : documents.currentPage - 1;
       dispatch('getPageDocuments', page);
+    }).catch((err) => {
+      commit(mutations.TOGGLE_LOADER);
+      commit(mutations.SET_ERROR, err.message);
     });
 };
 
@@ -84,6 +90,9 @@ export const uploadDocument = ({ commit, state, dispatch }, file) => {
     .then(() => {
       commit(mutations.TOGGLE_LOADER);
       dispatch('getPageDocuments', state.documents.currentPage);
+    }).catch((err) => {
+      commit(mutations.TOGGLE_LOADER);
+      commit(mutations.SET_ERROR, err.message);
     });
 };
 
@@ -101,6 +110,9 @@ export const updateDocumentName = ({ commit, state }, { documentId, newName }) =
     .then(({ name }) => {
       commit(mutations.TOGGLE_LOADER);
       commit(mutations.UPDATE_NAME, { name, documentId });
+    }).catch((err) => {
+      commit(mutations.TOGGLE_LOADER);
+      commit(mutations.SET_ERROR, err.message);
     });
 };
 
@@ -125,5 +137,16 @@ export const getPageDocuments = ({ commit, state }, currentPage = 1) => {
       commit(mutations.SET_CURRENT_PAGE, currentPage);
       commit(mutations.SET_TOTAL_DOCUMENTS, documents.total);
       commit(mutations.LOAD_DOCUMENTS, documentsWithFormatedDate);
+    }).catch((err) => {
+      commit(mutations.TOGGLE_LOADER);
+      commit(mutations.SET_ERROR, err.message);
     });
+};
+
+export const setError = ({ commit }, payload) => {
+  commit(mutations.SET_ERROR, payload);
+};
+
+export const resetError = ({ commit }) => {
+  commit(mutations.RESET_ERROR);
 };
