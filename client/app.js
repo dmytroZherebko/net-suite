@@ -1,5 +1,5 @@
 import Vue from 'vue';
-import Promise from 'promise-polyfill';
+import 'es6-promise/auto';
 import { sync } from 'vuex-router-sync';
 
 import router from './router';
@@ -8,11 +8,6 @@ import store from './store';
 import Root from './components/Root.vue';
 // styles
 import './main.scss';
-
-// promise polyfill
-if (!window.Promise) {
-  window.Promise = Promise;
-}
 
 sync(store, router);
 

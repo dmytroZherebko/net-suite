@@ -26,28 +26,32 @@
                         <div v-if="currentOption === 'file'">
                             <form
                                   novalidate
-                                  v-on:submit=""
-                                  class="upload-section__file"
-                                  :class="checkOnDragBlock()"
-                                  v-on:dragenter="onDragEnter"
-                                  v-on:dragleave="onDragLeave"
+                                  v-on:submit.prevent=""
                             >
-                                <h3 class="upload-section__title">
-                                    Drag and Drop Document Here to Get Started!
-                                </h3>
-                                <p class="upload-section__description">
-                                    Use the button below to upload your document to PDFfiller.
-                                    PDFfiller supports PDF, Word, PowerPoint, and Text formats.
-                                </p>
-                                <input
-                                        type="file"
-                                        accept=".ppt, .pptx, .doc, .docx, .pdf"
-                                        class="upload-section__input-file"
-                                        v-on:change="onChooseFile"
+                                <label class="upload-section__file"
+                                       :class="checkOnDragBlock()"
+                                       v-on:dragenter.prevent="onDragEnter"
+                                       v-on:dragleave="onDragLeave"
+                                       v-on:drop.prevent="onDrop"
+                                       v-on:dragover.prevent=""
                                 >
-                                <button type="button" class="button button_primary upload-section__upload-button">
-                                    Browse for a Document on Your Computer
-                                </button>
+                                    <h3 class="upload-section__title">
+                                        Drag and Drop Document Here to Get Started!
+                                    </h3>
+                                    <p class="upload-section__description">
+                                        Use the button below to upload your document to PDFfiller.
+                                        PDFfiller supports PDF, Word, PowerPoint, and Text formats.
+                                    </p>
+                                    <input
+                                            type="file"
+                                            accept=".ppt, .pptx, .doc, .docx, .pdf"
+                                            class="upload-section__input-file"
+                                            v-on:change="onChooseFile"
+                                    >
+                                    <div class="button button_primary upload-section__upload-button">
+                                        Browse for a Document on Your Computer
+                                    </div>
+                                </label>
                             </form>
                         </div>
                         <div v-if="currentOption === 'url'">
@@ -147,11 +151,25 @@
         const file = e.target.files[0];
         if (this.validateFileFormat(file.name)) {
           this.closeModal();
-          this.uploadDocument(e.target.files[0]);
+          this.uploadDocument(file);
+        }
+      },
+      onDrop(e) {
+        const file = e.dataTransfer.files[0];
+        this.dragOnFileInput = false;
+        if (this.validateFileFormat(file.name)) {
+          this.closeModal();
+          this.uploadDocument(file);
         }
       },
       onDragEnter() {
         this.dragOnFileInput = true;
+      },
+      onDragLeave() {
+        this.dragOnFileInput = false;
+      },
+      checkOnDragBlock() {
+        return this.dragOnFileInput ? 'upload-section__file_ondrag' : '';
       },
       validateFileFormat(file) {
         if (typeof file !== 'string') return false;
@@ -161,12 +179,6 @@
           return true;
         }
         return false;
-      },
-      onDragLeave() {
-        this.dragOnFileInput = false;
-      },
-      checkOnDragBlock() {
-        return this.dragOnFileInput ? 'upload-section__file_ondrag' : '';
       },
       ...mapActions([
         'uploadDocument'

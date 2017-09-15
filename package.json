@@ -10,9 +10,8 @@
   },
   "dependencies": {
     "compression-webpack-plugin": "^1.0.0",
+    "es6-promise": "^4.1.1",
     "postcss-loader": "^2.0.6",
-    "promise-polyfill": "^6.0.2",
-    "save-dev": "^2.0.0",
     "vue": "^2.4.2",
     "vue-router": "^2.7.0",
     "vuex": "^2.4.0",
