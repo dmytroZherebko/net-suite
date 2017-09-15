@@ -49,9 +49,10 @@
         >
             <div slot="modal-body" class="modal-body">
                 <input type="text"
-                       v-model="currentDocumentName"
+                       v-model="currentDocumentName.value"
                        class="input"
                        :class="checkDocumentNameInput()"
+                       v-on:input="onDocumentNameChange"
                 >
             </div>
         </modal>
@@ -69,7 +70,10 @@
     data() {
       return {
         currentDocumentId: null,
-        currentDocumentName: null,
+        currentDocumentName: {
+          value: null,
+          error: false
+        },
         showEditModal: false
       };
     },
@@ -96,7 +100,14 @@
         return documentId === this.currentDocumentId ? 'document_active' : '';
       },
       checkDocumentNameInput() {
-        return !this.currentDocumentName ? 'input_invalid' : '';
+        return this.currentDocumentName.error ? 'input_invalid' : '';
+      },
+      onDocumentNameChange() {
+        if (!this.currentDocumentName.value || this.currentDocumentName.value.length < 3) {
+          this.currentDocumentName.error = true;
+        } else {
+          this.currentDocumentName.error = false;
+        }
       },
 
       pageChanged(page) {
@@ -114,20 +125,20 @@
         this.currentDocumentId = null;
       },
       openEditNameModal(name) {
-        this.currentDocumentName = name;
+        this.currentDocumentName.value = name;
         this.showEditModal = true;
       },
       closeEditNameModal() {
         this.showEditModal = false;
       },
       onEditNameConfirm() {
-        if (this.currentDocumentName) {
+        if (!this.currentDocumentName.error) {
           this.closeEditNameModal();
           this.updateDocumentName({
             documentId: this.currentDocumentId,
-            newName: this.currentDocumentName
+            newName: this.currentDocumentName.value
           });
-          this.currentDocumentName = null;
+          this.currentDocumentName.value = null;
         }
       },
 

@@ -136,7 +136,7 @@
         return this.uploadFileUrl.error ? 'input_invalid' : '';
       },
       onUrlUploadSubmit() {
-        if (this.validateFileFormat(this.uploadFileUrl.value)) {
+        if (this.uploadFileUrl.value) {
           this.uploadDocument(this.uploadFileUrl.value);
           this.closeModal();
         } else {
@@ -155,6 +155,7 @@
       },
       validateFileFormat(file) {
         if (typeof file !== 'string') return false;
+
         const format = file.split('.').pop();
         if (/(ppt|pptx|doc|docx|pdf)/.test(format)) {
           return true;

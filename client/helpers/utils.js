@@ -19,3 +19,12 @@ export const getDataFromTimeStamp = (timestamp) => {
   const day = date.getDate();
   return `${month < 10 ? `0${month}` : month}/${day < 10 ? `0${day}` : day}/${date.getFullYear()}`;
 };
+
+export const getDocumentNameWithoutExtention = ({ name, type }) => {
+  let formatedName = name.split('.');
+  if (formatedName[formatedName.length - 1] === type) {
+    formatedName.pop();
+  }
+  formatedName = formatedName.join('.');
+  return formatedName;
+};
