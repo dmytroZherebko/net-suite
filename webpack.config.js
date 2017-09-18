@@ -7,8 +7,8 @@ var CompressionPlugin = require('compression-webpack-plugin');
 module.exports = {
   entry: ['whatwg-fetch', './client/app.js'],
   output: {
-    path: path.resolve(__dirname, './dist'),
-    publicPath: '/',
+    path: path.resolve(__dirname, './docs'),
+    publicPath: '',
     filename: 'build.js'
   },
   module: {

@@ -1,4 +1,4 @@
 export default {
-  AUTH: '/v2/oauth/token',
-  DOCUMENTS: '/v2/templates'
+  AUTH: 'https://api.pdffiller.com/v2/oauth/token',
+  DOCUMENTS: 'https://api.pdffiller.com/v2/templates'
 };
