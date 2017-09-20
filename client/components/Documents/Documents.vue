@@ -12,6 +12,7 @@
                 </div>
                 <div class="documents-list">
                     <div class="document"
+                         v-if="documents.length > 0"
                          v-for="document in documents"
                          :class="currentDocumentClass(document.id)"
                          v-on:click="changeCurrentDocument(document.id)"
@@ -23,6 +24,9 @@
                         <div class="document__date">
                             {{ document.updated }}
                         </div>
+                    </div>
+                    <div class="documents-list__no-documents" v-if="documents.length === 0">
+                        No Documents
                     </div>
                 </div>
             </div>

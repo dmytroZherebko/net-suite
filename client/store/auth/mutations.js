@@ -5,7 +5,12 @@ const mutations = constants.mutations;
 export default {
   [mutations.SET_ACCESS_TOKEN]: (state, payload) => {
     state.access_token = payload;
-    state.authorize = true;
+    state.authorize = !!payload;
+    if (payload) {
+      window.localStorage.setItem('token', payload);
+    } else {
+      window.localStorage.removeItem('token');
+    }
   },
   [mutations.SET_AUTH_PROCESS]: (state, payload) => {
     state.authorize_process = payload;

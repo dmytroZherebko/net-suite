@@ -1,3 +1,7 @@
+import router from '../router';
+import store from '../store';
+import constants from '../constants';
+
 const callApi = (url, params) => { // eslint-disable-line
   if (!params.headers) {
     params.headers = {};
@@ -21,18 +25,23 @@ const callApi = (url, params) => { // eslint-disable-line
     ...params
   })
     .then((data) => {
+      if (data.status === 401) {
+        store.commit(constants.mutations.SET_ACCESS_TOKEN, null);
+        router.push({ name: 'authorize', query: { redirect: router.currentRoute.fullPath } });
+        throw new Error();
+      }
+
       if (data.status >= 400) {
         return data.json()
           .then((err) => {
             let message = '';
             if (err.error) {
-              message = `${err.hint || ''}\n${err.message}`;
+              message = err.message || err.error || '';
             } else {
               err.errors.forEach((e) => {
                 message += `${e.message}${e.id || ''}\n`;
               });
             }
-
             throw new Error(message);
           });
       }

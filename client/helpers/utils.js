@@ -1,3 +1,5 @@
+import constants from '../constants';
+
 export const parseQueryString = (queryString) => { // eslint-disable-line
   const params = {};
   let temp,
@@ -27,4 +29,11 @@ export const getDocumentNameWithoutExtention = ({ name, type }) => {
   }
   formatedName = formatedName.join('.');
   return formatedName;
+};
+
+export const makeEndPointUrl = (endpoint) => {
+  if (process.env.NODE_ENV === 'production') {
+    return `${constants.endpoints.BASE_URL}${endpoint}`;
+  }
+  return endpoint;
 };

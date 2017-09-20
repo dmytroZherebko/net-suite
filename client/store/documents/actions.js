@@ -1,5 +1,5 @@
 import callApi from '../../helpers/api';
-import { getDataFromTimeStamp, getDocumentNameWithoutExtention } from '../../helpers/utils';
+import { getDataFromTimeStamp, getDocumentNameWithoutExtention, makeEndPointUrl } from '../../helpers/utils';
 import constants from '../../constants';
 
 const mutations = constants.mutations;
@@ -7,7 +7,7 @@ const endpoints = constants.endpoints;
 
 export const deleteDocumentById = ({ commit, state, dispatch, rootState }, payload) => {
   commit(mutations.TOGGLE_LOADER);
-  callApi(`${endpoints.DOCUMENTS}/${payload}`, {
+  callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${payload}`), {
     headers: {
       Authorization: `Bearer ${rootState.auth.access_token}`
     },
@@ -20,7 +20,9 @@ export const deleteDocumentById = ({ commit, state, dispatch, rootState }, paylo
       dispatch('getPageDocuments', page);
     }).catch((err) => {
       commit(mutations.TOGGLE_LOADER);
-      commit(mutations.SET_ERROR, err.message);
+      if (err.message) {
+        commit(mutations.SET_ERROR, err.message);
+      }
     });
 };
 
@@ -28,7 +30,7 @@ export const uploadDocument = ({ commit, state, dispatch, rootState }, file) => 
   const formData = new FormData();
   formData.append('file', file);
   commit(mutations.TOGGLE_LOADER);
-  callApi(endpoints.DOCUMENTS, {
+  callApi(makeEndPointUrl(endpoints.DOCUMENTS), {
     headers: {
       Authorization: `Bearer ${rootState.auth.access_token}`
     },
@@ -40,13 +42,15 @@ export const uploadDocument = ({ commit, state, dispatch, rootState }, file) => 
       dispatch('getPageDocuments', state.currentPage);
     }).catch((err) => {
       commit(mutations.TOGGLE_LOADER);
-      commit(mutations.SET_ERROR, err.message);
+      if (err.message) {
+        commit(mutations.SET_ERROR, err.message);
+      }
     });
 };
 
 export const updateDocumentName = ({ commit, rootState }, { documentId, newName }) => {
   commit(mutations.TOGGLE_LOADER);
-  callApi(`${endpoints.DOCUMENTS}/${documentId}`, {
+  callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${documentId}`), {
     headers: {
       Authorization: `Bearer ${rootState.auth.access_token}`
     },
@@ -60,13 +64,15 @@ export const updateDocumentName = ({ commit, rootState }, { documentId, newName 
       commit(mutations.UPDATE_NAME, { name: getDocumentNameWithoutExtention(doc), documentId });
     }).catch((err) => {
       commit(mutations.TOGGLE_LOADER);
-      commit(mutations.SET_ERROR, err.message);
+      if (err.message) {
+        commit(mutations.SET_ERROR, err.message);
+      }
     });
 };
 
 export const getPageDocuments = ({ commit, state, rootState }, currentPage = 1) => {
   commit(mutations.TOGGLE_LOADER);
-  callApi(endpoints.DOCUMENTS, {
+  callApi(makeEndPointUrl(endpoints.DOCUMENTS), {
     query: {
       page: currentPage,
       per_page: state.perPage
@@ -88,6 +94,8 @@ export const getPageDocuments = ({ commit, state, rootState }, currentPage = 1) 
       commit(mutations.LOAD_DOCUMENTS, documentsWithFormatedDate);
     }).catch((err) => {
       commit(mutations.TOGGLE_LOADER);
-      commit(mutations.SET_ERROR, err.message);
+      if (err.message) {
+        commit(mutations.SET_ERROR, err.message);
+      }
     });
 };

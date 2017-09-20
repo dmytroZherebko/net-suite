@@ -16,7 +16,16 @@
   }
 
   &-list {
-    min-height: 370px;
+    height: 370px;
+
+    &__no-documents {
+      height: 370px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      color: #ddd;
+    }
   }
 
   &-aside {}

@@ -1,5 +1,5 @@
 import callApi from '../../helpers/api';
-import { parseQueryString } from '../../helpers/utils';
+import { parseQueryString, makeEndPointUrl } from '../../helpers/utils';
 import constants from '../../constants';
 
 const mutations = constants.mutations;
@@ -7,7 +7,7 @@ const endpoints = constants.endpoints;
 
 const getAuthToken = (code, commit, state) => {
   commit(mutations.TOGGLE_LOADER);
-  callApi(endpoints.AUTH, {
+  callApi(makeEndPointUrl(endpoints.AUTH), {
     method: 'POST',
     body: JSON.stringify({
       grant_type: 'authorization_code',
@@ -20,10 +20,11 @@ const getAuthToken = (code, commit, state) => {
     .then((data) => {
       commit(mutations.TOGGLE_LOADER);
       commit(mutations.SET_ACCESS_TOKEN, data.access_token);
-      window.localStorage.setItem('token', data.access_token);
     }).catch((err) => {
       commit(mutations.TOGGLE_LOADER);
-      commit(mutations.SET_ERROR, err.message);
+      if (err.message) {
+        commit(mutations.SET_ERROR, err.message);
+      }
     });
 };
 
