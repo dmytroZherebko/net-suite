@@ -14,6 +14,20 @@ export default {
       state.total = payload;
     }
   },
+  [mutations.SET_CURRENT_DOCUMENT]: (state, payload) => {
+    state.currentDocumentId = payload;
+  },
+  [mutations.RESET_CURRENT_DOCUMENT]: (state) => {
+    state.currentDocumentId = null;
+  },
+  [mutations.SET_DOCUMENT_LINK]: (state, payload) => {
+    state.documentLink.hash = payload.hash;
+    state.documentLink.editorLink = payload.url;
+  },
+  [mutations.RESET_DOCUMENT_LINK]: (state) => {
+    state.documentLink.hash = null;
+    state.documentLink.editorLink = null;
+  },
   [mutations.UPDATE_NAME]: (state, { name, documentId }) => {
     state.documentsList.forEach((document) => {
       if (document.id === documentId) {

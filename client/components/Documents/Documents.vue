@@ -37,6 +37,10 @@
             </pagination>
         </div>
         <div class="documents-aside column-aside">
+            <open-document
+                    :documentId="currentDocumentId"
+            >
+            </open-document>
             <delete-document
                     :deleteDocument="deleteDocument"
                     :buttonIsDisable="!currentDocumentId"
@@ -67,13 +71,13 @@
   import { mapState, mapGetters, mapActions } from 'vuex';
   import Pagination from '../common/Pagination.vue';
   import DeleteDocument from './Delete.vue';
+  import OpenDocument from './Open.vue';
   import Modal from '../common/Modal.vue';
 
   export default {
 
     data() {
       return {
-        currentDocumentId: null,
         currentDocumentName: {
           value: null,
           error: false
@@ -87,6 +91,7 @@
         currentPage: state => state.documents.currentPage,
         totalItems: state => state.documents.total,
         perPage: state => state.documents.perPage,
+        currentDocumentId: state => state.documents.currentDocumentId,
       }),
       ...mapGetters({
         documents: 'getDocuments'
@@ -94,7 +99,7 @@
     },
 
     mounted() {
-      if (!this.documents) {
+      if (!this.documents.length) {
         this.getPageDocuments();
       }
     },
@@ -117,16 +122,18 @@
       pageChanged(page) {
         if (page === this.currentPage) return;
         this.getPageDocuments(page);
-        this.currentDocumentId = null;
+        this.resetCurrentDocument();
       },
 
       changeCurrentDocument(id) {
-        this.currentDocumentId = id;
+        if (this.currentDocumentId !== id) {
+          this.setCurrentDocument(id);
+        }
       },
 
       deleteDocument() {
         this.deleteDocumentById(this.currentDocumentId);
-        this.currentDocumentId = null;
+        this.resetCurrentDocument();
       },
       openEditNameModal(name) {
         this.currentDocumentName.value = name;
@@ -146,12 +153,19 @@
         }
       },
 
-      ...mapActions(['getPageDocuments', 'deleteDocumentById', 'updateDocumentName'])
+      ...mapActions([
+        'getPageDocuments',
+        'deleteDocumentById',
+        'updateDocumentName',
+        'resetCurrentDocument',
+        'setCurrentDocument',
+      ])
     },
 
     components: {
       Pagination,
       DeleteDocument,
+      OpenDocument,
       Modal
     }
   };

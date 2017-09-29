@@ -1,7 +1,7 @@
 <template>
     <div v-if="showModal" class="modal-wrapper" v-on:click.self="onCloseClick">
         <div class="modal" :class="modalClass">
-            <div class="modal-header">
+            <div class="modal-header" v-if="showHeader">
                 <h1 class="modal-header__title">
                     {{modalTitle || '&nbsp;'}}
                 </h1>
@@ -26,12 +26,19 @@
   export default {
     props: {
       showModal: Boolean,
-      modalType: String,
+      modalType: {
+        type: String,
+        default: 'alert'
+      },
       modalClass: {
         type: String,
         default: ''
       },
       showButtons: {
+        type: Boolean,
+        default: true
+      },
+      showHeader: {
         type: Boolean,
         default: true
       },

@@ -20,7 +20,10 @@ const routes = [
   {
     name: 'authorize',
     path: '/authorize',
-    component: AuthorizePage
+    component: AuthorizePage,
+    meta: {
+      hideNavBar: true
+    },
   }
 ];
 

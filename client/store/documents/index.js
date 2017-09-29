@@ -5,9 +5,14 @@ import * as getters from './getters';
 export default {
   state: {
     currentPage: null,
-    documentsList: null,
+    documentsList: [],
     total: null,
-    perPage: 10
+    perPage: 10,
+    currentDocumentId: null,
+    documentLink: {
+      editorLink: null,
+      hash: null
+    }
   },
   mutations,
   actions,
