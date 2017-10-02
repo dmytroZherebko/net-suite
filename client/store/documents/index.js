@@ -8,7 +8,11 @@ export default {
     documentsList: [],
     total: null,
     perPage: 10,
-    currentDocumentId: null,
+    currentDocument: {
+      name: null,
+      id: null,
+      type: null
+    },
     documentLink: {
       editorLink: null,
     }

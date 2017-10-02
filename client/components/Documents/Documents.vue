@@ -15,7 +15,7 @@
                          v-if="documents.length > 0"
                          v-for="document in documents"
                          :class="currentDocumentClass(document.id)"
-                         v-on:click="changeCurrentDocument(document.id)"
+                         v-on:click="changeCurrentDocument(document)"
                          v-on:dblclick="openEditNameModal(document.name)"
                     >
                         <div class="document__name">
@@ -41,29 +41,20 @@
                     :documentId="currentDocumentId"
             >
             </open-document>
+            <download-document
+                    :buttonIsDisable="!currentDocumentId"
+            ></download-document>
             <delete-document
                     :deleteDocument="deleteDocument"
                     :buttonIsDisable="!currentDocumentId"
             >
             </delete-document>
         </div>
-        <modal
-                :showModal="showEditModal"
-                modalTitle="Edit Document Name"
-                modalType="confirm"
-                @modal-close="closeEditNameModal"
-                @modal-ok="onEditNameConfirm"
-                @modal-cancel="closeEditNameModal"
-        >
-            <div slot="modal-body" class="modal-body">
-                <input type="text"
-                       v-model="currentDocumentName.value"
-                       class="input"
-                       :class="checkDocumentNameInput()"
-                       v-on:input="onDocumentNameChange"
-                >
-            </div>
-        </modal>
+        <edit-name
+                :documentName="currentDocumentName"
+                :closeEditNameModal="closeEditNameModal"
+                :showEditModal="showEditModal"
+        ></edit-name>
     </div>
 </template>
 
@@ -72,16 +63,14 @@
   import Pagination from '../common/Pagination.vue';
   import DeleteDocument from './Delete.vue';
   import OpenDocument from './Open.vue';
-  import Modal from '../common/Modal.vue';
+  import EditName from './EditName.vue';
+  import DownloadDocument from './DownloadDocument.vue';
 
   export default {
 
     data() {
       return {
-        currentDocumentName: {
-          value: null,
-          error: false
-        },
+        currentDocumentName: null,
         showEditModal: false
       };
     },
@@ -91,7 +80,7 @@
         currentPage: state => state.documents.currentPage,
         totalItems: state => state.documents.total,
         perPage: state => state.documents.perPage,
-        currentDocumentId: state => state.documents.currentDocumentId,
+        currentDocumentId: state => state.documents.currentDocument.id,
       }),
       ...mapGetters({
         documents: 'getDocuments'
@@ -108,16 +97,6 @@
       currentDocumentClass(documentId) {
         return documentId === this.currentDocumentId ? 'document_active' : '';
       },
-      checkDocumentNameInput() {
-        return this.currentDocumentName.error ? 'input_invalid' : '';
-      },
-      onDocumentNameChange() {
-        if (!this.currentDocumentName.value || this.currentDocumentName.value.length < 3) {
-          this.currentDocumentName.error = true;
-        } else {
-          this.currentDocumentName.error = false;
-        }
-      },
 
       pageChanged(page) {
         if (page === this.currentPage) return;
@@ -125,9 +104,9 @@
         this.resetCurrentDocument();
       },
 
-      changeCurrentDocument(id) {
-        if (this.currentDocumentId !== id) {
-          this.setCurrentDocument(id);
+      changeCurrentDocument(doc) {
+        if (this.currentDocumentId !== doc.id) {
+          this.setCurrentDocument(doc);
         }
       },
 
@@ -135,28 +114,19 @@
         this.deleteDocumentById(this.currentDocumentId);
         this.resetCurrentDocument();
       },
+
       openEditNameModal(name) {
-        this.currentDocumentName.value = name;
+        this.currentDocumentName = name;
         this.showEditModal = true;
       },
+
       closeEditNameModal() {
         this.showEditModal = false;
-      },
-      onEditNameConfirm() {
-        if (!this.currentDocumentName.error) {
-          this.closeEditNameModal();
-          this.updateDocumentName({
-            documentId: this.currentDocumentId,
-            newName: this.currentDocumentName.value
-          });
-          this.currentDocumentName.value = null;
-        }
       },
 
       ...mapActions([
         'getPageDocuments',
         'deleteDocumentById',
-        'updateDocumentName',
         'resetCurrentDocument',
         'setCurrentDocument',
       ])
@@ -166,7 +136,8 @@
       Pagination,
       DeleteDocument,
       OpenDocument,
-      Modal
+      EditName,
+      DownloadDocument,
     }
   };
 </script>

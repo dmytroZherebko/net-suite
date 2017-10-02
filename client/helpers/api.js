@@ -2,7 +2,7 @@ import router from '../router';
 import store from '../store';
 import constants from '../constants';
 
-const callApi = (url, params) => { // eslint-disable-line
+const callApi = (url, params, file) => { // eslint-disable-line
   if (!params.headers) {
     params.headers = {};
   }
@@ -14,11 +14,13 @@ const callApi = (url, params) => { // eslint-disable-line
     url = `${url}?${query}`;
   }
 
-  if (typeof params.body !== 'object') {
+  if (typeof params.body !== 'object' && !file) {
     params.headers['Content-Type'] = 'application/json';
   }
+  if (!file) {
+    params.headers.Accept = 'application/json';
+  }
 
-  params.headers.Accept = 'application/json';
   return fetch(url, {
     cache: 'no-store',
     method: 'GET',
@@ -47,7 +49,10 @@ const callApi = (url, params) => { // eslint-disable-line
       }
       return data;
     })
-    .then(data => data.json());
+    .then((data) => {
+      if (file) return data.blob();
+      return data.json();
+    });
 };
 
 export default callApi;

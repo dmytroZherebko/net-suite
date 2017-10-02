@@ -15,10 +15,14 @@ export default {
     }
   },
   [mutations.SET_CURRENT_DOCUMENT]: (state, payload) => {
-    state.currentDocumentId = payload;
+    state.currentDocument.id = payload.id;
+    state.currentDocument.name = payload.name;
+    state.currentDocument.type = payload.type;
   },
   [mutations.RESET_CURRENT_DOCUMENT]: (state) => {
-    state.currentDocumentId = null;
+    state.currentDocument.id = null;
+    state.currentDocument.name = null;
+    state.currentDocument.type = null;
   },
   [mutations.SET_DOCUMENT_LINK]: (state, payload) => {
     state.documentLink.editorLink = payload;

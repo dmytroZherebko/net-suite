@@ -24,7 +24,7 @@ export const getDataFromTimeStamp = (timestamp) => {
 
 export const getDocumentNameWithoutExtention = ({ name, type }) => {
   let formatedName = name.split('.');
-  if (formatedName[formatedName.length - 1] === type) {
+  if (formatedName[formatedName.length - 1].toLowerCase() === type) {
     formatedName.pop();
   }
   formatedName = formatedName.join('.');

@@ -1,3 +1,5 @@
+import downloadjs from 'downloadjs';
+
 import callApi from '../../helpers/api';
 import { getDataFromTimeStamp, getDocumentNameWithoutExtention, makeEndPointUrl } from '../../helpers/utils';
 import constants from '../../constants';
@@ -104,8 +106,7 @@ let doneListener;
 
 export const openDocumentEditor = ({ commit, rootState, state, dispatch }) => {
   commit(mutations.TOGGLE_LOADER);
-  callApi(makeEndPointUrl(endpoints.DOCUMENT_LINK.replace('{document_id}', state.currentDocumentId)), {
-    method: 'GET',
+  callApi(makeEndPointUrl(endpoints.DOCUMENT_LINK.replace('{document_id}', state.currentDocument.id)), {
     headers: {
       Authorization: `Bearer ${rootState.auth.access_token}`
     }
@@ -128,13 +129,31 @@ export const openDocumentEditor = ({ commit, rootState, state, dispatch }) => {
     });
 };
 
+export const downloadDocument = ({ commit, state, rootState }) => {
+  commit(mutations.TOGGLE_LOADER);
+  callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${state.currentDocument.id}/download`), {
+    headers: {
+      Authorization: `Bearer ${rootState.auth.access_token}`
+    }
+  }, true)
+    .then((blob) => {
+      downloadjs(blob, `${state.currentDocument.name}.${state.currentDocument.type}`);
+      commit(mutations.TOGGLE_LOADER);
+    }).catch((err) => {
+      commit(mutations.TOGGLE_LOADER);
+      if (err.message) {
+        commit(mutations.SET_ERROR, err.message);
+      }
+    });
+};
+
 export const closeDocumentEditor = ({ commit }) => {
   commit(mutations.RESET_DOCUMENT_LINK);
   window.removeEventListener('message', doneListener);
 };
 
-export const setCurrentDocument = ({ commit }, documentId) => {
-  commit(mutations.SET_CURRENT_DOCUMENT, documentId);
+export const setCurrentDocument = ({ commit }, document) => {
+  commit(mutations.SET_CURRENT_DOCUMENT, document);
 };
 
 export const resetCurrentDocument = ({ commit }) => {
