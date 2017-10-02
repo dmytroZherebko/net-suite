@@ -21,11 +21,9 @@ export default {
     state.currentDocumentId = null;
   },
   [mutations.SET_DOCUMENT_LINK]: (state, payload) => {
-    state.documentLink.hash = payload.hash;
-    state.documentLink.editorLink = payload.url;
+    state.documentLink.editorLink = payload;
   },
   [mutations.RESET_DOCUMENT_LINK]: (state) => {
-    state.documentLink.hash = null;
     state.documentLink.editorLink = null;
   },
   [mutations.UPDATE_NAME]: (state, { name, documentId }) => {

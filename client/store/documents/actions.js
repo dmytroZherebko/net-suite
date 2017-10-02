@@ -104,18 +104,17 @@ let doneListener;
 
 export const openDocumentEditor = ({ commit, rootState, state, dispatch }) => {
   commit(mutations.TOGGLE_LOADER);
-  callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${state.currentDocumentId}/constructor`), {
-    method: 'POST',
+  callApi(makeEndPointUrl(endpoints.DOCUMENT_LINK.replace('{document_id}', state.currentDocumentId)), {
+    method: 'GET',
     headers: {
       Authorization: `Bearer ${rootState.auth.access_token}`
     }
   })
     .then((res) => {
       commit(mutations.TOGGLE_LOADER);
-      commit(mutations.SET_DOCUMENT_LINK, res);
+      commit(mutations.SET_DOCUMENT_LINK, res.location);
       doneListener = (e) => {
         if (e.data === 'editorDone') {
-          window.removeEventListener('message', doneListener);
           dispatch('closeDocumentEditor');
         }
       };
@@ -129,16 +128,9 @@ export const openDocumentEditor = ({ commit, rootState, state, dispatch }) => {
     });
 };
 
-export const closeDocumentEditor = ({ state, rootState, commit }) => {
-  const hash = state.documentLink.hash;
+export const closeDocumentEditor = ({ commit }) => {
   commit(mutations.RESET_DOCUMENT_LINK);
   window.removeEventListener('message', doneListener);
-  callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${state.currentDocumentId}/constructor/${hash}`), {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${rootState.auth.access_token}`
-    }
-  });
 };
 
 export const setCurrentDocument = ({ commit }, documentId) => {

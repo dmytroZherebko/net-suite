@@ -11,7 +11,6 @@ export default {
     currentDocumentId: null,
     documentLink: {
       editorLink: null,
-      hash: null
     }
   },
   mutations,

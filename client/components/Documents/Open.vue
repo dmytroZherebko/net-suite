@@ -11,7 +11,10 @@
                 v-on:modal-close="closeModal"
         >
             <div slot="modal-body">
-                <iframe :src="documentUrl" :style="{width: '100%', height: '700px'}"></iframe>
+                <iframe ref="frame"
+                        :src="documentUrl"
+                        :style="{width: '100%', height: '700px'}"
+                ></iframe>
             </div>
         </modal>
     </div>
@@ -41,7 +44,7 @@
       },
       closeModal() {
         this.closeDocumentEditor();
-      }
+      },
     },
     components: {
       Modal
