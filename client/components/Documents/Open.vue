@@ -11,8 +11,7 @@
                 v-on:modal-close="closeModal"
         >
             <div slot="modal-body">
-                <iframe ref="frame"
-                        :src="documentUrl"
+                <iframe :src="documentUrl"
                         :style="{width: '100%', height: '700px'}"
                 ></iframe>
             </div>
