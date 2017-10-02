@@ -122,6 +122,7 @@
 
       closeEditNameModal() {
         this.showEditModal = false;
+        this.currentDocumentName = null;
       },
 
       ...mapActions([
