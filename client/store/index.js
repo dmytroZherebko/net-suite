@@ -5,6 +5,7 @@ import mutations from './mutations';
 import * as actions from './actions';
 import auth from './auth';
 import documents from './documents';
+import link2fill from './link2fill';
 
 Vue.use(Vuex);
 
@@ -18,7 +19,8 @@ export default new Vuex.Store({
   },
   modules: {
     auth,
-    documents
+    documents,
+    link2fill
   },
   mutations,
   actions,

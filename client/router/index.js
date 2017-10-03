@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import store from '../store';
 import AuthorizePage from '../components/Auhtorize/Authorize.vue';
 import Documents from '../components/Documents/Documents.vue';
+import LinkToFillForm from '../components/LinkToFill/LinkToFillForm.vue';
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,22 @@ const routes = [
     name: 'authorize',
     path: '/authorize',
     component: AuthorizePage,
+    meta: {
+      hideNavBar: true
+    },
+  },
+  {
+    name: 'link_to_fill_create',
+    path: '/link-to-fill/create',
+    component: LinkToFillForm,
+    params: true,
+    beforeEnter: (to, from, next) => {
+      if (!store.state.documents.currentDocument.id) {
+        next({ path: '/documents' });
+      } else {
+        next();
+      }
+    },
     meta: {
       hideNavBar: true
     },

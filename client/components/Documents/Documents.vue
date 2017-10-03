@@ -44,6 +44,14 @@
             <download-document
                     :buttonIsDisable="!currentDocumentId"
             ></download-document>
+            <router-link
+                    tag="button"
+                    :disabled="!currentDocumentId"
+                    class="button button_menu button_margin-bottom"
+                    :to="{ path: '/link-to-fill/create', params: { prevPage: $route.fullPath }}"
+            >
+                LinkToFill
+            </router-link>
             <delete-document
                     :deleteDocument="deleteDocument"
                     :buttonIsDisable="!currentDocumentId"

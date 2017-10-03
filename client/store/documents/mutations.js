@@ -18,11 +18,13 @@ export default {
     state.currentDocument.id = payload.id;
     state.currentDocument.name = payload.name;
     state.currentDocument.type = payload.type;
+    state.currentDocument.lastEdited = null;
   },
   [mutations.RESET_CURRENT_DOCUMENT]: (state) => {
     state.currentDocument.id = null;
     state.currentDocument.name = null;
     state.currentDocument.type = null;
+    state.currentDocument.lastEdited = null;
   },
   [mutations.SET_DOCUMENT_LINK]: (state, payload) => {
     state.documentLink.editorLink = payload;

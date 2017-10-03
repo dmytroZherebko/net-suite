@@ -11,6 +11,8 @@
 
 @import "common/pagination";
 
+@import "common/switchers";
+
 //
 
 @import "documents/documents";
@@ -28,3 +30,6 @@
 @import "upload/upload-section";
 
 @import "upload/upload-options";
+
+//
+@import "link2fill/link2fill-form";

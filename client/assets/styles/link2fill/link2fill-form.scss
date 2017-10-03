@@ -1,0 +1,63 @@
+.link-to-fill-form {
+  width: 70%;
+  margin: 10px auto;
+
+  @media (max-width: 1000px) {
+    width: 90%;
+  }
+
+  &__title {
+    font-size: 22px;
+    margin: 15px 0;
+  }
+
+  &-header {
+    display: flex;
+    background: #f9f9f9;
+
+    &__back {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      padding: 10px 0;
+      font-size: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      border-right: 1px solid #ddd;
+    }
+
+    &__title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  }
+
+  &-section {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+
+    &__title {
+      width: 30%;
+      min-width: 200px;
+      margin-right: 20px;
+      color: #666;
+    }
+
+    &__info {
+      width: 70%;
+    }
+  }
+
+  &-button {
+    width: 220px;
+    margin: 10px auto;
+    padding: 12px;
+    font-size: 16px;
+  }
+}
