@@ -1,0 +1,61 @@
+.tags {
+  &-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 5px;
+  }
+
+  &__tag {
+    position: relative;
+    max-width: 300px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    margin: 5px 5px 5px 0;
+    padding: 0 25px 0 5px;
+    background: #eee;
+
+    @media (max-width: 600px) {
+      width: 200px;
+    }
+  }
+
+  &__input {
+    width: auto;
+    height: 24px;
+    margin: 5px 5px 5px 0;
+    border: 1px dashed #ff9000;
+    box-shadow: none;
+
+    &_invalid {
+      color: #e74c3c;
+      border-style: solid;
+      border-color: #e74c3c;
+    }
+
+    &:focus {
+      border-color: #ff9000;
+      box-shadow: none;
+    }
+  }
+
+  &__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    white-space: nowrap;
+  }
+
+  &__remove {
+    position: absolute;
+    top: 2px;
+    right: 0;
+    margin-right: 5px;
+    color: #bbb;
+    cursor: pointer;
+
+    &::before {
+      content: "\2715";
+    }
+  }
+}

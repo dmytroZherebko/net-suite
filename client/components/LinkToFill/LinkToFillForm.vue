@@ -3,7 +3,7 @@
         <header class="link-to-fill-form-header">
             <router-link
                     class="link-to-fill-form-header__back"
-                    :to="$route.params.prevPage || '/documents'"
+                    :to="prevPage"
             >
                 &#8678;
             </router-link>
@@ -89,6 +89,34 @@
 
             <div class="link-to-fill-form-section">
                 <div class="link-to-fill-form-section__title">
+                    Request additional documents.
+                </div>
+                <div class="link-to-fill-form-section__info">
+                    <div class="input tags-wrapper ">
+                        <div v-for="(document, index) in formData.additional_documents"
+                             class="tags__tag"
+                        >
+                            <div class="tags__name">
+                                {{ document }}
+                            </div>
+                            <div class="tags__remove"
+                                 v-on:click="removeAdditionalDocument(index)"
+                            ></div>
+                        </div>
+                        <input v-if="formData.additional_documents.length < 5"
+                               type="text"
+                               autocomplete="off"
+                               class="input tags__input"
+                               maxlength="70"
+                               v-on:blur="addAdditionalDocument"
+                               v-on:keyup.enter="addAdditionalDocument"
+                               placeholder="Add document name">
+                    </div>
+                </div>
+            </div>
+
+            <div class="link-to-fill-form-section">
+                <div class="link-to-fill-form-section__title">
                     Prevent closing document before filling all fields.
                 </div>
                 <div class="link-to-fill-form-section__info">
@@ -125,6 +153,36 @@
 
             <div class="link-to-fill-form-section">
                 <div class="link-to-fill-form-section__title">
+                    Send Notification to
+                </div>
+                <div class="link-to-fill-form-section__info">
+                    <div class="input tags-wrapper ">
+                        <div v-for="(user, index) in formData.notification_emails"
+                             class="tags__tag"
+                        >
+                            <div class="tags__name">
+                                {{ user.email }}
+                            </div>
+                            <div class="tags__remove"
+                                 v-on:click="removeNotificationEmail(index)"
+                            ></div>
+                        </div>
+                        <input v-if="formData.notification_emails.length < 10"
+                               type="text"
+                               autocomplete="off"
+                               class="input tags__input"
+                               :class="notificationEmailError ? 'tags__input_invalid' : ''"
+                               maxlength="70"
+                               v-on:blur="addNotificationEmail"
+                               v-on:keyup.enter="addNotificationEmail"
+                               v-on:input="resetNotificationEmailError"
+                               placeholder="Add Email Address">
+                    </div>
+                </div>
+            </div>
+
+            <div class="link-to-fill-form-section">
+                <div class="link-to-fill-form-section__title">
                     Shows welcome agreement each time when user will open LinkToFill.
                 </div>
                 <div class="link-to-fill-form-section__info">
@@ -141,6 +199,15 @@
                 </div>
                 <div class="link-to-fill-form-section__info">
                     <input class="input" type="text" v-model="formData.callback_url">
+                </div>
+            </div>
+
+            <div class="link-to-fill-form-section">
+                <div class="link-to-fill-form-section__title">
+                    Redirect After Submission
+                </div>
+                <div class="link-to-fill-form-section__info">
+                    <input class="input" type="text" v-model="formData.redirect_url">
                 </div>
             </div>
 
@@ -164,21 +231,50 @@
                     </label>
                 </div>
             </div>
-            <button class="button button_primary link-to-fill-form-button">
+            <button class="button button_primary link-to-fill-form-button"
+                    v-on:click="createL2F"
+            >
                 Create LinkToFill
             </button>
         </div>
+
+        <modal
+                :showModal="showSubmitModal"
+                modalTitle="LinkToFill Url"
+                modalType="confirm"
+                primaryButton="Copy Link"
+                secondaryButton="Go Back"
+                @modal-close="closeSubmitModal"
+                @modal-cancel="closeSubmitModal"
+                @modal-confirm="copyUrl"
+        >
+            <div class="modal-body" slot="modal-body">
+                <div class="text-center margin-bottom">
+                    Use this link to access and share your document.
+                </div>
+                <input type="text" readonly :value="linkToFillUrl" class="input">
+            </div>
+        </modal>
     </div>
 </template>
 
 <script>
-  import { mapState, mapGetters } from 'vuex';
+  import { mapState, mapGetters, mapActions } from 'vuex';
+  import { isEmailValid, copyToClipboard } from '../../helpers/utils';
+  import Modal from '../common/Modal.vue';
 
   export default {
     data() {
       return {
-        formData: {},
-        showEditModal: false
+        formData: {
+          additional_documents: [],
+          notification_emails: []
+        },
+        prevPage: this.$route.params.prevPage || '/documents',
+        showEditModal: false,
+        notificationEmailError: false,
+        linkToFillUrl: null,
+        showSubmitModal: false
       };
     },
 
@@ -199,8 +295,55 @@
 
     methods: {
       ...mapGetters(['getDefaultParams']),
+      ...mapActions(['createLinkToFill']),
+      addAdditionalDocument(e) {
+        const value = e.target.value;
+        if (!value) return;
+
+        this.formData.additional_documents.push(value);
+        e.target.value = '';
+      },
+
+      removeAdditionalDocument(index) {
+        this.formData.additional_documents.splice(index, 1);
+      },
+      resetNotificationEmailError() {
+        this.notificationEmailError = false;
+      },
+      removeNotificationEmail(index) {
+        this.formData.notification_emails.splice(index, 1);
+      },
+      addNotificationEmail(e) {
+        const value = e.target.value.trim();
+        if (!value) return;
+
+        if (isEmailValid(value)) {
+          this.formData.notification_emails.push({ email: value });
+          e.target.value = '';
+          this.notificationEmailError = false;
+        } else {
+          this.notificationEmailError = true;
+        }
+      },
+      createL2F() {
+        this.createLinkToFill(this.formData)
+          .then((url) => {
+            this.linkToFillUrl = url;
+            this.showSubmitModal = true;
+          });
+      },
+      copyUrl() {
+        copyToClipboard(this.linkToFillUrl);
+      },
+      closeSubmitModal() {
+        this.showSubmitModal = false;
+        this.$router.push(this.prevPage);
+        this.linkToFillUrl = null;
+      }
     },
 
-    components: {}
+    components: {
+      Modal
+    }
   };
 </script>

@@ -29,6 +29,7 @@ const callApi = (url, params, file) => { // eslint-disable-line
     .then((data) => {
       if (data.status === 401) {
         store.commit(constants.mutations.SET_ACCESS_TOKEN, null);
+        store.dispatch('checkAuthCode');
         router.push({ name: 'authorize', query: { redirect: router.currentRoute.fullPath } });
         throw new Error();
       }

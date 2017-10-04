@@ -37,3 +37,22 @@ export const makeEndPointUrl = (endpoint) => {
   }
   return endpoint;
 };
+
+export const isEmailValid = email => /.+@.+\..+/i.test(email);
+
+export const copyToClipboard = (text) => {
+  const textArea = document.createElement('textarea');
+  textArea.style.position = 'fixed';
+  textArea.style.height = '0';
+  textArea.style.opacity = '0';
+  textArea.value = text;
+  document.body.appendChild(textArea);
+  textArea.select();
+  try {
+    document.execCommand('copy');
+  } catch (err) {
+    console.log(err); // eslint-disable-line
+  } finally {
+    document.body.removeChild(textArea);
+  }
+};

@@ -89,6 +89,7 @@
         totalItems: state => state.documents.total,
         perPage: state => state.documents.perPage,
         currentDocumentId: state => state.documents.currentDocument.id,
+        userInfo: state => state.user.userInfo,
       }),
       ...mapGetters({
         documents: 'getDocuments'
@@ -98,6 +99,9 @@
     mounted() {
       if (!this.documents.length) {
         this.getPageDocuments();
+      }
+      if (!this.userInfo) {
+        this.getUserInfo();
       }
     },
 
@@ -138,6 +142,7 @@
         'deleteDocumentById',
         'resetCurrentDocument',
         'setCurrentDocument',
+        'getUserInfo',
       ])
     },
 

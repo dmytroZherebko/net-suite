@@ -4,7 +4,8 @@
   "globals": {
     "window": true,
     "fetch": true,
-    "FormData": true
+    "FormData": true,
+    "document": true
   },
   "rules": {
     "comma-dangle": "off",
