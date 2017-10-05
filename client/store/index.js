@@ -6,6 +6,7 @@ import * as actions from './actions';
 import auth from './auth';
 import documents from './documents';
 import link2fill from './link2fill';
+import send2sign from './send2sign';
 import user from './user';
 
 Vue.use(Vuex);
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     auth,
     documents,
     link2fill,
+    send2sign,
     user
   },
   mutations,

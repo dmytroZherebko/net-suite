@@ -288,13 +288,13 @@
 
     mounted() {
       if (!this.$route.params.l2f_id) {
-        this.formData = this.getDefaultParams();
+        this.formData = this.getL2FDefaultParams();
         this.formData.document_id = this.currentDocumentId;
       }
     },
 
     methods: {
-      ...mapGetters(['getDefaultParams']),
+      ...mapGetters(['getL2FDefaultParams']),
       ...mapActions(['createLinkToFill']),
       addAdditionalDocument(e) {
         const value = e.target.value;

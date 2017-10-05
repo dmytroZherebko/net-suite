@@ -52,6 +52,14 @@
             >
                 LinkToFill
             </router-link>
+            <router-link
+                    tag="button"
+                    :disabled="!currentDocumentId"
+                    class="button button_menu button_margin-bottom"
+                    :to="{ path: '/send-to-sign/create', params: { prevPage: $route.fullPath }}"
+            >
+                SendToSign
+            </router-link>
             <delete-document
                     :deleteDocument="deleteDocument"
                     :buttonIsDisable="!currentDocumentId"

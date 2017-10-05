@@ -1,4 +1,4 @@
-export const getDefaultParams = (state, getters, rootState) => { // eslint-disable-line
+export const getL2FDefaultParams = (state, getters, rootState) => { // eslint-disable-line
   const params = { ...state.defaultParams };
   const email = rootState.user.userInfo && rootState.user.userInfo.email;
   params.additional_documents = [];

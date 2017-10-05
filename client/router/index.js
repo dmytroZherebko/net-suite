@@ -5,6 +5,7 @@ import store from '../store';
 import AuthorizePage from '../components/Auhtorize/Authorize.vue';
 import Documents from '../components/Documents/Documents.vue';
 import LinkToFillForm from '../components/LinkToFill/LinkToFillForm.vue';
+import SendToSignForm from '../components/SendToSign/SendToSignForm.vue';
 
 Vue.use(VueRouter);
 
@@ -30,6 +31,22 @@ const routes = [
     name: 'link_to_fill_create',
     path: '/link-to-fill/create',
     component: LinkToFillForm,
+    params: true,
+    beforeEnter: (to, from, next) => {
+      if (!store.state.documents.currentDocument.id) {
+        next({ path: '/documents' });
+      } else {
+        next();
+      }
+    },
+    meta: {
+      hideNavBar: true
+    },
+  },
+  {
+    name: 'send_to_sign_create',
+    path: '/send-to-sign/create',
+    component: SendToSignForm,
     params: true,
     beforeEnter: (to, from, next) => {
       if (!store.state.documents.currentDocument.id) {
