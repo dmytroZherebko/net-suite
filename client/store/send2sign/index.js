@@ -21,7 +21,7 @@ export default {
       message_subject: 'Digital signature request from ',
       message_text: 'Please sign and return the linked document with PDFfiller. If you have any questions, please contact me.',
       access: 'signature',
-      phone_authenticate: null,
+      phone_authenticate: '',
       additional_documents: []
     }
   },
