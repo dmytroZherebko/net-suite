@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="button button_menu button_margin-bottom" :disabled="buttonIsDisable" v-on:click="downloadDocument">
+        <button class="button button_menu margin-bottom" :disabled="buttonIsDisable" v-on:click="downloadDocument">
             download
         </button>
     </div>

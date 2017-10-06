@@ -47,7 +47,7 @@
             <router-link
                     tag="button"
                     :disabled="!currentDocumentId"
-                    class="button button_menu button_margin-bottom"
+                    class="button button_menu margin-bottom"
                     :to="{ path: '/link-to-fill/create', params: { prevPage: $route.fullPath }}"
             >
                 LinkToFill
@@ -55,7 +55,7 @@
             <router-link
                     tag="button"
                     :disabled="!currentDocumentId"
-                    class="button button_menu button_margin-bottom"
+                    class="button button_menu margin-bottom"
                     :to="{ path: '/send-to-sign/create', params: { prevPage: $route.fullPath }}"
             >
                 SendToSign

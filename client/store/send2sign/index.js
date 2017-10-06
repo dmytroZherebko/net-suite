@@ -6,17 +6,17 @@ export default {
     defaultParams: {
       document_id: null,
       method: 'sendtoeach',
-      envelope_name: '',
+      envelope_name: 'Envelope #1',
       security_pin: 'standard',
-      pin: null,
+      pin: '',
       sign_in_order: false,
       sender_notifications: true,
       recipients: []
     },
     defaultRecipient: {
-      role: 777,
-      email: null,
-      name: null,
+      order: null,
+      email: '',
+      name: '',
       require_photo: false,
       message_subject: 'Digital signature request from ',
       message_text: 'Please sign and return the linked document with PDFfiller. If you have any questions, please contact me.',

@@ -1,0 +1,54 @@
+.recipients {
+  min-width: 660px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.recipient {
+  margin-top: -1px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background: #fafafa;
+
+  &__edit {
+    display: flex;
+    align-items: center;
+
+    &-action {
+      display: flex;
+      width: 40%;
+      padding: 4px;
+
+      &_delete {
+        width: 10%;
+      }
+
+      &_toggle {
+        width: 10%;
+        padding-right: 0;
+        cursor: pointer;
+
+        &::after {
+          content: '\276E';
+          display: block;
+          margin-left: 10px;
+          transform: rotate(-90deg);
+        }
+
+        &.is-open::after {
+          transform: rotate(90deg);
+        }
+      }
+
+      &_first {
+        padding-left: 0;
+      }
+    }
+
+    &-input-order {
+      width: 10%;
+      margin-right: 4px;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="button button_menu button_margin-bottom" :disabled="!documentId" v-on:click="openDocumentInEditor">
+        <button class="button button_menu margin-bottom" :disabled="!documentId" v-on:click="openDocumentInEditor">
             open
         </button>
         <modal
