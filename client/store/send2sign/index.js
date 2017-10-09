@@ -1,4 +1,4 @@
-// import * as actions from './actions';
+import * as actions from './actions';
 import * as getters from './getters';
 
 export default {
@@ -26,5 +26,5 @@ export default {
     }
   },
   getters,
-  // actions,
+  actions,
 };

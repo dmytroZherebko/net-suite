@@ -7,7 +7,7 @@ export const getS2SDefaultRecipient = (state, getters, rootState) => {
   const params = { ...state.defaultRecipient };
   const email = rootState.user.userInfo && rootState.user.userInfo.email;
   if (email) {
-    params.message_subject = params.message_subject + rootState.user.userInfo.email;
+    params.message_subject = params.message_subject + email;
   }
 
   return params;

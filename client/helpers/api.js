@@ -42,7 +42,7 @@ const callApi = (url, params, file) => { // eslint-disable-line
               message = err.message || err.error || '';
             } else {
               err.errors.forEach((e) => {
-                message += `${e.message}${e.id || ''}\n`;
+                message += `${e.message}\n`;
               });
             }
             throw new Error(message);

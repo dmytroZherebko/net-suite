@@ -24,5 +24,6 @@ export const createLinkToFill = ({ commit, rootState}, payload) => { // eslint-d
       if (err.message) {
         commit(mutations.SET_ERROR, err.message);
       }
+      throw new Error();
     });
 };

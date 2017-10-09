@@ -228,26 +228,21 @@
 
                         <div class="form-section">
                             <div class="form-section__title">
-                                Message Subject
+                                Message
                             </div>
-                            <div class="form-section__info">
+                            <div class="form-section__info form-section-message">
+                                <div class="form-section-message__subject">Subject:</div>
                                 <input type="text"
-                                       class="input"
+                                       class="input form-section-message__subject-input"
                                        v-model="recipient.message_subject"
                                        maxlength="255"
                                 >
-                            </div>
-                        </div>
-                        <div class="form-section">
-                            <div class="form-section__title">
-                                Message Text
-                            </div>
-                            <div class="form-section__info">
-                            <textarea type="text"
-                                      class="input input_textarea"
-                                      v-model="recipient.message_text"
-                                      maxlength="500"
-                            ></textarea>
+                                <textarea type="text"
+                                          class="input input_textarea form-section-message__text"
+                                          v-model="recipient.message_text"
+                                          placeholder="Message"
+                                          maxlength="500"
+                                ></textarea>
                             </div>
                         </div>
                     </div>
@@ -267,17 +262,29 @@
                 Create SendToSign
             </button>
         </div>
-        <pre>
-            {{ formData }}
-        </pre>
+        <modal
+                :showModal="showResultModal"
+                modalType="alert"
+                modalTitle="SendToSign Created"
+                v-on:modal-close="closeResultModal"
+                v-on:modal-ok="closeResultModal"
+        >
+            <div class="modal-body text-center" slot="modal-body">
+                We Have Sent Your Document to Be Signed!
+            </div>
+        </modal>
     </div>
 </template>
 
 <script>
-  import { mapState, mapGetters } from 'vuex';
+  import { mapState, mapGetters, mapActions } from 'vuex';
   import { isEmailValid } from '../../helpers/utils';
+  import Modal from '../common/Modal.vue';
 
   export default {
+    components: {
+      Modal
+    },
     data() {
       return {
         formData: {
@@ -288,6 +295,7 @@
           pin: false
         },
         prevPage: this.$route.params.prevPage || '/documents',
+        showResultModal: false
       };
     },
 
@@ -301,7 +309,7 @@
 
     mounted() {
       if (!this.$route.params.s2s_id) {
-        this.formData = this.getS2SDefaultParams();
+        this.formData = { ...this.getS2SDefaultParams() };
         this.recipientTemplate = this.getS2SDefaultRecipient();
         this.formData.document_id = this.currentDocumentId;
         this.formData.recipients = [];
@@ -311,6 +319,7 @@
 
     methods: {
       ...mapGetters(['getS2SDefaultParams', 'getS2SDefaultRecipient']),
+      ...mapActions(['createSendToSign']),
       removeAdditionalDocument(index, recipientIndex) {
         this.formData.recipients[recipientIndex].additional_documents.splice(index, 1);
       },
@@ -335,32 +344,48 @@
           }
         });
       },
+
       toggleRecipientSection(recipientIndex) {
         this.formData.recipients[recipientIndex].isCollapsed = !this.formData.recipients[recipientIndex].isCollapsed;
       },
+
       addRecipient() {
         this.formData.recipients.forEach((rec) => {
           rec.isCollapsed = true;
         });
         this.addDefaultRecipient();
       },
+
       deleteRecipient(index) {
         this.formData.recipients.splice(index, 1);
         this.formData.recipients.forEach((rec, recIndex) => {
           rec.order = recIndex + 1;
         });
       },
+
       resetFormError(field) {
         this.formErrors[field] = false;
       },
+
       resetRecipientFormError(field, index) {
         this.formData.recipients[index].errors[field] = false;
       },
+
       submitS2SForm() {
         if (this.checkFormValid()) {
-          console.log(this.formData);
+          this.createSendToSign(this.formData)
+            .then(() => {
+              this.showResultModal = true;
+            })
+            .catch(() => {});
         }
       },
+
+      closeResultModal() {
+        this.showResultModal = false;
+        this.$router.push(this.prevPage);
+      },
+
       checkFormValid() {
         if (this.formData.method === 'sendtogroup') {
           if (this.formData.envelope_name.length === 0) {
@@ -446,7 +471,5 @@
         return true;
       }
     },
-
-    components: {}
   };
 </script>

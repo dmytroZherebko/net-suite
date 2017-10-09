@@ -216,7 +216,11 @@
                     LinkToFill Custom Message
                 </div>
                 <div class="form-section__info">
-                    <textarea class="input input_textarea" type="text" v-model="formData.custom_message"></textarea>
+                    <textarea class="input input_textarea"
+                              type="text"
+                              v-model="formData.custom_message"
+                              maxlength="500"
+                    ></textarea>
                 </div>
             </div>
 
@@ -246,7 +250,7 @@
                 secondaryButton="Go Back"
                 @modal-close="closeSubmitModal"
                 @modal-cancel="closeSubmitModal"
-                @modal-confirm="copyUrl"
+                @modal-ok="copyUrl"
         >
             <div class="modal-body" slot="modal-body">
                 <div class="text-center margin-bottom">
@@ -287,7 +291,7 @@
 
     mounted() {
       if (!this.$route.params.l2f_id) {
-        this.formData = this.getL2FDefaultParams();
+        this.formData = { ...this.getL2FDefaultParams() };
         this.formData.document_id = this.currentDocumentId;
         this.formData.additional_documents = [];
         const defaultMail = this.formData.notification_emails[0];
@@ -332,7 +336,8 @@
           .then((url) => {
             this.linkToFillUrl = url;
             this.showSubmitModal = true;
-          });
+          })
+          .catch(() => {});
       },
       copyUrl() {
         copyToClipboard(this.linkToFillUrl);

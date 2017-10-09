@@ -52,6 +52,33 @@
     &__info {
       width: 70%;
     }
+
+    &-message {
+      position: relative;
+      &__subject {
+        position: absolute;
+        color: #888;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        padding: 6px 10px;
+        line-height: 20px;
+      }
+
+      &__subject-input {
+        padding-left: 65px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+
+      &__text {
+        margin-top: -1px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-top-color: #e5e5e5;
+        box-shadow: none;
+      }
+    }
   }
 
   &-button {
