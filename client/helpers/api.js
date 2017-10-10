@@ -34,6 +34,10 @@ const callApi = (url, params, file) => { // eslint-disable-line
         throw new Error();
       }
 
+      if (data.status === 413) {
+        throw new Error('File size is limited to 25 Mb! Please select a smaller file.');
+      }
+
       if (data.status >= 400) {
         return data.json()
           .then((err) => {

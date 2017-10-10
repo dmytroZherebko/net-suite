@@ -66,7 +66,7 @@
                                     Enter the URL of a document hosted online to add it to PDFfiller.
                                 </p>
                                 <p class="upload-section__description">
-                                    PDFfiller supports PDF, Word, PowerPoint, and Text formats.
+                                    PDFfiller supports PDF, Word, and PowerPoint files. Max file size: 25 Mb!
                                 </p>
                                 <div class="upload-section__input-wrapper">
                                     <input
@@ -87,6 +87,17 @@
                 </div>
             </div>
         </modal>
+        <modal
+                :showModal="showSuccessUploadModal"
+                modalTitle="Successful upload"
+                modalType="alert"
+                @modal-close="closeSuccessModal"
+                @modal-ok="closeSuccessModal"
+        >
+            <div class="modal-body text-center" slot="modal-body">
+                File was successfully uploaded.
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -98,6 +109,7 @@
     data() {
       return {
         showModal: false,
+        showSuccessUploadModal: false,
         uploadFileUrl: {
           value: null,
           error: false
@@ -122,6 +134,9 @@
         this.uploadFileUrl.value = null;
         this.uploadFileUrl.error = false;
       },
+      closeSuccessModal() {
+        this.showSuccessUploadModal = false;
+      },
       openModal() {
         this.showModal = true;
       },
@@ -141,7 +156,11 @@
       },
       onUrlUploadSubmit() {
         if (this.uploadFileUrl.value) {
-          this.uploadDocument(this.uploadFileUrl.value);
+          this.uploadDocument(this.uploadFileUrl.value)
+            .then(() => {
+              this.showSuccessUploadModal = true;
+            })
+            .catch(() => {});
           this.closeModal();
         } else {
           this.uploadFileUrl.error = true;
@@ -149,17 +168,21 @@
       },
       onChooseFile(e) {
         const file = e.target.files[0];
-        if (this.validateFileFormat(file.name)) {
-          this.closeModal();
-          this.uploadDocument(file);
-        }
+        this.upload(file);
       },
       onDrop(e) {
         const file = e.dataTransfer.files[0];
         this.dragOnFileInput = false;
-        if (this.validateFileFormat(file.name)) {
+        this.upload(file);
+      },
+      upload(file) {
+        if (file && this.validateFile(file)) {
           this.closeModal();
-          this.uploadDocument(file);
+          this.uploadDocument(file)
+            .then(() => {
+              this.showSuccessUploadModal = true;
+            })
+            .catch(() => {});
         }
       },
       onDragEnter() {
@@ -171,17 +194,23 @@
       checkOnDragBlock() {
         return this.dragOnFileInput ? 'upload-section__file_ondrag' : '';
       },
-      validateFileFormat(file) {
-        if (typeof file !== 'string') return false;
-
-        const format = file.split('.').pop();
-        if (/(ppt|pptx|doc|docx|pdf)/.test(format)) {
-          return true;
+      validateFile(file) {
+        const format = file.name.split('.').pop().toLowerCase();
+        if (!/(ppt|pptx|doc|docx|pdf)/.test(format)) {
+          this.setError('PDFfiller supports PDF, Word, and PowerPoint files.');
+          return false;
         }
-        return false;
+
+        if (file.size > 26214400) {
+          this.setError('File size is limited to 25 Mb! Please select a smaller file.');
+          return false;
+        }
+
+        return true;
       },
       ...mapActions([
-        'uploadDocument'
+        'uploadDocument',
+        'setError'
       ])
     },
     components: {

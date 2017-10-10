@@ -119,6 +119,7 @@
                                    :class="{'input_invalid': recipient.errors.order}"
                                    v-on:input="resetRecipientFormError('order', recipientIndex)"
                                    v-model.number="recipient.order"
+                                   maxlength="2"
                             >
                             <input type="text"
                                    class="input"
@@ -392,8 +393,8 @@
             this.formErrors.envelope_name = true;
             return false;
           }
-          if (this.formData.sign_in_order) {
-            return this.validateRecipientsOrder();
+          if (this.formData.sign_in_order && !this.validateRecipientsOrder()) {
+            return false;
           }
           return this.validateRecipientsNameAndEmail();
         }

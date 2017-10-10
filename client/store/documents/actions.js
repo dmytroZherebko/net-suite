@@ -19,7 +19,7 @@ export const deleteDocumentById = ({ commit, state, dispatch, rootState }, paylo
       commit(mutations.TOGGLE_LOADER);
       const { documentsList, currentPage } = state;
       const page = documentsList.length > 1 ? currentPage : currentPage - 1;
-      dispatch('getPageDocuments', page);
+      dispatch('getPageDocuments', { currentPage: page });
     }).catch((err) => {
       commit(mutations.TOGGLE_LOADER);
       if (err.message) {
@@ -32,7 +32,7 @@ export const uploadDocument = ({ commit, state, dispatch, rootState }, file) => 
   const formData = new FormData();
   formData.append('file', file);
   commit(mutations.TOGGLE_LOADER);
-  callApi(makeEndPointUrl(endpoints.DOCUMENTS), {
+  return callApi(makeEndPointUrl(endpoints.DOCUMENTS), {
     headers: {
       Authorization: `Bearer ${rootState.auth.access_token}`
     },
@@ -41,12 +41,15 @@ export const uploadDocument = ({ commit, state, dispatch, rootState }, file) => 
   })
     .then(() => {
       commit(mutations.TOGGLE_LOADER);
-      dispatch('getPageDocuments', state.currentPage);
+      return dispatch('getPageDocuments', {
+        currentPage: state.currentPage
+      });
     }).catch((err) => {
       commit(mutations.TOGGLE_LOADER);
       if (err.message) {
         commit(mutations.SET_ERROR, err.message);
       }
+      throw new Error(err);
     });
 };
 
@@ -72,9 +75,10 @@ export const updateDocumentName = ({ commit, rootState }, { documentId, newName 
     });
 };
 
-export const getPageDocuments = ({ commit, state, rootState }, currentPage = 1) => {
+export const getPageDocuments = ({ commit, state, rootState }, payload = {}) => {
+  const currentPage = payload.currentPage || 1;
   commit(mutations.TOGGLE_LOADER);
-  callApi(makeEndPointUrl(endpoints.DOCUMENTS), {
+  return callApi(makeEndPointUrl(endpoints.DOCUMENTS), {
     query: {
       page: currentPage,
       per_page: state.perPage
@@ -94,6 +98,9 @@ export const getPageDocuments = ({ commit, state, rootState }, currentPage = 1) 
       commit(mutations.SET_CURRENT_PAGE, currentPage);
       commit(mutations.SET_TOTAL_DOCUMENTS, documents.total);
       commit(mutations.LOAD_DOCUMENTS, documentsWithFormatedDate);
+      if (payload.setFirstAsCurrent) {
+        commit(mutations.SET_CURRENT_DOCUMENT, documents.items[0]);
+      }
     }).catch((err) => {
       commit(mutations.TOGGLE_LOADER);
       if (err.message) {

@@ -120,7 +120,7 @@
 
       pageChanged(page) {
         if (page === this.currentPage) return;
-        this.getPageDocuments(page);
+        this.getPageDocuments({ currentPage: page });
         this.resetCurrentDocument();
       },
 
