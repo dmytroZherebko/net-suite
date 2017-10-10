@@ -45,7 +45,7 @@
         };
       },
       ...mapState({
-        currentDocumentId: state => state.documents.currentDocument.Id
+        currentDocumentId: state => state.documents.currentDocument.id
       })
     },
 
