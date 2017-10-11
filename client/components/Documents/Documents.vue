@@ -67,7 +67,7 @@
             </delete-document>
         </div>
         <edit-name
-                :documentName="currentDocumentName"
+                v-model="currentDocumentName"
                 :closeEditNameModal="closeEditNameModal"
                 :showEditModal="showEditModal"
         ></edit-name>

@@ -53,9 +53,9 @@ export const uploadDocument = ({ commit, state, dispatch, rootState }, file) => 
     });
 };
 
-export const updateDocumentName = ({ commit, rootState }, { documentId, newName }) => {
+export const updateDocumentName = ({ commit, rootState, state }, { newName }) => {
   commit(mutations.TOGGLE_LOADER);
-  callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${documentId}`), {
+  callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${state.currentDocument.id}`), {
     headers: {
       Authorization: `Bearer ${rootState.auth.access_token}`
     },
@@ -65,8 +65,8 @@ export const updateDocumentName = ({ commit, rootState }, { documentId, newName 
     })
   })
     .then((doc) => {
+      commit(mutations.UPDATE_NAME, { name: getDocumentNameWithoutExtention(doc), documentId: state.currentDocument.id });
       commit(mutations.TOGGLE_LOADER);
-      commit(mutations.UPDATE_NAME, { name: getDocumentNameWithoutExtention(doc), documentId });
     }).catch((err) => {
       commit(mutations.TOGGLE_LOADER);
       if (err.message) {

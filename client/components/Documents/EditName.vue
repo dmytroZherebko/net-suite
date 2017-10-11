@@ -10,16 +10,16 @@
         <div slot="modal-body" class="modal-body">
             <input type="text"
                    class="input"
-                   :class="{ 'input_invalid': currentDocumentName.error }"
+                   :class="{ 'input_invalid': inputError }"
                    v-on:input="onDocumentNameChange"
-                   :value="currentDocumentName.value"
+                   :value="value"
             >
         </div>
     </modal>
 </template>
 
 <script>
-  import { mapActions, mapState } from 'vuex';
+  import { mapActions } from 'vuex';
   import Modal from '../common/Modal.vue';
 
   export default {
@@ -28,7 +28,7 @@
         type: Boolean,
         required: true
       },
-      documentName: {
+      value: {
         type: String
       },
       closeEditNameModal: {
@@ -37,39 +37,28 @@
       }
     },
     data() {
-      const documentName = this.documentName;
       return {
-        currentDocumentName: {
-          value: documentName,
-          error: false
-        }
+        inputError: false
       };
-    },
-
-    computed: {
-      ...mapState({
-        currentDocumentId: state => state.documents.currentDocument.id
-      })
     },
 
     methods: {
       onDocumentNameChange(e) {
-        this.currentDocumentName.value = e.target.value;
-        if (!this.currentDocumentName.value || this.currentDocumentName.value.length < 3) {
-          this.currentDocumentName.error = true;
+        const value = e.target.value;
+        this.$emit('input', value);
+        if (!value.trim() || value.trim().length < 3) {
+          this.inputError = true;
         } else {
-          this.currentDocumentName.error = false;
+          this.inputError = false;
         }
       },
 
       onEditNameConfirm() {
-        if (!this.currentDocumentName.error) {
+        if (!this.inputError) {
           this.closeEditNameModal();
           this.updateDocumentName({
-            documentId: this.currentDocumentId,
-            newName: this.currentDocumentName.value
+            newName: this.value.trim()
           });
-          this.currentDocumentName.value = null;
         }
       },
 
