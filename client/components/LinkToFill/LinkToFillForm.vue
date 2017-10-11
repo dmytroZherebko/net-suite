@@ -107,9 +107,11 @@
                                type="text"
                                autocomplete="off"
                                class="input tags__input"
+                               :class="{'tags__input_invalid': additionalDocumentError }"
                                maxlength="70"
                                v-on:blur="addAdditionalDocument"
                                v-on:keyup.enter="addAdditionalDocument"
+                               v-on:input="resetAdditionalDocumentError"
                                placeholder="Add document name">
                     </div>
                 </div>
@@ -171,7 +173,7 @@
                                type="text"
                                autocomplete="off"
                                class="input tags__input"
-                               :class="notificationEmailError ? 'tags__input_invalid' : ''"
+                               :class="{'tags__input_invalid': notificationEmailError}"
                                maxlength="70"
                                v-on:blur="addNotificationEmail"
                                v-on:keyup.enter="addNotificationEmail"
@@ -190,15 +192,6 @@
                         <input type="checkbox" v-model="formData.welcome_screen">
                         <div class="slider"></div>
                     </label>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <div class="form-section__title">
-                    LinkToFill Complete Callback Url
-                </div>
-                <div class="form-section__info">
-                    <input class="input" type="text" v-model="formData.callback_url">
                 </div>
             </div>
 
@@ -276,6 +269,7 @@
         },
         prevPage: this.$route.params.prevPage || '/documents',
         notificationEmailError: false,
+        additionalDocumentError: false,
         linkToFillUrl: null,
         showSubmitModal: false
       };
@@ -305,7 +299,10 @@
       addAdditionalDocument(e) {
         const value = e.target.value;
         if (!value) return;
-
+        if (value.length < 3) {
+          this.additionalDocumentError = true;
+          return;
+        }
         this.formData.additional_documents.push(value);
         e.target.value = '';
       },
@@ -314,7 +311,14 @@
         this.formData.additional_documents.splice(index, 1);
       },
       resetNotificationEmailError() {
-        this.notificationEmailError = false;
+        if (this.notificationEmailError) {
+          this.notificationEmailError = false;
+        }
+      },
+      resetAdditionalDocumentError() {
+        if (this.additionalDocumentError) {
+          this.additionalDocumentError = false;
+        }
       },
       removeNotificationEmail(index) {
         this.formData.notification_emails.splice(index, 1);

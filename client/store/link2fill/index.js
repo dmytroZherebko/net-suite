@@ -16,7 +16,6 @@ export default {
       welcome_screen: true,
       signature_stamp: true,
       reusable: false,
-      callback_url: '',
       redirect_url: 'https://www.pdffiller.com',
       document_id: null,
       additional_documents: []

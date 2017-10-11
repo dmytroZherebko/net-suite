@@ -9,10 +9,10 @@
     >
         <div slot="modal-body" class="modal-body">
             <input type="text"
-                   v-model="currentDocumentName.value"
                    class="input"
-                   :class="checkDocumentNameInput()"
+                   :class="{ 'input_invalid': currentDocumentName.error }"
                    v-on:input="onDocumentNameChange"
+                   :value="currentDocumentName.value"
             >
         </div>
     </modal>
@@ -36,24 +36,25 @@
         required: true
       }
     },
+    data() {
+      const documentName = this.documentName;
+      return {
+        currentDocumentName: {
+          value: documentName,
+          error: false
+        }
+      };
+    },
 
     computed: {
-      currentDocumentName() {
-        return {
-          value: this.documentName,
-          error: null
-        };
-      },
       ...mapState({
         currentDocumentId: state => state.documents.currentDocument.id
       })
     },
 
     methods: {
-      checkDocumentNameInput() {
-        return this.currentDocumentName.error ? 'input_invalid' : '';
-      },
-      onDocumentNameChange() {
+      onDocumentNameChange(e) {
+        this.currentDocumentName.value = e.target.value;
         if (!this.currentDocumentName.value || this.currentDocumentName.value.length < 3) {
           this.currentDocumentName.error = true;
         } else {

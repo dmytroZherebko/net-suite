@@ -185,9 +185,11 @@
                                            type="text"
                                            autocomplete="off"
                                            class="input tags__input"
+                                           :class="{'tags__input_invalid': recipient.errors.additional_documents}"
                                            maxlength="70"
                                            v-on:blur="e => {addAdditionalDocument(e, recipientIndex)}"
                                            v-on:keyup.enter="e => {addAdditionalDocument(e, recipientIndex)}"
+                                           v-on:input="resetRecipientFormError('additional_documents', recipientIndex)"
                                            placeholder="Add document name">
                                 </div>
                             </div>
@@ -201,8 +203,6 @@
                                 <div class="form-section__info">
                                     <input type="text"
                                            class="input"
-                                           :class="{'input_invalid': recipient.errors.phone_authenticate}"
-                                           v-on:input="resetRecipientFormError('phone_authenticate', recipientIndex)"
                                            v-model="recipient.phone_authenticate"
                                     >
                                 </div>
@@ -327,6 +327,10 @@
       addAdditionalDocument(e, recipientIndex) {
         const value = e.target.value;
         if (!value) return;
+        if (value.length < 3) {
+          this.formData.recipients[recipientIndex].errors.additional_documents = true;
+          return;
+        }
 
         this.formData.recipients[recipientIndex].additional_documents.push(value);
         e.target.value = '';
@@ -340,7 +344,7 @@
           errors: {
             name: false,
             email: false,
-            phone_authenticate: false,
+            additional_documents: false,
             order: false
           }
         });
@@ -406,10 +410,6 @@
           }
 
           if (!this.validateRecipientsNameAndEmail()) return false;
-
-          if (this.formData.security_pin === 'enhanced') {
-            return this.validateRecipientsPhone();
-          }
         }
 
         return true;
@@ -452,21 +452,6 @@
           }
 
           orderArray.push(recipient.order);
-        }
-
-        return true;
-      },
-      validateRecipientsPhone() {
-        const recipients = this.formData.recipients;
-        const len = recipients.length;
-
-        for (let i = 0; i < len; i++) {
-          const recipient = recipients[i];
-          if (recipient.phone_authenticate.length < 11) {
-            recipient.errors.phone_authenticate = true;
-            recipient.isCollapsed = false;
-            return false;
-          }
         }
 
         return true;
