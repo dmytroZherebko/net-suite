@@ -28,6 +28,7 @@ const removeUselessS2SKeys = (s2sData) => {
     }
 
     delete formatedRecipient.errors;
+    delete formatedRecipient.isCollapsed;
     formatedRecipient.additional_documents = [...formatedRecipient.additional_documents];
     return formatedRecipient;
   });

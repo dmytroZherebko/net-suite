@@ -4,8 +4,8 @@ import VueRouter from 'vue-router';
 import store from '../store';
 import AuthorizePage from '../components/Auhtorize/Authorize.vue';
 import Documents from '../components/Documents/Documents.vue';
-import LinkToFillForm from '../components/LinkToFill/LinkToFillForm.vue';
-import SendToSignForm from '../components/SendToSign/SendToSignForm.vue';
+import LinkToFillForm from '../components/LinkToFill/LinkToFillFormTemplate.vue';
+import SendToSignForm from '../components/SendToSign/SendToSignFormTemplate.vue';
 
 Vue.use(VueRouter);
 

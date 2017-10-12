@@ -51,10 +51,10 @@
 
     &__info {
       width: 70%;
+      position: relative;
     }
 
     &-message {
-      position: relative;
       &__subject {
         position: absolute;
         color: #888;
