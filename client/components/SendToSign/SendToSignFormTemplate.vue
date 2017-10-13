@@ -145,6 +145,7 @@
                                       v-if="formData.method === 'sendtoeach' && formData.security_pin === 'enhanced'"
                         >
                             <input type="text"
+                                   slot="form-control"
                                    class="input"
                                    v-model="recipient.phone_authenticate"
                             >
@@ -152,6 +153,7 @@
 
                         <form-section title="Editing Permissions">
                             <switcher-radio
+                                    slot="form-control"
                                     v-model="recipient.access"
                                     :inputs="[{value: 'signature', title: 'Signature Only'}, {value: 'full', title: 'Full Access'}]"
                                     radioName="access"
