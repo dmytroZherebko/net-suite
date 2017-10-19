@@ -154,6 +154,36 @@ export const downloadDocument = ({ commit, state, rootState }) => {
     });
 };
 
+export const uploadToZoho = ({ commit, state, rootState }) => {
+  commit(mutations.TOGGLE_LOADER);
+  return callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${state.currentDocument.id}/download`), {
+    headers: {
+      Authorization: `Bearer ${rootState.auth.access_token}`
+    }
+  }, true)
+    .then((blob) => { // eslint-disable-line
+      return ZOHO.CRM.INTERACTION.getPageInfo()
+        .then((page) => { // eslint-disable-line
+          return ZOHO.CRM.API.attachFile({
+            Entity: page.entity,
+            RecordID: page.data.id,
+            File: { Name: state.currentDocument.name, Content: blob }
+          });
+        });
+    })
+    .then(() => {
+      commit(mutations.TOGGLE_LOADER);
+      return true;
+    })
+    .catch((err) => {
+      commit(mutations.TOGGLE_LOADER);
+      if (err.message) {
+        commit(mutations.SET_ERROR, err.message);
+      }
+      throw new Error(err);
+    });
+};
+
 export const closeDocumentEditor = ({ commit }) => {
   commit(mutations.RESET_DOCUMENT_LINK);
   window.removeEventListener('message', doneListener);

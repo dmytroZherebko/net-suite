@@ -60,6 +60,10 @@
             >
                 SendToSign
             </router-link>
+            <zoho-attachment
+                    :documentId="currentDocumentId"
+            >
+            </zoho-attachment>
             <delete-document
                     :deleteDocument="deleteDocument"
                     :buttonIsDisable="!currentDocumentId"
@@ -81,8 +85,17 @@
   import OpenDocument from './Open.vue';
   import EditName from './EditName.vue';
   import DownloadDocument from './DownloadDocument.vue';
+  import ZohoAttachment from './ZohoAttachment.vue';
 
   export default {
+    components: {
+      Pagination,
+      DeleteDocument,
+      OpenDocument,
+      EditName,
+      DownloadDocument,
+      ZohoAttachment,
+    },
 
     data() {
       return {
@@ -153,13 +166,5 @@
         'getUserInfo',
       ])
     },
-
-    components: {
-      Pagination,
-      DeleteDocument,
-      OpenDocument,
-      EditName,
-      DownloadDocument,
-    }
   };
 </script>

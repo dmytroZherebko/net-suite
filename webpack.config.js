@@ -75,11 +75,12 @@ module.exports = {
       '.ngrok.io'
     ],
     proxy: {
-      "/v2": {
+      "/v2/*": {
         target: "https://api.pdffiller.com",
         "secure": false,
-        "changeOrigin": false
-      },
+        "changeOrigin": false,
+        logLevel: 'debug'
+      }
     }
   },
   performance: {

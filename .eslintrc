@@ -5,7 +5,8 @@
     "window": true,
     "fetch": true,
     "FormData": true,
-    "document": true
+    "document": true,
+    "ZOHO": true
   },
   "rules": {
     "comma-dangle": "off",

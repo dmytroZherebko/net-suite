@@ -16,6 +16,8 @@ window.pdffiller = {
     store.dispatch('setClientCred', payload);
     store.dispatch('checkAuthCode');
 
+    ZOHO.embeddedApp.init();
+
     new Vue({
       store,
       router,
