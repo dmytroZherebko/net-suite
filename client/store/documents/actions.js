@@ -167,7 +167,7 @@ export const uploadToZoho = ({ commit, state, rootState }) => {
           return ZOHO.CRM.API.attachFile({
             Entity: page.entity,
             RecordID: page.data.id,
-            File: { Name: state.currentDocument.name, Content: blob }
+            File: { Name: `${state.currentDocument.name}.${state.currentDocument.type}`, Content: blob }
           });
         });
     })
