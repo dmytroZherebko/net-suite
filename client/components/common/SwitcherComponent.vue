@@ -1,7 +1,7 @@
 <template>
     <label class="switch" :class="{'checked': checked}">
         <input type="checkbox"
-               v-on:change="onSwitcherChange($event.target.checked)"
+               @change="onSwitcherChange($event.target.checked)"
                :checked="checked">
         <div class="slider"></div>
     </label>

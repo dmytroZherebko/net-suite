@@ -1,5 +1,5 @@
 <template>
-    <ul class="pagination" v-if="totalItems > itemsPerPage">
+    <ul class="pagination" v-if="totalItems > itemsPerPage" key="pagination">
         <li class="pagination__item">
             <a href="#" class="pagination__link pagination__link_button" :class="checkLinkIsActive('prev')" @click.prevent="pageChanged(currentPage - 1)">
                 &#8592; Previous
@@ -10,15 +10,15 @@
                 1
             </a>
         </li>
-        <li class="pagination__separator" v-if="start > 2">
+        <li class="pagination__separator" v-if="start > 2" key="pagination-separator-start">
             <a href="#" class="pagination__link">
                 ...
             </a>
         </li>
-        <li class="pagination__item" v-for="n in paginationRange">
+        <li class="pagination__item" v-for="n in paginationRange" :key="n">
             <a href="#" class="pagination__link" :class="activePage(n)" @click.prevent="pageChanged(n)">{{ n }}</a>
         </li>
-        <li class="pagination__separator" v-if="lastPage > lastVisible + 1">
+        <li class="pagination__separator" v-if="lastPage > lastVisible + 1" key="pagination-separator-end">
             <a href="#" class="pagination__link">
                 ...
             </a>

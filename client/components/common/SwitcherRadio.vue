@@ -1,10 +1,11 @@
 <template>
     <div class="switch-radio"
-         v-on:change="onSwitcherChange($event.target.value)"
+         @change="onSwitcherChange($event.target.value)"
     >
         <label
                 class="switch-radio__item"
                 v-for="item in inputs"
+                :key="item.value"
                 :class="item.value === value ? 'switch-radio__item_active' : ''"
         >
             <input type="radio"

@@ -5,16 +5,16 @@
                <router-link to="documents" class="nav__link" active-class="nav__link_active">MY DOCS</router-link>
            </li>
         </ul>
-        <upload></upload>
+        <upload-document/>
     </div>
 </template>
 
 <script>
-  import Upload from '../Upload/Upload.vue';
+  import UploadDocument from '../Upload/UploadDocument.vue';
 
   export default {
     components: {
-      Upload
+      UploadDocument
     }
   };
 </script>

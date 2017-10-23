@@ -1,13 +1,14 @@
 <template>
     <div class="input tags-wrapper">
         <div v-for="(tag, index) in tagsList"
+             :key="index"
              class="tags__tag"
         >
             <div class="tags__name">
                 {{ tag[valueField] || tag }}
             </div>
             <div class="tags__remove"
-                 v-on:click="removeTagItem(index)"
+                 @click="removeTagItem(index)"
             ></div>
         </div>
         <input v-if="tagsList.length < maxItems"
@@ -16,10 +17,11 @@
                class="input tags__input"
                :class="{'tags__input_invalid': hasError}"
                maxlength="70"
-               v-on:blur="addNewTagItem"
-               v-on:keyup.enter="addNewTagItem"
-               v-on:input="resetTagInputError"
-               :placeholder="placeholder">
+               @blur="addNewTagItem"
+               @keyup.enter="addNewTagItem"
+               @input="resetTagInputError"
+               :placeholder="placeholder"
+        >
     </div>
 </template>
 

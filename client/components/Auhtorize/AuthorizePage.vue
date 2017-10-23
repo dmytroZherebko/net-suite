@@ -8,6 +8,7 @@
   import { mapState } from 'vuex';
 
   export default {
+    name: 'AuthorizePage',
     data() {
       return {
         redirectPatch: this.$route.query.redirect || '/'

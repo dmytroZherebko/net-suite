@@ -1,27 +1,27 @@
 <template>
     <div>
-        <button class="button button_menu margin-bottom" :disabled="!documentId" v-on:click="openDocumentInEditor">
+        <button class="button button_menu margin-bottom" :disabled="!documentId" @click="openDocumentInEditor">
             open
         </button>
-        <modal
-                :showModal="!!documentUrl"
-                :showButtons="false"
-                :showHeader="false"
-                modalClass="modal_editor"
-                v-on:modal-close="closeModal"
+        <modal-component
+                :show-modal="!!documentUrl"
+                :show-buttons="false"
+                :show-header="false"
+                modal-class="modal_editor"
+                @modal-close="closeModal"
         >
             <div slot="modal-body">
                 <iframe :src="documentUrl"
                         :style="{width: '100%', height: '700px'}"
                 ></iframe>
             </div>
-        </modal>
+        </modal-component>
     </div>
 </template>
 
 <script>
   import { mapActions, mapState } from 'vuex';
-  import Modal from '../common/Modal.vue';
+  import ModalComponent from '../common/ModalComponent.vue';
 
   export default {
     props: {
@@ -46,7 +46,7 @@
       },
     },
     components: {
-      Modal
+      ModalComponent
     }
   };
 </script>

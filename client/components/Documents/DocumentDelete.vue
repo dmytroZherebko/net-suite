@@ -1,12 +1,12 @@
 <template>
     <div>
-        <button class="button button_menu" :disabled="buttonIsDisable" v-on:click="showConfirmationModal">
+        <button class="button button_menu" :disabled="buttonIsDisable" @click="showConfirmationModal">
             delete
         </button>
-        <modal
-                :showModal="showModal"
-                modalTitle="Delete Document"
-                modalType="confirm"
+        <modal-component
+                :show-modal="showModal"
+                modal-title="Delete Document"
+                modal-type="confirm"
                 @modal-close="onClose"
                 @modal-ok="onDelete"
                 @modal-cancel="onCancel"
@@ -16,12 +16,12 @@
                     Are you sure you want to delete the document?
                 </p>
             </div>
-        </modal>
+        </modal-component>
     </div>
 </template>
 
 <script>
-  import Modal from '../common/Modal.vue';
+  import ModalComponent from '../common/ModalComponent.vue';
 
   export default {
     props: {
@@ -55,7 +55,7 @@
     },
 
     components: {
-      Modal
+      ModalComponent
     }
   };
 </script>

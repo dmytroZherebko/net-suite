@@ -5,7 +5,7 @@ import { sync } from 'vuex-router-sync';
 import router from './router';
 import store from './store';
 
-import Root from './components/Root.vue';
+import App from './components/App.vue';
 // styles
 import './main.scss';
 
@@ -22,9 +22,9 @@ window.pdffiller = {
       store,
       router,
       components: {
-        Root
+        App
       },
-      template: '<root></root>'
+      template: '<app></app>'
     }).$mount('#app');
   }
 };

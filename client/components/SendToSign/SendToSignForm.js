@@ -1,17 +1,17 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 import { isEmailValid } from '../../helpers/utils';
-import Modal from '../common/Modal.vue';
-import Switcher from '../common/Switcher.vue';
+import ModalComponent from '../common/ModalComponent.vue';
+import SwitcherComponent from '../common/SwitcherComponent.vue';
 import SwitcherRadio from '../common/SwitcherRadio.vue';
-import Tags from '../common/Tags.vue';
+import TagsComponent from '../common/TagsComponent.vue';
 import FormSection from '../common/FormSection.vue';
 
 export default {
   components: {
-    Modal,
-    Switcher,
+    ModalComponent,
+    SwitcherComponent,
     SwitcherRadio,
-    Tags,
+    TagsComponent,
     FormSection
   },
 

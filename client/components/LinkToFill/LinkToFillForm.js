@@ -1,8 +1,8 @@
 import { mapState, mapGetters, mapActions } from 'vuex';
 import { isEmailValid, copyToClipboard } from '../../helpers/utils';
-import Switcher from '../common/Switcher.vue';
+import SwitcherComponent from '../common/SwitcherComponent.vue';
 import SwitcherRadio from '../common/SwitcherRadio.vue';
-import Tags from '../common/Tags.vue';
+import TagsComponent from '../common/TagsComponent.vue';
 import FormSection from '../common/FormSection.vue';
 
 import ResultModal from './L2FResultModal.vue';
@@ -10,9 +10,9 @@ import ResultModal from './L2FResultModal.vue';
 export default {
   components: {
     ResultModal,
-    Switcher,
+    SwitcherComponent,
     SwitcherRadio,
-    Tags,
+    TagsComponent,
     FormSection
   },
 

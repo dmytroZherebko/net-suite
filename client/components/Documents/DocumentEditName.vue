@@ -1,8 +1,8 @@
 <template>
-    <modal
-            :showModal="showEditModal"
-            modalTitle="Edit Document Name"
-            modalType="confirm"
+    <modal-component
+            :show-modal="showEditModal"
+            modal-title="Edit Document Name"
+            modal-type="confirm"
             @modal-close="closeEditNameModal"
             @modal-ok="onEditNameConfirm"
             @modal-cancel="closeEditNameModal"
@@ -11,16 +11,16 @@
             <input type="text"
                    class="input"
                    :class="{ 'input_invalid': inputError }"
-                   v-on:input="onDocumentNameChange"
+                   @input="onDocumentNameChange"
                    :value="value"
             >
         </div>
-    </modal>
+    </modal-component>
 </template>
 
 <script>
   import { mapActions } from 'vuex';
-  import Modal from '../common/Modal.vue';
+  import ModalComponent from '../common/ModalComponent.vue';
 
   export default {
     props: {
@@ -68,7 +68,7 @@
     },
 
     components: {
-      Modal
+      ModalComponent
     }
   };
 </script>

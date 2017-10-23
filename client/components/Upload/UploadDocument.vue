@@ -1,14 +1,14 @@
 <template>
     <div class="column-aside">
-        <button class="button button_menu" v-on:click="openModal">
+        <button class="button button_menu" @click="openModal">
             Upload
         </button>
-        <modal
-                :showModal="showModal"
-                :showButtons="false"
-                modalTitle="Upload Document"
-                modalType="modal"
-                modalClass="modal_uploader"
+        <modal-component
+                :show-modal="showModal"
+                :show-buttons="false"
+                modal-title="Upload Document"
+                modal-type="modal"
+                modal-class="modal_uploader"
                 @modal-close="closeModal"
         >
             <div slot="modal-body">
@@ -16,9 +16,10 @@
                     <ul class="upload-options">
                         <li
                             v-for="option in uploadOptions"
+                            :key="option.type"
                             :class="checkOptionIsActive(option.type)"
                             class="upload-options__item"
-                            v-on:click="changeUploadOption(option.type)">
+                            @click="changeUploadOption(option.type)">
                             {{ option.title }}
                         </li>
                     </ul>
@@ -26,14 +27,14 @@
                         <div v-if="currentOption === 'file'">
                             <form
                                   novalidate
-                                  v-on:submit.prevent=""
+                                  @submit.prevent=""
                             >
                                 <label class="upload-section__file"
                                        :class="checkOnDragBlock()"
-                                       v-on:dragenter.prevent="onDragEnter"
-                                       v-on:dragleave="onDragLeave"
-                                       v-on:drop.prevent="onDrop"
-                                       v-on:dragover.prevent=""
+                                       @dragenter.prevent="onDragEnter"
+                                       @dragleave="onDragLeave"
+                                       @drop.prevent="onDrop"
+                                       @dragover.prevent=""
                                 >
                                     <h3 class="upload-section__title">
                                         Drag and Drop Document Here to Get Started!
@@ -46,7 +47,7 @@
                                             type="file"
                                             accept=".ppt, .pptx, .doc, .docx, .pdf"
                                             class="upload-section__input-file"
-                                            v-on:change="onChooseFile"
+                                            @change="onChooseFile"
                                     >
                                     <div class="button button_primary upload-section__upload-button">
                                         Browse for a Document on Your Computer
@@ -57,7 +58,7 @@
                         <div v-if="currentOption === 'url'">
                             <form
                                     novalidate
-                                    v-on:submit.prevent="onUrlUploadSubmit"
+                                    @submit.prevent="onUrlUploadSubmit"
                             >
                                 <h3 class="upload-section__title">
                                     Add Documents from the Web
@@ -75,7 +76,7 @@
                                             :class="checkUrlError()"
                                             placeholder="http://"
                                             v-model.trim="uploadFileUrl.value"
-                                            v-on:input="onChangeUrlValue"
+                                            @input="onChangeUrlValue"
                                     >
                                     <button class="button button_primary upload-section__button">
                                         Upload
@@ -86,26 +87,30 @@
                     </div>
                 </div>
             </div>
-        </modal>
-        <modal
-                :showModal="showSuccessUploadModal"
-                modalTitle="Successful upload"
-                modalType="alert"
+        </modal-component>
+        <modal-component
+                :show-modal="showSuccessUploadModal"
+                modal-title="Successful upload"
+                modal-type="alert"
                 @modal-close="closeSuccessModal"
                 @modal-ok="closeSuccessModal"
         >
             <div class="modal-body text-center" slot="modal-body">
                 File was successfully uploaded.
             </div>
-        </modal>
+        </modal-component>
     </div>
 </template>
 
 <script>
   import { mapActions } from 'vuex';
-  import Modal from '../common/Modal.vue';
+  import ModalComponent from '../common/ModalComponent.vue';
 
   export default {
+    components: {
+      ModalComponent
+    },
+
     data() {
       return {
         showModal: false,
@@ -212,9 +217,6 @@
         'uploadDocument',
         'setError'
       ])
-    },
-    components: {
-      Modal
     }
   };
 </script>

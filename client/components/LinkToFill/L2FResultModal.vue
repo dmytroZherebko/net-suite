@@ -1,10 +1,10 @@
 <template>
-    <modal
-            :showModal="showSubmitModal"
-            modalTitle="LinkToFill Url"
-            modalType="confirm"
-            primaryButton="Copy Link"
-            secondaryButton="Go Back"
+    <modal-component
+            :show-modal="showSubmitModal"
+            modal-title="LinkToFill Url"
+            modal-type="confirm"
+            primary-button="Copy Link"
+            secondary-button="Go Back"
             @modal-close="closeSubmitModal"
             @modal-cancel="closeSubmitModal"
             @modal-ok="copyUrl"
@@ -15,11 +15,11 @@
             </div>
             <input type="text" readonly :value="linkToFillUrl" class="input">
         </div>
-    </modal>
+    </modal-component>
 </template>
 
 <script>
-  import Modal from '../common/Modal.vue';
+  import ModalComponent from '../common/ModalComponent.vue';
 
   export default {
     props: {
@@ -39,7 +39,7 @@
     },
 
     components: {
-      Modal
+      ModalComponent
     }
   };
 </script>

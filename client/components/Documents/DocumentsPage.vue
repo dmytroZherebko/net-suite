@@ -13,10 +13,11 @@
                 <div class="documents-list">
                     <div class="document"
                          v-if="documents.length > 0"
+                         :key="document.id"
                          v-for="document in documents"
                          :class="currentDocumentClass(document.id)"
-                         v-on:click="changeCurrentDocument(document)"
-                         v-on:dblclick="openEditNameModal(document.name)"
+                         @click="changeCurrentDocument(document)"
+                         @dblclick="openEditNameModal(document.name)"
                     >
                         <div class="document__name">
                             {{ document.name }}
@@ -30,20 +31,14 @@
                     </div>
                 </div>
             </div>
-            <pagination :current-page="currentPage"
+            <pagination-component :current-page="currentPage"
                         :items-per-page="perPage"
                         :total-items="totalItems"
-                        @page-changed="pageChanged">
-            </pagination>
+                        @page-changed="pageChanged" />
         </div>
         <div class="documents-aside column-aside">
-            <open-document
-                    :documentId="currentDocumentId"
-            >
-            </open-document>
-            <download-document
-                    :buttonIsDisable="!currentDocumentId"
-            ></download-document>
+            <open-document :document-id="currentDocumentId" />
+            <download-document :button-is-disable="!currentDocumentId" />
             <router-link
                     tag="button"
                     :disabled="!currentDocumentId"
@@ -60,36 +55,32 @@
             >
                 SendToSign
             </router-link>
-            <zoho-attachment
-                    :documentId="currentDocumentId"
-            >
-            </zoho-attachment>
+            <zoho-attachment :document-id="currentDocumentId" />
             <delete-document
-                    :deleteDocument="deleteDocument"
-                    :buttonIsDisable="!currentDocumentId"
-            >
-            </delete-document>
+                    :delete-document="deleteDocument"
+                    :button-is-disable="!currentDocumentId"
+            />
         </div>
         <edit-name
                 v-model="currentDocumentName"
-                :closeEditNameModal="closeEditNameModal"
-                :showEditModal="showEditModal"
-        ></edit-name>
+                :close-edit-name-modal="closeEditNameModal"
+                :show-edit-modal="showEditModal"
+        />
     </div>
 </template>
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex';
-  import Pagination from '../common/Pagination.vue';
-  import DeleteDocument from './Delete.vue';
-  import OpenDocument from './Open.vue';
-  import EditName from './EditName.vue';
-  import DownloadDocument from './DownloadDocument.vue';
+  import PaginationComponent from '../common/PaginationComponent.vue';
+  import DeleteDocument from './DocumentDelete.vue';
+  import OpenDocument from './DocumentOpen.vue';
+  import EditName from './DocumentEditName.vue';
+  import DownloadDocument from './DocumentDownload.vue';
   import ZohoAttachment from './ZohoAttachment.vue';
 
   export default {
     components: {
-      Pagination,
+      PaginationComponent,
       DeleteDocument,
       OpenDocument,
       EditName,

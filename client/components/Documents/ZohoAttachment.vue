@@ -1,27 +1,31 @@
 <template>
     <div>
-        <button class="button button_menu margin-bottom" :disabled="!documentId" v-on:click="uploadDocumentToZoho">
+        <button class="button button_menu margin-bottom" :disabled="!documentId" @click="uploadDocumentToZoho">
             Add to Zoho Attachment
         </button>
-        <modal
-                :showModal="showUploadPopUp"
-                modalTitle="Attachment uploaded"
-                modalType="alert"
+        <modal-component
+                :showmodal="showUploadPopUp"
+                modal-title="Attachment uploaded"
+                modal-type="alert"
                 @modal-close="closeModal"
                 @modal-ok="closeModal"
         >
             <div class="modal-body text-center" slot="modal-body">
                 File was successfully uploaded as attachment to the record. Reload page to see the file in attachments list.
             </div>
-        </modal>
+        </modal-component>
     </div>
 </template>
 
 <script>
   import { mapActions } from 'vuex';
-  import Modal from '../common/Modal.vue';
+  import ModalComponent from '../common/ModalComponent.vue';
 
   export default {
+    components: {
+      ModalComponent
+    },
+
     props: {
       documentId: {
         type: Number,
@@ -45,9 +49,6 @@
       closeModal() {
         this.showUploadPopUp = false;
       }
-    },
-    components: {
-      Modal
     }
   };
 </script>

@@ -1,9 +1,9 @@
 <template>
     <div>
-        <modal
-                :showModal="showError"
-                modalTitle="Error"
-                modalType="alert"
+        <modal-component
+                :show-modal="showError"
+                modal-title="Error"
+                modal-type="alert"
                 @modal-close="onClose"
                 @modal-ok="onClose"
         >
@@ -12,13 +12,13 @@
                     {{ errorText }}
                 </p>
             </div>
-        </modal>
+        </modal-component>
     </div>
 </template>
 
 <script>
   import { mapState, mapActions } from 'vuex';
-  import Modal from '../common/Modal.vue';
+  import ModalComponent from './ModalComponent.vue';
 
   export default {
     computed: {
@@ -36,7 +36,7 @@
     },
 
     components: {
-      Modal
+      ModalComponent
     }
   };
 </script>
