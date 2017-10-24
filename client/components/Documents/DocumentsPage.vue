@@ -56,6 +56,7 @@
                 SendToSign
             </router-link>
             <zoho-attachment :document-id="currentDocumentId" />
+            <zoho-fields />
             <delete-document
                     :delete-document="deleteDocument"
                     :button-is-disable="!currentDocumentId"
@@ -77,6 +78,7 @@
   import EditName from './DocumentEditName.vue';
   import DownloadDocument from './DocumentDownload.vue';
   import ZohoAttachment from './ZohoAttachment.vue';
+  import ZohoFields from './ZohoFields.vue';
 
   export default {
     components: {
@@ -86,6 +88,7 @@
       EditName,
       DownloadDocument,
       ZohoAttachment,
+      ZohoFields
     },
 
     data() {

@@ -1,17 +1,20 @@
 <template>
     <div>
-        <button class="button button_menu margin-bottom" :disabled="!documentId" @click="uploadDocumentToZoho">
-            Add to Zoho Attachment
+        <button class="button button_menu margin-bottom" @click="getZohoFields">
+            Show Zoho Record Fields
         </button>
         <modal-component
                 :show-modal="showUploadPopUp"
-                modal-title="Attachment uploaded"
-                modal-type="alert"
+                modal-title="Zoho Fields List"
+                :show-buttons="false"
+                modal-class="modal_uploader"
                 @modal-close="closeModal"
                 @modal-ok="closeModal"
         >
-            <div class="modal-body text-center" slot="modal-body">
-                File was successfully uploaded as attachment to the record. Reload page to see the file in attachments list.
+            <div class="modal-body" slot="modal-body">
+                <pre>
+                    {{zohoFields}}
+                </pre>
             </div>
         </modal-component>
     </div>
@@ -26,23 +29,19 @@
       ModalComponent
     },
 
-    props: {
-      documentId: {
-        type: Number,
-        default: null
-      },
-    },
     data() {
       return {
-        showUploadPopUp: false
+        showUploadPopUp: false,
+        zohoFields: {}
       };
     },
 
     methods: {
-      ...mapActions(['uploadToZoho']),
-      uploadDocumentToZoho() {
-        this.uploadToZoho()
-          .then(() => {
+      ...mapActions(['getZohoFieldsData']),
+      getZohoFields() {
+        this.getZohoFieldsData()
+          .then((zohoFields) => {
+            this.zohoFields = zohoFields;
             this.showUploadPopUp = true;
           }).catch(() => {});
       },

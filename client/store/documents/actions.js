@@ -184,6 +184,20 @@ export const uploadToZoho = ({ commit, state, rootState }) => {
     });
 };
 
+export const getZohoFieldsData = ({ commit }) => {
+  commit(mutations.TOGGLE_LOADER);
+  return ZOHO.CRM.INTERACTION.getPageInfo()
+    .then((fields) => {
+      console.log(fields);
+      commit(mutations.TOGGLE_LOADER);
+      return fields;
+    })
+    .catch(() => {
+      commit(mutations.TOGGLE_LOADER);
+      commit(mutations.SET_ERROR, 'Cant get fields from Zoho');
+    });
+};
+
 export const closeDocumentEditor = ({ commit }) => {
   commit(mutations.RESET_DOCUMENT_LINK);
   window.removeEventListener('message', doneListener);
