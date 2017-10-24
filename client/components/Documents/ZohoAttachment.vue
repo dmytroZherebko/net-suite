@@ -4,7 +4,7 @@
             Add to Zoho Attachment
         </button>
         <modal-component
-                :showmodal="showUploadPopUp"
+                :show-modal="showUploadPopUp"
                 modal-title="Attachment uploaded"
                 modal-type="alert"
                 @modal-close="closeModal"
