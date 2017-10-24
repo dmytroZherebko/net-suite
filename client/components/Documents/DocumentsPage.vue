@@ -57,6 +57,7 @@
             </router-link>
             <zoho-attachment :document-id="currentDocumentId" />
             <zoho-fields />
+            <zoho-fill :document-id="currentDocumentId" />
             <delete-document
                     :delete-document="deleteDocument"
                     :button-is-disable="!currentDocumentId"
@@ -79,6 +80,7 @@
   import DownloadDocument from './DocumentDownload.vue';
   import ZohoAttachment from './ZohoAttachment.vue';
   import ZohoFields from './ZohoFields.vue';
+  import ZohoFill from './ZohoFill.vue';
 
   export default {
     components: {
@@ -88,7 +90,8 @@
       EditName,
       DownloadDocument,
       ZohoAttachment,
-      ZohoFields
+      ZohoFields,
+      ZohoFill
     },
 
     data() {

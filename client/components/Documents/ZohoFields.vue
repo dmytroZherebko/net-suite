@@ -1,7 +1,7 @@
 <template>
     <div>
         <button class="button button_menu margin-bottom" @click="getZohoFields">
-            Show Zoho Record Fields
+            Zoho Record Fields
         </button>
         <modal-component
                 :show-modal="showUploadPopUp"
@@ -12,9 +12,25 @@
                 @modal-ok="closeModal"
         >
             <div class="modal-body" slot="modal-body">
-                <pre>
-                    {{zohoFields}}
-                </pre>
+                <div class="zoho-fields__title">
+                    List of fields current ZOHO record.
+                </div>
+                <div class="zoho-field zoho-field_title">
+                    <div class="zoho-field__name ">
+                        Field Name
+                    </div>
+                    <div class="zoho-field__value">
+                        Field Value
+                    </div>
+                </div>
+                <div v-for="(value, key) in zohoFields" class="zoho-field">
+                    <div class="zoho-field__name">
+                        {{key}}
+                    </div>
+                    <div class="zoho-field__value">
+                        {{value}}
+                    </div>
+                </div>
             </div>
         </modal-component>
     </div>
@@ -47,6 +63,7 @@
       },
       closeModal() {
         this.showUploadPopUp = false;
+        this.zohoFields = null;
       }
     }
   };
