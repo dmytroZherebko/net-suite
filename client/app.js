@@ -31,7 +31,7 @@ const pdffiller = {
 
 window.onload = () => {
   pdffiller.init({
-    redirect_uri: 'https://36f46d66.ngrok.io',
+    redirect_uri: 'https://pdffiller.github.io/public-api-integration-widget',
     client_id: '393c5867612989cd',
   });
 };
