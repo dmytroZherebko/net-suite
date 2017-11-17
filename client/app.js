@@ -11,7 +11,7 @@ import './main.scss';
 
 sync(store, router);
 
-window.pdffiller = {
+const pdffiller = {
   init: (payload) => {
     store.dispatch('setClientCred', payload);
     store.dispatch('checkAuthCode');
@@ -27,4 +27,11 @@ window.pdffiller = {
       template: '<app></app>'
     }).$mount('#app');
   }
+};
+
+window.onload = () => {
+  pdffiller.init({
+    redirect_uri: 'https://36f46d66.ngrok.io',
+    client_id: '393c5867612989cd',
+  });
 };

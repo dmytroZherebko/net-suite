@@ -1,5 +1,5 @@
 <template>
-    <div v-if="showModal" class="modal-wrapper" @click.self="onCloseClick">
+    <div v-if="showModal" class="modal-wrapper" @click.self="onOutsideCloseClick">
         <div class="modal" :class="modalClass">
             <div class="modal-header" v-if="showHeader">
                 <h1 class="modal-header__title">
@@ -53,6 +53,10 @@
       modalTitle: {
         type: String,
         default: ''
+      },
+      closeByOutsideClick: {
+        type: Boolean,
+        default: true
       }
     },
 
@@ -65,6 +69,11 @@
       },
       onCloseClick() {
         this.$emit('modal-close');
+      },
+      onOutsideCloseClick() {
+        if (this.closeByOutsideClick) {
+          this.$emit('modal-close');
+        }
       }
     }
   };

@@ -1,6 +1,6 @@
 <template>
     <div v-if="!authorizeProcess">
-        <iframe :src="`https://developers.pdffiller.com/api_access?client_id=${id}&state=${state}&redirect_uri=${uri}`" :style="{width: '100%', height: '700px'}"></iframe>
+        <iframe :src="`https://developers.pdffiller.com/api_access?client_id=${id}&state=${state}&redirect_uri=${uri}&response_type=token`" :style="{width: '100%', height: '700px'}"></iframe>
     </div>
 </template>
 

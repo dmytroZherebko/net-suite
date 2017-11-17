@@ -4,16 +4,14 @@
             open
         </button>
         <modal-component
-                :show-modal="!!documentUrl"
+                :show-modal="showOpenDocumentPopUp"
                 :show-buttons="false"
-                :show-header="false"
-                modal-class="modal_editor"
+                modal-title="Editor is open"
+                :close-by-outside-click="false"
                 @modal-close="closeModal"
         >
-            <div slot="modal-body">
-                <iframe :src="documentUrl"
-                        :style="{width: '100%', height: '700px'}"
-                ></iframe>
+            <div slot="modal-body" class="modal-body text-center">
+                Your document is open in editor. If you close pop-up editor window will closed.
             </div>
         </modal-component>
     </div>
@@ -32,7 +30,7 @@
     },
     computed: {
       ...mapState({
-        documentUrl: state => state.documents.documentLink.editorLink
+        showOpenDocumentPopUp: state => state.documents.showOpenDocumentPopUp
       })
     },
 

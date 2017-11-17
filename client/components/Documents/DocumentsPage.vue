@@ -15,7 +15,7 @@
                          v-if="documents.length > 0"
                          :key="document.id"
                          v-for="document in documents"
-                         :class="currentDocumentClass(document.id)"
+                         :class="getDocumentClass(document)"
                          @click="changeCurrentDocument(document)"
                          @dblclick="openEditNameModal(document.name)"
                     >
@@ -124,8 +124,35 @@
     },
 
     methods: {
-      currentDocumentClass(documentId) {
-        return documentId === this.currentDocumentId ? 'document_active' : '';
+      getDocumentClass(document) {
+        const currentDocumentClass = document.id === this.currentDocumentId ? 'document_active' : '';
+        let documentTypeClass;
+
+        switch (document.type) {
+          case 'pdf':
+            documentTypeClass = 'document_pdf';
+            break;
+          case 'doc':
+          case 'docx':
+            documentTypeClass = 'document_doc';
+            break;
+          case 'ppt':
+          case 'pptx':
+            documentTypeClass = 'document_ppt';
+            break;
+          case 'xsl':
+          case 'xslt':
+            documentTypeClass = 'document_xsl';
+            break;
+          default:
+            break;
+        }
+
+        if (document.fillable) {
+          documentTypeClass = 'document_template';
+        }
+
+        return `${documentTypeClass} ${currentDocumentClass}`;
       },
 
       pageChanged(page) {

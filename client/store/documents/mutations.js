@@ -26,11 +26,8 @@ export default {
     state.currentDocument.type = null;
     state.currentDocument.lastEdited = null;
   },
-  [mutations.SET_DOCUMENT_LINK]: (state, payload) => {
-    state.documentLink.editorLink = payload;
-  },
-  [mutations.RESET_DOCUMENT_LINK]: (state) => {
-    state.documentLink.editorLink = null;
+  [mutations.SET_DOCUMENT_POPUP]: (state, payload) => {
+    state.showOpenDocumentPopUp = payload;
   },
   [mutations.UPDATE_NAME]: (state, { name, documentId }) => {
     state.documentsList.forEach((document) => {

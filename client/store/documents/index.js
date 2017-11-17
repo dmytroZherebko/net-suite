@@ -13,9 +13,7 @@ export default {
       id: null,
       type: null
     },
-    documentLink: {
-      editorLink: null,
-    }
+    showOpenDocumentPopUp: false,
   },
   mutations,
   actions,

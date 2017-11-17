@@ -1,7 +1,7 @@
 import downloadjs from 'downloadjs';
 
 import callApi from '../../helpers/api';
-import { getDataFromTimeStamp, getDocumentNameWithoutExtention, makeEndPointUrl, filterZohoFields } from '../../helpers/utils';
+import { getDataFromTimeStamp, getDocumentNameWithoutExtention, makeEndPointUrl } from '../../helpers/utils';
 import constants from '../../constants';
 
 const mutations = constants.mutations;
@@ -109,6 +109,7 @@ export const getPageDocuments = ({ commit, state, rootState }, payload = {}) => 
     });
 };
 
+let editorWindow;
 let doneListener;
 
 export const openDocumentEditor = ({ commit, rootState, state, dispatch }) => {
@@ -118,9 +119,11 @@ export const openDocumentEditor = ({ commit, rootState, state, dispatch }) => {
       Authorization: `Bearer ${rootState.auth.access_token}`
     }
   })
-    .then((res) => {
+    .then(({ location }) => {
       commit(mutations.TOGGLE_LOADER);
-      commit(mutations.SET_DOCUMENT_LINK, res.location);
+      commit(mutations.SET_DOCUMENT_POPUP, true);
+      editorWindow = window.open(location, 'Editor');
+
       doneListener = (e) => {
         if (e.data === 'editorDone') {
           dispatch('closeDocumentEditor');
@@ -134,6 +137,15 @@ export const openDocumentEditor = ({ commit, rootState, state, dispatch }) => {
         commit(mutations.SET_ERROR, err.message);
       }
     });
+};
+
+export const closeDocumentEditor = ({ commit, dispatch, state }) => {
+  editorWindow.close();
+  window.removeEventListener('message', doneListener);
+  commit(mutations.SET_DOCUMENT_POPUP, false);
+  dispatch('getPageDocuments', {
+    currentPage: state.currentPage
+  });
 };
 
 export const downloadDocument = ({ commit, state, rootState }) => {
@@ -152,102 +164,6 @@ export const downloadDocument = ({ commit, state, rootState }) => {
         commit(mutations.SET_ERROR, err.message);
       }
     });
-};
-
-export const uploadToZoho = ({ commit, state, rootState }) => {
-  commit(mutations.TOGGLE_LOADER);
-  return callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${state.currentDocument.id}/download`), {
-    headers: {
-      Authorization: `Bearer ${rootState.auth.access_token}`
-    }
-  }, true)
-    .then((blob) => { // eslint-disable-line
-      return ZOHO.CRM.INTERACTION.getPageInfo()
-        .then((page) => { // eslint-disable-line
-          return ZOHO.CRM.API.attachFile({
-            Entity: page.entity,
-            RecordID: page.data.id,
-            File: { Name: `${state.currentDocument.name}.${state.currentDocument.type}`, Content: blob }
-          });
-        });
-    })
-    .then(() => {
-      commit(mutations.TOGGLE_LOADER);
-      return true;
-    })
-    .catch((err) => {
-      commit(mutations.TOGGLE_LOADER);
-      if (err.message) {
-        commit(mutations.SET_ERROR, err.message);
-      }
-      throw new Error(err);
-    });
-};
-
-export const fillFromZohoRecord = ({ commit, state, rootState, dispatch }) => {
-  let pageEntity = null;
-  let pageId = null;
-  commit(mutations.TOGGLE_LOADER);
-  return ZOHO.CRM.INTERACTION.getPageInfo()
-    .then((pageInfo) => {
-      pageEntity = pageInfo.entity;
-      pageId = pageInfo.data.id;
-      const pageFields = filterZohoFields({ ...pageInfo.data });
-      return callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${state.currentDocument.id}`), {
-        headers: {
-          Authorization: `Bearer ${rootState.auth.access_token}`
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          fillable_fields: pageFields,
-          name: state.currentDocument.name + pageId
-        })
-      });
-    })
-    .then((filledDocumentInfo) => { // eslint-disable-line
-      return callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${filledDocumentInfo.id}/download`), {
-        headers: {
-          Authorization: `Bearer ${rootState.auth.access_token}`
-        }
-      }, true);
-    })
-    .then((blob) => { // eslint-disable-line
-      return ZOHO.CRM.API.attachFile({
-        Entity: pageEntity,
-        RecordID: pageId,
-        File: { Name: `${state.currentDocument.name + pageId}.${state.currentDocument.type}`, Content: blob }
-      });
-    })
-    .then(() => {
-      commit(mutations.TOGGLE_LOADER);
-      return dispatch('getPageDocuments', { currentPage: state.currentPage });
-    })
-    .catch((err) => {
-      commit(mutations.TOGGLE_LOADER);
-      if (err.message) {
-        commit(mutations.SET_ERROR, err.message);
-      }
-      throw new Error(err);
-    });
-};
-
-export const getZohoFieldsData = ({ commit }) => {
-  commit(mutations.TOGGLE_LOADER);
-  return ZOHO.CRM.INTERACTION.getPageInfo()
-    .then((pageInfo) => {
-      const pageFields = filterZohoFields({ ...pageInfo.data });
-      commit(mutations.TOGGLE_LOADER);
-      return pageFields;
-    })
-    .catch(() => {
-      commit(mutations.TOGGLE_LOADER);
-      commit(mutations.SET_ERROR, 'Cant get fields from Zoho');
-    });
-};
-
-export const closeDocumentEditor = ({ commit }) => {
-  commit(mutations.RESET_DOCUMENT_LINK);
-  window.removeEventListener('message', doneListener);
 };
 
 export const setCurrentDocument = ({ commit }, document) => {
