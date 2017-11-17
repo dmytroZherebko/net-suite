@@ -16,12 +16,6 @@ const pdffiller = {
     store.dispatch('setClientCred', payload);
     store.dispatch('checkAuthCode');
 
-    try {
-      ZOHO.embeddedApp.init();
-    } catch (err) {
-      console.log(err); // eslint-disable-line
-    }
-
     new Vue({
       store,
       router,

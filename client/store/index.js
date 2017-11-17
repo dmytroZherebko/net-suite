@@ -8,7 +8,6 @@ import documents from './documents';
 import link2fill from './link2fill';
 import send2sign from './send2sign';
 import user from './user';
-import zoho from './zoho';
 
 Vue.use(Vuex);
 
@@ -26,7 +25,6 @@ export default new Vuex.Store({
     link2fill,
     send2sign,
     user,
-    zoho,
   },
   mutations,
   actions,
