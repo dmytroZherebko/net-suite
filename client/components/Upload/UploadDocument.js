@@ -57,8 +57,9 @@ export default {
     async onUrlUploadSubmit() {
       try {
         if (this.uploadFileUrl.value) {
+          const url = this.uploadFileUrl.value;
           this.closeModal();
-          await this.uploadDocument(this.uploadFileUrl.value);
+          await this.uploadDocument(url);
           this.showSuccessUploadModal = true;
         } else {
           this.uploadFileUrl.error = true;
