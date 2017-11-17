@@ -103,14 +103,13 @@ export default {
       this.formData.recipients[index].errors[field] = false;
     },
 
-    submitS2SForm() {
-      if (this.checkFormValid()) {
-        this.createSendToSign(this.formData)
-          .then(() => {
-            this.showResultModal = true;
-          })
-          .catch(() => {});
-      }
+    async submitS2SForm() {
+      try {
+        if (this.checkFormValid()) {
+          await this.createSendToSign(this.formData);
+          this.showResultModal = true;
+        }
+      } catch (err) { console.log(err); } // eslint-disable-line
     },
 
     closeResultModal() {

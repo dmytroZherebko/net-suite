@@ -5,25 +5,25 @@ import constants from '../../constants';
 const mutations = constants.mutations;
 const endpoints = constants.endpoints;
 
-export const createLinkToFill = ({ commit, rootState}, payload) => { // eslint-disable-line
-  commit(mutations.TOGGLE_LOADER);
-  return callApi(makeEndPointUrl(endpoints.LINK_TO_FILL), {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${rootState.auth.access_token}`
-    },
-    body: JSON.stringify(payload)
-  })
-    .then((linkToFill) => {
-      commit(mutations.TOGGLE_LOADER);
-
-      return linkToFill.url;
-    })
-    .catch((err) => {
-      commit(mutations.TOGGLE_LOADER);
-      if (err.message) {
-        commit(mutations.SET_ERROR, err.message);
-      }
-      throw new Error();
+export const createLinkToFill = async ({ commit, rootState }, payload) => { // eslint-disable-line
+  try {
+    if (payload.additional_documents.length === 0) {
+      delete payload.additional_documents;
+    }
+    commit(mutations.TOGGLE_LOADER);
+    const linkToFill = await callApi(makeEndPointUrl(endpoints.LINK_TO_FILL), {
+      method: 'POST',
+      access_token: rootState.auth.access_token,
+      body: JSON.stringify(payload)
     });
+    commit(mutations.TOGGLE_LOADER);
+
+    return linkToFill.url;
+  } catch (err) {
+    commit(mutations.TOGGLE_LOADER);
+    if (err.message) {
+      commit(mutations.SET_ERROR, err.message);
+    }
+    throw new Error();
+  }
 };

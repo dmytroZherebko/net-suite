@@ -85,13 +85,11 @@ export default {
         this.notificationEmailError = true;
       }
     },
-    createL2F() {
-      this.createLinkToFill(this.formData)
-        .then((url) => {
-          this.linkToFillUrl = url;
-          this.showSubmitModal = true;
-        })
-        .catch(() => {});
+    async createL2F() {
+      try {
+        this.linkToFillUrl = await this.createLinkToFill({ ...this.formData });
+        this.showSubmitModal = true;
+      } catch (err) { console.log(err); } // eslint-disable-line
     },
     copyUrl() {
       copyToClipboard(this.linkToFillUrl);

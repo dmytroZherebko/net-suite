@@ -5,7 +5,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
-  entry: ['whatwg-fetch', './client/app.js'],
+  entry: ['whatwg-fetch', 'regenerator-runtime/runtime', './client/app.js'],
   output: {
     path: path.resolve(__dirname, './docs'),
     publicPath: '',
@@ -77,15 +77,7 @@ module.exports = {
     port: 3000,
     allowedHosts: [
       '.ngrok.io'
-    ],
-    proxy: {
-      "/v2/*": {
-        target: "https://api.pdffiller.com",
-        "secure": false,
-        "changeOrigin": false,
-        logLevel: 'debug'
-      }
-    }
+    ]
   },
   performance: {
     hints: false

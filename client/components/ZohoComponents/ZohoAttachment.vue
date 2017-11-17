@@ -40,11 +40,11 @@
 
     methods: {
       ...mapActions(['uploadToZoho']),
-      uploadDocumentToZoho() {
-        this.uploadToZoho()
-          .then(() => {
-            this.showUploadPopUp = true;
-          }).catch(() => {});
+      async uploadDocumentToZoho() {
+        try {
+          await this.uploadToZoho();
+          this.showUploadPopUp = true;
+        } catch (err) { console.log(err); } // eslint-disable-line
       },
       closeModal() {
         this.showUploadPopUp = false;

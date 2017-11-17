@@ -40,11 +40,11 @@
 
     methods: {
       ...mapActions(['fillFromZohoRecord']),
-      fillTemplate() {
-        this.fillFromZohoRecord()
-          .then(() => {
-            this.showUploadPopUp = true;
-          }).catch(() => {});
+      async fillTemplate() {
+        try {
+          await this.fillFromZohoRecord();
+          this.showUploadPopUp = true;
+        } catch (err) { console.log(err); } // eslint-disable-line
       },
       closeModal() {
         this.showUploadPopUp = false;

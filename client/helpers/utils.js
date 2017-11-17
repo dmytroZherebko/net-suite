@@ -31,12 +31,7 @@ export const getDocumentNameWithoutExtention = ({ name, type }) => {
   return formatedName;
 };
 
-export const makeEndPointUrl = (endpoint) => {
-  if (process.env.NODE_ENV === 'production') {
-    return `${constants.endpoints.BASE_URL}${endpoint}`;
-  }
-  return endpoint;
-};
+export const makeEndPointUrl = endpoint => `${constants.endpoints.BASE_URL}${endpoint}`;
 
 const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 

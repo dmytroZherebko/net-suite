@@ -29,32 +29,35 @@ const removeUselessS2SKeys = (s2sData) => {
 
     delete formatedRecipient.errors;
     delete formatedRecipient.isCollapsed;
-    formatedRecipient.additional_documents = [...formatedRecipient.additional_documents];
+    if (formatedRecipient.additional_documents.length > 0) {
+      formatedRecipient.additional_documents = [...formatedRecipient.additional_documents];
+    } else {
+      delete formatedRecipient.additional_documents;
+    }
     return formatedRecipient;
   });
 
   return s2sUpdated;
 };
 
-export const createSendToSign = ({ commit, rootState}, payload) => { // eslint-disable-line
-  const s2sData = removeUselessS2SKeys(payload);
+export const createSendToSign = async({ commit, rootState}, payload) => { // eslint-disable-line
+  try {
+    const s2sData = removeUselessS2SKeys(payload);
 
-  commit(mutations.TOGGLE_LOADER);
-  return callApi(makeEndPointUrl(endpoints.SEND_TO_SIGN), {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${rootState.auth.access_token}`
-    },
-    body: JSON.stringify(s2sData)
-  })
-    .then(() => {
-      commit(mutations.TOGGLE_LOADER);
-    })
-    .catch((err) => {
-      commit(mutations.TOGGLE_LOADER);
-      if (err.message) {
-        commit(mutations.SET_ERROR, err.message);
-      }
-      throw new Error();
+    commit(mutations.TOGGLE_LOADER);
+
+    await callApi(makeEndPointUrl(endpoints.SEND_TO_SIGN), {
+      method: 'POST',
+      access_token: rootState.auth.access_token,
+      body: JSON.stringify(s2sData)
     });
+
+    commit(mutations.TOGGLE_LOADER);
+  } catch (err) {
+    commit(mutations.TOGGLE_LOADER);
+    if (err.message) {
+      commit(mutations.SET_ERROR, err.message);
+    }
+    throw new Error();
+  }
 };

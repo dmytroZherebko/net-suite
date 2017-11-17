@@ -78,9 +78,9 @@
   import OpenDocument from './DocumentOpen.vue';
   import EditName from './DocumentEditName.vue';
   import DownloadDocument from './DocumentDownload.vue';
-  import ZohoAttachment from './ZohoAttachment.vue';
-  import ZohoFields from './ZohoFields.vue';
-  import ZohoFill from './ZohoFill.vue';
+  import ZohoAttachment from '../ZohoComponents/ZohoAttachment.vue';
+  import ZohoFields from '../ZohoComponents/ZohoFields.vue';
+  import ZohoFill from '../ZohoComponents/ZohoFill.vue';
 
   export default {
     components: {

@@ -43,6 +43,9 @@
     },
 
     methods: {
+      ...mapActions([
+        'updateDocumentName',
+      ]),
       onDocumentNameChange(e) {
         const value = e.target.value;
         this.$emit('input', value);
@@ -61,10 +64,6 @@
           });
         }
       },
-
-      ...mapActions([
-        'updateDocumentName',
-      ])
     },
 
     components: {

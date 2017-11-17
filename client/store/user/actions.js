@@ -5,15 +5,11 @@ import constants from '../../constants';
 const mutations = constants.mutations;
 const endpoints = constants.endpoints;
 
-export const getUserInfo = ({ commit, rootState, state }) => { // eslint-disable-line
+export const getUserInfo = async({ commit, rootState, state }) => { // eslint-disable-line
   if (!state.user_info) {
-    callApi(makeEndPointUrl(endpoints.USER_INFO), {
-      headers: {
-        Authorization: `Bearer ${rootState.auth.access_token}`
-      }
-    })
-      .then((user) => {
-        commit(mutations.SET_USER_INFO, user);
-      });
+    const user = await callApi(makeEndPointUrl(endpoints.USER_INFO), {
+      access_token: rootState.auth.access_token,
+    });
+    commit(mutations.SET_USER_INFO, user);
   }
 };

@@ -6,103 +6,94 @@ import constants from '../../constants';
 const mutations = constants.mutations;
 const endpoints = constants.endpoints;
 
-export const uploadToZoho = ({ commit, rootState }) => {
-  commit(mutations.TOGGLE_LOADER);
-  return callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${rootState.documents.currentDocument.id}/download`), {
-    headers: {
-      Authorization: `Bearer ${rootState.auth.access_token}`
+export const uploadToZoho = async ({ commit, rootState }) => {
+  try {
+    commit(mutations.TOGGLE_LOADER);
+    const fileBlob = await callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${rootState.documents.currentDocument.id}/download`), {
+      access_token: rootState.auth.access_token,
+    }, true);
+
+    const pageInfo = await ZOHO.CRM.INTERACTION.getPageInfo();
+    await ZOHO.CRM.API.attachFile({
+      Entity: pageInfo.entity,
+      RecordID: pageInfo.data.id,
+      File: {
+        Name: `${rootState.documents.currentDocument.name}.${rootState.documents.currentDocument.type}`,
+        Content: fileBlob
+      }
+    });
+
+    commit(mutations.TOGGLE_LOADER);
+    return true;
+  } catch (err) {
+    commit(mutations.TOGGLE_LOADER);
+    if (err.message) {
+      commit(mutations.SET_ERROR, err.message);
     }
-  }, true)
-    .then((blob) => { // eslint-disable-line
-      return ZOHO.CRM.INTERACTION.getPageInfo()
-        .then((page) => { // eslint-disable-line
-          return ZOHO.CRM.API.attachFile({
-            Entity: page.entity,
-            RecordID: page.data.id,
-            File: { Name: `${rootState.documents.currentDocument.name}.${rootState.documents.currentDocument.type}`, Content: blob }
-          });
-        });
-    })
-    .then(() => {
-      commit(mutations.TOGGLE_LOADER);
-      return true;
-    })
-    .catch((err) => {
-      commit(mutations.TOGGLE_LOADER);
-      if (err.message) {
-        commit(mutations.SET_ERROR, err.message);
-      }
-      throw new Error(err);
-    });
+    throw new Error(err);
+  }
 };
 
-export const fillFromZohoRecord = ({ commit, rootState, dispatch }) => {
-  let pageEntity = null;
-  let pageId = null;
-  let pageFields = null;
-  commit(mutations.TOGGLE_LOADER);
-  return ZOHO.CRM.INTERACTION.getPageInfo()
-    .then((pageInfo) => {
-      pageEntity = pageInfo.entity;
-      pageId = pageInfo.data.id;
-      pageFields = filterZohoFields({ ...pageInfo.data });
-      return callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${rootState.documents.currentDocument.id}/fields`), {
-        headers: {
-          Authorization: `Bearer ${rootState.auth.access_token}`
-        }
-      });
-    })
-    .then((pdffillerFields) => {
-      const mappedFields = getMappedFields(pdffillerFields, pageFields);
+export const fillFromZohoRecord = async ({ commit, rootState, dispatch }) => {
+  try {
+    commit(mutations.TOGGLE_LOADER);
 
-      return callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${rootState.documents.currentDocument.id}`), {
-        headers: {
-          Authorization: `Bearer ${rootState.auth.access_token}`
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          fillable_fields: mappedFields,
-          name: rootState.documents.currentDocument.name + pageId
-        })
-      });
-    })
-    .then((filledDocumentInfo) => { // eslint-disable-line
-      return callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${filledDocumentInfo.id}/download`), {
-        headers: {
-          Authorization: `Bearer ${rootState.auth.access_token}`
-        }
-      }, true);
-    })
-    .then((blob) => { // eslint-disable-line
-      return ZOHO.CRM.API.attachFile({
-        Entity: pageEntity,
-        RecordID: pageId,
-        File: { Name: `${rootState.documents.currentDocument.name + pageId}.${rootState.documents.currentDocument.type}`, Content: blob }
-      });
-    })
-    .then(() => {
-      commit(mutations.TOGGLE_LOADER);
-      return dispatch('getPageDocuments', { currentPage: rootState.documents.currentPage });
-    })
-    .catch((err) => {
-      commit(mutations.TOGGLE_LOADER);
-      if (err.message) {
-        commit(mutations.SET_ERROR, err.message);
-      }
-      throw new Error(err);
+    const pageInfo = await ZOHO.CRM.INTERACTION.getPageInfo();
+    const pageEntity = pageInfo.entity;
+    const pageId = pageInfo.data.id;
+    const pageFields = filterZohoFields({ ...pageInfo.data });
+
+    const fillableUrl = makeEndPointUrl(`${endpoints.DOCUMENTS}/${rootState.documents.currentDocument.id}/fields`);
+    const pdffillerFields = await callApi(fillableUrl, {
+      access_token: rootState.auth.access_token,
     });
+
+    const mappedFields = getMappedFields(pdffillerFields, pageFields);
+
+    const fillUrl = makeEndPointUrl(`${endpoints.DOCUMENTS}/${rootState.documents.currentDocument.id}`);
+    const filledDocumentInfo = await callApi(fillUrl, {
+      access_token: rootState.auth.access_token,
+      method: 'POST',
+      body: JSON.stringify({
+        fillable_fields: mappedFields,
+        name: rootState.documents.currentDocument.name + pageId
+      })
+    });
+
+    const uploadFileUrl = makeEndPointUrl(`${endpoints.DOCUMENTS}/${filledDocumentInfo.id}/download`);
+    const uploadedFile = await callApi(uploadFileUrl, {
+      access_token: rootState.auth.access_token
+    }, true);
+
+    await ZOHO.CRM.API.attachFile({
+      Entity: pageEntity,
+      RecordID: pageId,
+      File: {
+        Name: `${rootState.documents.currentDocument.name + pageId}.${rootState.documents.currentDocument.type}`,
+        Content: uploadedFile
+      }
+    });
+
+    commit(mutations.TOGGLE_LOADER);
+    return dispatch('getPageDocuments', { currentPage: rootState.documents.currentPage });
+  } catch (err) {
+    commit(mutations.TOGGLE_LOADER);
+    if (err.message) {
+      commit(mutations.SET_ERROR, err.message);
+    }
+    throw new Error(err);
+  }
 };
 
-export const getZohoFieldsData = ({ commit }) => {
-  commit(mutations.TOGGLE_LOADER);
-  return ZOHO.CRM.INTERACTION.getPageInfo()
-    .then((pageInfo) => {
-      const pageFields = filterZohoFields({ ...pageInfo.data });
-      commit(mutations.TOGGLE_LOADER);
-      return pageFields;
-    })
-    .catch(() => {
-      commit(mutations.TOGGLE_LOADER);
-      commit(mutations.SET_ERROR, 'Cant get fields from Zoho');
-    });
+export const getZohoFieldsData = async ({ commit }) => {
+  try {
+    commit(mutations.TOGGLE_LOADER);
+    const pageInfo = await ZOHO.CRM.INTERACTION.getPageInfo();
+    const pageFields = filterZohoFields({ ...pageInfo.data });
+    commit(mutations.TOGGLE_LOADER);
+    return pageFields;
+  } catch (err) {
+    commit(mutations.TOGGLE_LOADER);
+    commit(mutations.SET_ERROR, 'Cant get fields from Zoho');
+  }
 };

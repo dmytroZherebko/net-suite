@@ -54,12 +54,11 @@
 
     methods: {
       ...mapActions(['getZohoFieldsData']),
-      getZohoFields() {
-        this.getZohoFieldsData()
-          .then((zohoFields) => {
-            this.zohoFields = zohoFields;
-            this.showUploadPopUp = true;
-          }).catch(() => {});
+      async getZohoFields() {
+        try {
+          this.zohoFields = await this.getZohoFieldsData();
+          this.showUploadPopUp = true;
+        } catch (err) { console.log(err); } // eslint-disable-line
       },
       closeModal() {
         this.showUploadPopUp = false;
