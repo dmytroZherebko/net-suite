@@ -32,6 +32,6 @@ const pdffiller = {
 window.onload = () => {
   pdffiller.init({
     redirect_uri: 'https://pdffiller.github.io/public-api-integration-widget',
-    client_id: '393c5867612989cd',
+    client_id: 'd2dfd47a961a607d',
   });
 };
