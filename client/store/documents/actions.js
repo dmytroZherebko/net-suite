@@ -136,7 +136,9 @@ export const openDocumentEditor = async ({ commit, rootState, state, dispatch })
 };
 
 export const closeDocumentEditor = ({ commit, dispatch, state }) => {
-  editorWindow.close();
+  if (editorWindow) {
+    editorWindow.close();
+  }
   window.removeEventListener('message', doneListener);
   commit(mutations.SET_DOCUMENT_POPUP, false);
   dispatch('getPageDocuments', {

@@ -7,7 +7,7 @@ export default {
     currentPage: null,
     documentsList: [],
     total: null,
-    perPage: 10,
+    perPage: 9,
     currentDocument: {
       name: null,
       id: null,

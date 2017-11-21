@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="button button_menu margin-bottom" :disabled="!documentId" @click="fillTemplate">
+        <button class="button button_menu margin-bottom" :disabled="!documentId || !fillable" @click="fillTemplate">
             Fill from Zoho
         </button>
         <modal-component
@@ -30,6 +30,10 @@
       documentId: {
         type: Number,
         default: null
+      },
+      fillable: {
+        type: Boolean,
+        default: false
       },
     },
     data() {

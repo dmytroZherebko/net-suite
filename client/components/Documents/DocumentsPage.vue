@@ -57,7 +57,7 @@
             </router-link>
             <zoho-attachment :document-id="currentDocumentId" />
             <zoho-fields />
-            <zoho-fill :document-id="currentDocumentId" />
+            <zoho-fill :document-id="currentDocumentId" :fillable="currentDocumentIsFillable" />
             <delete-document
                     :delete-document="deleteDocument"
                     :button-is-disable="!currentDocumentId"
@@ -97,6 +97,7 @@
     data() {
       return {
         currentDocumentName: null,
+        currentDocumentIsFillable: false,
         showEditModal: false
       };
     },
@@ -164,6 +165,7 @@
       changeCurrentDocument(doc) {
         if (this.currentDocumentId !== doc.id) {
           this.setCurrentDocument(doc);
+          this.currentDocumentIsFillable = doc.fillable;
         }
       },
 
