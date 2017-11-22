@@ -63,6 +63,10 @@ export const updateDocumentName = async ({ commit, rootState, state }, { newName
       })
     });
     commit(mutations.UPDATE_NAME, { name: getDocumentNameWithoutExtention(document), documentId: state.currentDocument.id });
+    commit(mutations.SET_CURRENT_DOCUMENT, { ...document,
+      name: getDocumentNameWithoutExtention(document),
+      updated: getDataFromTimeStamp(document.updated * 1000)
+    });
     commit(mutations.TOGGLE_LOADER);
   } catch (err) {
     commit(mutations.TOGGLE_LOADER);
@@ -152,6 +156,7 @@ export const downloadDocument = async ({ commit, state, rootState }) => {
     const fileBlob = await callApi(makeEndPointUrl(`${endpoints.DOCUMENTS}/${state.currentDocument.id}/download`), {
       access_token: rootState.auth.access_token,
     }, true);
+    downloadjs(fileBlob, `${state.currentDocument.name}.${state.currentDocument.type}`);
     downloadjs(fileBlob, `${state.currentDocument.name}.${state.currentDocument.type}`);
     commit(mutations.TOGGLE_LOADER);
   } catch (err) {
