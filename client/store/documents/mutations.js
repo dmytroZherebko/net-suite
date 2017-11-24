@@ -18,6 +18,7 @@ export default {
     state.currentDocument.id = payload.id;
     state.currentDocument.name = payload.name;
     state.currentDocument.type = payload.type;
+    state.currentDocument.fillable = payload.fillable;
     state.currentDocument.lastEdited = payload.updated;
   },
   [mutations.RESET_CURRENT_DOCUMENT]: (state) => {

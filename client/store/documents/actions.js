@@ -101,6 +101,9 @@ export const getPageDocuments = async ({ commit, state, rootState }, payload = {
     commit(mutations.LOAD_DOCUMENTS, formatted);
     if (payload.setFirstAsCurrent) {
       commit(mutations.SET_CURRENT_DOCUMENT, documents.items[0]);
+    } else {
+      const currentDocument = formatted.find(doc => doc.id === state.currentDocument.id);
+      if (currentDocument) commit(mutations.SET_CURRENT_DOCUMENT, currentDocument);
     }
   } catch (err) {
     commit(mutations.TOGGLE_LOADER);

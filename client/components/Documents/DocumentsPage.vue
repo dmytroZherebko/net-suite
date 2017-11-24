@@ -88,7 +88,6 @@
     data() {
       return {
         currentDocumentName: null,
-        currentDocumentIsFillable: false,
         showEditModal: false
       };
     },
@@ -100,6 +99,7 @@
         perPage: state => state.documents.perPage,
         currentDocumentId: state => state.documents.currentDocument.id,
         userInfo: state => state.user.userInfo,
+        currentDocumentIsFillable: state => state.documents.currentDocument.fillable
       }),
       ...mapGetters({
         documents: 'getDocuments'
@@ -156,7 +156,6 @@
       changeCurrentDocument(doc) {
         if (this.currentDocumentId !== doc.id) {
           this.setCurrentDocument(doc);
-          this.currentDocumentIsFillable = doc.fillable;
         }
       },
 

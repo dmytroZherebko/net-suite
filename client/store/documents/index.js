@@ -11,7 +11,8 @@ export default {
     currentDocument: {
       name: null,
       id: null,
-      type: null
+      type: null,
+      fillable: null
     },
     showOpenDocumentPopUp: false,
   },
