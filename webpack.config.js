@@ -98,13 +98,6 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.LoaderOptionsPlugin({
       minimize: true
     }),
-    new CompressionPlugin({
-      asset: '[path].gz[query]',
-      algorithm: 'gzip',
-      test: /\.(js|css)$/,
-      threshold: 10240,
-      minRatio: 0
-    }),
     new webpack.optimize.ModuleConcatenationPlugin()
   ])
 }
