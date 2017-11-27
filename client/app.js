@@ -4,6 +4,7 @@ import { sync } from 'vuex-router-sync';
 
 import router from './router';
 import store from './store';
+import { endpoints } from './constants';
 
 import App from './components/App.vue';
 // styles
@@ -29,7 +30,7 @@ const pdffiller = {
 
 window.onload = () => {
   pdffiller.init({
-    redirect_uri: 'https://pdffiller.github.io/public-api-integration-widget/build/index.html',
+    redirect_uri: endpoints.replace('{build_number}', process.env.NODE_ENV),
     client_id: 'd2dfd47a961a607d',
   });
 };
