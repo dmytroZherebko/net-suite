@@ -63,7 +63,8 @@ module.exports = {
     new ExtractTextPlugin("style.css"),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+        NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+        BUILD_NUMBER: JSON.stringify(process.env.BUILD_NUMBER)
       }
     }),
   ],
