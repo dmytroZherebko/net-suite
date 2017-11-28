@@ -2,7 +2,6 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   entry: ['whatwg-fetch', 'regenerator-runtime/runtime', './client/app.js'],
