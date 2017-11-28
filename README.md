@@ -20,3 +20,7 @@ Widget for fast integration.
 - s2s
 - open in editor
 - work with templates
+
+## Notes
+Use `git cherry-pick <commit hash>` to sync between different versions to prevent issues when widget have files of other
+integration or integration doesn`t have own components or files.
