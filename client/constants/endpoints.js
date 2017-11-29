@@ -6,5 +6,4 @@ export default {
   USER_INFO: '/users/me',
   LINK_TO_FILL: '/fillable_forms',
   SEND_TO_SIGN: '/signature_requests',
-  CDN_BASE: 'https://cdn.pdffiller.com/public-api-integration-widget/{build_number}/index.html',
 };
