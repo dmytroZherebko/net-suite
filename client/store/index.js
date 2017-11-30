@@ -17,7 +17,8 @@ export default new Vuex.Store({
     error: {
       showError: false,
       errorText: null
-    }
+    },
+    filepicker: false
   },
   modules: {
     auth,

@@ -177,3 +177,9 @@ export const setCurrentDocument = ({ commit }, document) => {
 export const resetCurrentDocument = ({ commit }) => {
   commit(mutations.RESET_CURRENT_DOCUMENT);
 };
+
+export const broadcastDocumentInfoToParent = (store, document) => {
+  if (window.opener) {
+    window.opener.postMessage(JSON.stringify(document), '*');
+  }
+};

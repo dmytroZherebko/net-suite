@@ -4,6 +4,10 @@
   flex-direction: column;
   margin: 0 10px;
 
+  &_full-size {
+    width: 100%;
+  }
+
   &-page {
     display: flex;
     justify-content: space-between;

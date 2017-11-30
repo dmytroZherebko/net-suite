@@ -1,6 +1,6 @@
 <template>
     <div class="documents-page">
-        <div class="documents">
+        <div class="documents" :class="{'documents_full-size': filepicker}">
             <div class="documents-table">
                 <div class="documents__header">
                     <div class="document__name">
@@ -17,7 +17,7 @@
                          v-for="document in documents"
                          :class="getDocumentClass(document)"
                          @click="changeCurrentDocument(document)"
-                         @dblclick="openEditNameModal(document.name)"
+                         @dblclick="dbListener(document)"
                     >
                         <div class="document__name">
                             {{ document.name }}
@@ -36,7 +36,7 @@
                         :total-items="totalItems"
                         @page-changed="pageChanged" />
         </div>
-        <div class="documents-aside column-aside">
+        <div class="documents-aside column-aside" v-if="!filepicker">
             <open-document :document-id="currentDocumentId" />
             <download-document :button-is-disable="!currentDocumentId" />
             <router-link
@@ -99,6 +99,7 @@
         perPage: state => state.documents.perPage,
         currentDocumentId: state => state.documents.currentDocument.id,
         userInfo: state => state.user.userInfo,
+        filepicker: state => state.filepicker,
         currentDocumentIsFillable: state => state.documents.currentDocument.fillable
       }),
       ...mapGetters({
@@ -164,9 +165,13 @@
         this.resetCurrentDocument();
       },
 
-      openEditNameModal(name) {
-        this.currentDocumentName = name;
-        this.showEditModal = true;
+      dbListener(document) {
+        if (this.filepicker) {
+          this.broadcastDocumentInfoToParent(document);
+        } else {
+          this.currentDocumentName = document.name;
+          this.showEditModal = true;
+        }
       },
 
       closeEditNameModal() {
@@ -180,6 +185,7 @@
         'resetCurrentDocument',
         'setCurrentDocument',
         'getUserInfo',
+        'broadcastDocumentInfoToParent',
       ])
     },
   };
