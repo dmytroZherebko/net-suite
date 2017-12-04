@@ -6,9 +6,9 @@ export default {
     defaultParams: {
       access: 'full',
       status: 'public',
-      email_required: true,
+      email_required: false,
       allow_downloads: false,
-      name_required: true,
+      name_required: false,
       custom_message: '',
       notification_emails: [],
       sender_notifications: true,
