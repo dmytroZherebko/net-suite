@@ -1,7 +1,7 @@
 import { parseQueryString } from '../../helpers/utils';
 import constants from '../../constants';
 
-const mutations = constants.mutations;
+const { mutations } = constants;
 
 export const checkAuthCode = ({ state, commit }) => { // eslint-disable-line
   if (!state.authorize) {

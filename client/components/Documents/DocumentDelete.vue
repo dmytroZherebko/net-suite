@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="button button_menu" :disabled="buttonIsDisable" @click="showConfirmationModal">
+        <button class="button button_menu margin-bottom" :disabled="buttonIsDisable" @click="showConfirmationModal">
             delete
         </button>
         <modal-component

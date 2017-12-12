@@ -4,8 +4,7 @@ import callApi from '../../helpers/api';
 import { getDataFromTimeStamp, getDocumentNameWithoutExtention, makeEndPointUrl } from '../../helpers/utils';
 import constants from '../../constants';
 
-const mutations = constants.mutations;
-const endpoints = constants.endpoints;
+const { mutations, endpoints } = constants;
 
 export const deleteDocumentById = async ({ commit, state, dispatch, rootState }, payload) => {
   try {

@@ -2,8 +2,7 @@ import callApi from '../../helpers/api';
 import { makeEndPointUrl } from '../../helpers/utils';
 import constants from '../../constants';
 
-const mutations = constants.mutations;
-const endpoints = constants.endpoints;
+const { mutations, endpoints } = constants;
 
 export const createLinkToFill = async ({ commit, rootState }, payload) => { // eslint-disable-line
   try {

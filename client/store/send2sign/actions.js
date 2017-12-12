@@ -1,44 +1,8 @@
 import callApi from '../../helpers/api';
-import { makeEndPointUrl } from '../../helpers/utils';
+import { makeEndPointUrl, removeUselessS2SKeys } from '../../helpers/utils';
 import constants from '../../constants';
 
-const mutations = constants.mutations;
-const endpoints = constants.endpoints;
-
-const removeUselessS2SKeys = (s2sData) => {
-  const s2sUpdated = { ...s2sData };
-  if (s2sUpdated.method === 'sendtogroup') {
-    delete s2sUpdated.pin;
-    delete s2sUpdated.security_pin;
-  }
-
-  if (s2sUpdated.method === 'sendtoeach') {
-    delete s2sUpdated.envelope_name;
-    delete s2sUpdated.sign_in_order;
-
-    if (s2sUpdated.security_pin === 'standard') {
-      delete s2sUpdated.pin;
-    }
-  }
-
-  s2sUpdated.recipients = s2sUpdated.recipients.map((recipient) => {
-    const formatedRecipient = { ...recipient };
-    if (s2sUpdated.method === 'sendtogroup' || s2sUpdated.security_pin === 'standard') {
-      delete formatedRecipient.phone_authenticate;
-    }
-
-    delete formatedRecipient.errors;
-    delete formatedRecipient.isCollapsed;
-    if (formatedRecipient.additional_documents.length > 0) {
-      formatedRecipient.additional_documents = [...formatedRecipient.additional_documents];
-    } else {
-      delete formatedRecipient.additional_documents;
-    }
-    return formatedRecipient;
-  });
-
-  return s2sUpdated;
-};
+const { mutations, endpoints } = constants;
 
 export const createSendToSign = async({ commit, rootState}, payload) => { // eslint-disable-line
   try {

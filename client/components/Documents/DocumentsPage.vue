@@ -1,41 +1,16 @@
 <template>
     <div class="documents-page">
-        <div class="documents" :class="{'documents_full-size': filepicker}">
-            <div class="documents-table">
-                <div class="documents__header">
-                    <div class="document__name">
-                        Document Name
-                    </div>
-                    <div class="document__date">
-                        Last Modified
-                    </div>
-                </div>
-                <div class="documents-list">
-                    <div class="document"
-                         v-if="documents.length > 0"
-                         :key="document.id"
-                         v-for="document in documents"
-                         :class="getDocumentClass(document)"
-                         @click="changeCurrentDocument(document)"
-                         @dblclick="dbListener(document)"
-                    >
-                        <div class="document__name">
-                            {{ document.name }}
-                        </div>
-                        <div class="document__date">
-                            {{ document.updated }}
-                        </div>
-                    </div>
-                    <div class="documents-list__no-documents" v-if="documents.length === 0">
-                        No Documents
-                    </div>
-                </div>
-            </div>
-            <pagination-component :current-page="currentPage"
-                        :items-per-page="perPage"
-                        :total-items="totalItems"
-                        @page-changed="pageChanged" />
-        </div>
+        <documents-list
+                :documents="documents"
+                :current-page="currentPage"
+                :items-per-page="perPage"
+                :total-items="totalItems"
+                :page-changed="pageChanged"
+                :filepicker="filepicker"
+                :current-document-id="currentDocumentId"
+                :change-current-document="changeCurrentDocument"
+                :db-listener="dbListener"
+        />
         <div class="documents-aside column-aside" v-if="!filepicker">
             <open-document :document-id="currentDocumentId" />
             <download-document :button-is-disable="!currentDocumentId" />
@@ -70,7 +45,7 @@
 
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex';
-  import PaginationComponent from '../common/PaginationComponent.vue';
+  import DocumentsList from '../common/DocumentsList.vue';
   import DeleteDocument from './DocumentDelete.vue';
   import OpenDocument from './DocumentOpen.vue';
   import EditName from './DocumentEditName.vue';
@@ -78,7 +53,7 @@
 
   export default {
     components: {
-      PaginationComponent,
+      DocumentsList,
       DeleteDocument,
       OpenDocument,
       EditName,
@@ -117,37 +92,6 @@
     },
 
     methods: {
-      getDocumentClass(document) {
-        const currentDocumentClass = document.id === this.currentDocumentId ? 'document_active' : '';
-        let documentTypeClass;
-
-        switch (document.type) {
-          case 'pdf':
-            documentTypeClass = 'document_pdf';
-            break;
-          case 'doc':
-          case 'docx':
-            documentTypeClass = 'document_doc';
-            break;
-          case 'ppt':
-          case 'pptx':
-            documentTypeClass = 'document_ppt';
-            break;
-          case 'xsl':
-          case 'xslt':
-            documentTypeClass = 'document_xsl';
-            break;
-          default:
-            break;
-        }
-
-        if (document.fillable) {
-          documentTypeClass = 'document_template';
-        }
-
-        return `${documentTypeClass} ${currentDocumentClass}`;
-      },
-
       pageChanged(page) {
         if (page === this.currentPage) return;
         this.getPageDocuments({ currentPage: page });
