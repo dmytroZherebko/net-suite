@@ -23,6 +23,7 @@ export default new Vuex.Store({
     proxy: false,
     proxyUrl: null,
     pdffillerUserId: null,
+    openInJsEditor: false,
     integration: {
       name: null,
       config: {}

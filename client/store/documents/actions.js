@@ -118,7 +118,9 @@ let doneListener;
 export const openDocumentEditor = async ({ commit, rootState, state, dispatch }) => {
   try {
     commit(mutations.TOGGLE_LOADER);
-    const { location } = await callApi(endpoints.DOCUMENT_LINK.replace('{document_id}', state.currentDocument.id), {
+    let url = endpoints.DOCUMENT_LINK.replace('{document_id}', state.currentDocument.id);
+    url = rootState.openInJsEditor ? `${url}&editor_type=JS_NEW` : url;
+    const { location } = await callApi(url, {
       access_token: rootState.auth.access_token,
     });
 
@@ -164,7 +166,7 @@ export const downloadDocument = async ({ commit, state, rootState }) => {
     const fileBlob = await callApi(`${endpoints.DOCUMENTS}/${state.currentDocument.id}/download`, {
       access_token: rootState.auth.access_token,
     }, true);
-    downloadjs(fileBlob, `${state.currentDocument.name}.${state.currentDocument.type}`);
+
     downloadjs(fileBlob, `${state.currentDocument.name}.${state.currentDocument.type}`);
     commit(mutations.TOGGLE_LOADER);
   } catch (err) {

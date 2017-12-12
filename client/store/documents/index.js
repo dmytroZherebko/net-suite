@@ -15,7 +15,7 @@ export default {
       fillable: null
     },
     openDocument: {
-      openDocumentMode: 'window', // can be window, modal and full
+      openDocumentMode: 'full', // can be window, modal and full
       showOpenDocumentPopUp: false,
       documentUrl: null
     },

@@ -3,10 +3,12 @@
         <button class="button button_menu margin-bottom" :disabled="!documentId" @click="openDocumentInEditor">
             open
         </button>
-        <iframe
-                v-if="openMode === 'full' && documentUrl"
-                :src="documentUrl"
-                class="document-iframe document-iframe_full"></iframe>
+        <div v-if="openMode === 'full' && documentUrl"
+             class="document-iframe_full-wrapper">
+            <iframe
+                    :src="documentUrl"
+                    class="document-iframe"></iframe>
+        </div>
         <modal-component
                 v-else
                 :show-modal="showOpenDocumentPopUp"

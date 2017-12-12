@@ -10,8 +10,12 @@ const preconfigStore = (config) => {
     commit('checkAuthCode');
   }
 
-  if (config.mode) {
-    commit(mutations.SET_OPEN_DOCUMENT_MODE, config.mode);
+  if (config.openDocumentMode) {
+    commit(mutations.SET_OPEN_DOCUMENT_MODE, config.openDocumentMode);
+  }
+
+  if (config.openInJsEditor) {
+    commit(mutations.SET_EDITOR_MODE, config.openInJsEditor);
   }
 
   if (config.pdffiller && config.pdffiller.proxyUrl) {

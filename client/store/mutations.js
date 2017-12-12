@@ -23,6 +23,9 @@ export default {
   [mutations.SET_PROXY_URL]: (state, payload) => {
     state.proxyUrl = payload;
   },
+  [mutations.SET_EDITOR_MODE]: (state, payload) => {
+    state.openInJsEditor = payload;
+  },
   [mutations.SET_PDFFILLER_USER_ID]: (state, payload) => {
     state.pdffillerUserId = payload;
   },
