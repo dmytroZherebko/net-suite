@@ -58,7 +58,8 @@ const routes = [
     meta: {
       hideNavBar: true
     },
-  }
+  },
+  { path: '*', redirect: '/documents' }
 ];
 
 const router = new VueRouter({
