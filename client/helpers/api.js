@@ -1,16 +1,19 @@
-import { handleError, addHeaders, getQueryString } from './requestUtils';
+import { handleError, configureRequestParams, getQueryString } from './requestUtils';
 
 const callApi = async (url, params, file) => { // eslint-disable-line
-  addHeaders(params, file);
-
   if (params.query) {
     url = `${url}?${getQueryString(params.query)}`;
   }
 
-  const data = await fetch(url, {
+  const requestParams = configureRequestParams(url, params, file);
+
+  const requestUrl = requestParams.url;
+  delete requestParams.url;
+
+  const data = await fetch(requestUrl, {
     cache: 'no-store',
     method: 'GET',
-    ...params
+    ...requestParams
   });
 
   await handleError(data);

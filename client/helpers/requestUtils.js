@@ -28,7 +28,7 @@ export const handleError = async (data) => {
   }
 };
 
-export const addHeaders = (params, file) => {
+export const configureRequestParams = (url, params, file) => {
   if (!params.headers) {
     params.headers = {};
   }
@@ -44,6 +44,18 @@ export const addHeaders = (params, file) => {
   if (typeof params.body !== 'object' && !file) {
     params.headers['Content-Type'] = 'application/json';
   }
+
+  params.credentials = 'same-origin';
+
+  if (store.state.proxy && !params.noPdfillerApi) {
+    params.headers['x-pdffiller-user-id'] = store.state.pdffillerUserId;
+    params.headers['x-proxy-url'] = url;
+    params.url = store.state.proxyUrl;
+  } else {
+    params.url = `${store.state.baseUrl}${url}`;
+  }
+
+  return params;
 };
 
 export const getQueryString = queryObject => Object.keys(queryObject)

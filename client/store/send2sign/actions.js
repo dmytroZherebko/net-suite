@@ -10,7 +10,7 @@ export const createSendToSign = async({ commit, rootState}, payload) => { // esl
 
     commit(mutations.TOGGLE_LOADER);
 
-    await callApi(`${rootState.baseUrl}${endpoints.SEND_TO_SIGN}`, {
+    await callApi(endpoints.SEND_TO_SIGN, {
       method: 'POST',
       access_token: rootState.auth.access_token,
       body: JSON.stringify(s2sData)

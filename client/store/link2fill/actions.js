@@ -9,7 +9,7 @@ export const createLinkToFill = async ({ commit, rootState }, payload) => { // e
       delete payload.additional_documents;
     }
     commit(mutations.TOGGLE_LOADER);
-    const linkToFill = await callApi(`${rootState.baseUrl}${endpoints.LINK_TO_FILL}`, {
+    const linkToFill = await callApi(endpoints.LINK_TO_FILL, {
       method: 'POST',
       access_token: rootState.auth.access_token,
       body: JSON.stringify(payload)

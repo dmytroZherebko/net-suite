@@ -9,7 +9,7 @@ const { mutations, endpoints } = constants;
 export const deleteDocumentById = async ({ commit, state, dispatch, rootState }, payload) => {
   try {
     commit(mutations.TOGGLE_LOADER);
-    await callApi(`${rootState.baseUrl}${endpoints.DOCUMENTS}/${payload}`, {
+    await callApi(`${endpoints.DOCUMENTS}/${payload}`, {
       access_token: rootState.auth.access_token,
       method: 'DELETE'
     });
@@ -32,7 +32,7 @@ export const uploadDocument = async ({ commit, state, dispatch, rootState }, fil
     formData.append('file', file);
     commit(mutations.TOGGLE_LOADER);
 
-    await callApi(`${rootState.baseUrl}${endpoints.DOCUMENTS}`, {
+    await callApi(endpoints.DOCUMENTS, {
       access_token: rootState.auth.access_token,
       method: 'POST',
       body: formData
@@ -54,7 +54,7 @@ export const uploadDocument = async ({ commit, state, dispatch, rootState }, fil
 export const updateDocumentName = async ({ commit, rootState, state }, { newName }) => {
   try {
     commit(mutations.TOGGLE_LOADER);
-    const document = await callApi(`${rootState.baseUrl}${endpoints.DOCUMENTS}/${state.currentDocument.id}`, {
+    const document = await callApi(`${endpoints.DOCUMENTS}/${state.currentDocument.id}`, {
       access_token: rootState.auth.access_token,
       method: 'PUT',
       body: JSON.stringify({
@@ -79,7 +79,7 @@ export const getPageDocuments = async ({ commit, state, rootState }, payload = {
   try {
     const currentPage = payload.currentPage || 1;
     commit(mutations.TOGGLE_LOADER);
-    const documents = await callApi(`${rootState.baseUrl}${endpoints.DOCUMENTS}`, {
+    const documents = await callApi(endpoints.DOCUMENTS, {
       query: {
         page: currentPage,
         per_page: state.perPage
@@ -115,14 +115,10 @@ export const getPageDocuments = async ({ commit, state, rootState }, payload = {
 let editorWindow;
 let doneListener;
 
-export const setOpenDocumentMode = ({ commit }, payload) => {
-  commit(mutations.SET_OPEN_DOCUMENT_MODE, payload);
-};
-
 export const openDocumentEditor = async ({ commit, rootState, state, dispatch }) => {
   try {
     commit(mutations.TOGGLE_LOADER);
-    const { location } = await callApi(`${rootState.baseUrl}${endpoints.DOCUMENT_LINK.replace('{document_id}', state.currentDocument.id)}`, {
+    const { location } = await callApi(endpoints.DOCUMENT_LINK.replace('{document_id}', state.currentDocument.id), {
       access_token: rootState.auth.access_token,
     });
 
@@ -165,7 +161,7 @@ export const closeDocumentEditor = ({ commit, dispatch, state }) => {
 export const downloadDocument = async ({ commit, state, rootState }) => {
   try {
     commit(mutations.TOGGLE_LOADER);
-    const fileBlob = await callApi(`${rootState.baseUrl}${endpoints.DOCUMENTS}/${state.currentDocument.id}/download`, {
+    const fileBlob = await callApi(`${endpoints.DOCUMENTS}/${state.currentDocument.id}/download`, {
       access_token: rootState.auth.access_token,
     }, true);
     downloadjs(fileBlob, `${state.currentDocument.name}.${state.currentDocument.type}`);

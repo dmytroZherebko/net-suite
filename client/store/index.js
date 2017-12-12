@@ -19,7 +19,14 @@ export default new Vuex.Store({
       errorText: null
     },
     filepicker: false,
-    baseUrl: 'https://api.pdffiller.com/v2',
+    baseUrl: 'https://api.pdffiller.com',
+    proxy: false,
+    proxyUrl: null,
+    pdffillerUserId: null,
+    integration: {
+      name: null,
+      config: {}
+    }
   },
   modules: {
     auth,

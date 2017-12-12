@@ -14,7 +14,7 @@ sync(store, router);
 
 const pdffiller = {
   init: (config) => {
-    preconfigStore(config);
+    if (config) preconfigStore(config);
 
     new Vue({
       store,
