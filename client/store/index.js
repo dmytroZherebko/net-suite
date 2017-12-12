@@ -18,7 +18,8 @@ export default new Vuex.Store({
       showError: false,
       errorText: null
     },
-    filepicker: false
+    filepicker: false,
+    baseUrl: 'https://api.pdffiller.com/v2',
   },
   modules: {
     auth,

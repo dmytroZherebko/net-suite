@@ -6,5 +6,15 @@
   </head>
   <body>
     <div id="app"></div>
+    <script>
+      window.onload = () => {
+        pdffiller.init({
+          auth: {
+            redirect_uri: process.env.redirect_uri,
+            client_id: process.env.client_id,
+          }
+        });
+      };
+    </script>
   </body>
 </html>

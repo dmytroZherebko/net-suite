@@ -14,4 +14,7 @@ export default {
     state.error.errorText = null;
     state.error.showError = false;
   },
+  [mutations.SET_BASE_URL]: (state, payload) => {
+    state.baseUrl = payload;
+  },
 };

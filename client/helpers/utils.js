@@ -1,5 +1,3 @@
-import constants from '../constants';
-
 export const parseQueryString = (queryString) => { // eslint-disable-line
   const params = {};
   let temp,
@@ -30,8 +28,6 @@ export const getDocumentNameWithoutExtention = ({ name, type }) => {
   formatedName = formatedName.join('.');
   return formatedName;
 };
-
-export const makeEndPointUrl = endpoint => `${constants.endpoints.BASE_URL}${endpoint}`;
 
 const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 

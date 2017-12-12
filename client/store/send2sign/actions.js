@@ -1,5 +1,5 @@
 import callApi from '../../helpers/api';
-import { makeEndPointUrl, removeUselessS2SKeys } from '../../helpers/utils';
+import { removeUselessS2SKeys } from '../../helpers/utils';
 import constants from '../../constants';
 
 const { mutations, endpoints } = constants;
@@ -10,7 +10,7 @@ export const createSendToSign = async({ commit, rootState}, payload) => { // esl
 
     commit(mutations.TOGGLE_LOADER);
 
-    await callApi(makeEndPointUrl(endpoints.SEND_TO_SIGN), {
+    await callApi(`${rootState.baseUrl}${endpoints.SEND_TO_SIGN}`, {
       method: 'POST',
       access_token: rootState.auth.access_token,
       body: JSON.stringify(s2sData)

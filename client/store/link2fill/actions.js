@@ -1,5 +1,4 @@
 import callApi from '../../helpers/api';
-import { makeEndPointUrl } from '../../helpers/utils';
 import constants from '../../constants';
 
 const { mutations, endpoints } = constants;
@@ -10,7 +9,7 @@ export const createLinkToFill = async ({ commit, rootState }, payload) => { // e
       delete payload.additional_documents;
     }
     commit(mutations.TOGGLE_LOADER);
-    const linkToFill = await callApi(makeEndPointUrl(endpoints.LINK_TO_FILL), {
+    const linkToFill = await callApi(`${rootState.baseUrl}${endpoints.LINK_TO_FILL}`, {
       method: 'POST',
       access_token: rootState.auth.access_token,
       body: JSON.stringify(payload)

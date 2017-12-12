@@ -27,8 +27,14 @@ export default {
     state.currentDocument.type = null;
     state.currentDocument.lastEdited = null;
   },
-  [mutations.SET_DOCUMENT_POPUP]: (state, payload) => {
-    state.showOpenDocumentPopUp = payload;
+  [mutations.SET_OPEN_DOCUMENT_POPUP]: (state, payload) => {
+    state.openDocument.showOpenDocumentPopUp = payload;
+  },
+  [mutations.SET_OPEN_DOCUMENT_URL]: (state, payload) => {
+    state.openDocument.documentUrl = payload;
+  },
+  [mutations.SET_OPEN_DOCUMENT_MODE]: (state, payload) => {
+    state.openDocument.openDocumentMode = payload;
   },
   [mutations.UPDATE_NAME]: (state, { name, documentId }) => {
     state.documentsList.forEach((document) => {

@@ -14,6 +14,11 @@ export default {
       type: null,
       fillable: null
     },
+    openDocument: {
+      openDocumentMode: 'window', // can be window, modal and full
+      showOpenDocumentPopUp: false,
+      documentUrl: null
+    },
     showOpenDocumentPopUp: false,
   },
   mutations,
