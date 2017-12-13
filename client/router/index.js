@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import store from '../store';
 import AuthorizePage from '../components/Auhtorize/AuthorizePage.vue';
 import Documents from '../components/Documents/DocumentsPage.vue';
+import IntegrationDocuments from '../components/IntegrationDocuments/DocumentsPage.vue';
 import LinkToFillForm from '../components/LinkToFill/LinkToFillFormTemplate.vue';
 import SendToSignForm from '../components/SendToSign/SendToSignFormTemplate.vue';
 
@@ -18,6 +19,11 @@ const routes = [
     path: '/documents',
     name: 'documents',
     component: Documents
+  },
+  {
+    path: '/integration-documents',
+    name: 'documents',
+    component: IntegrationDocuments
   },
   {
     name: 'authorize',

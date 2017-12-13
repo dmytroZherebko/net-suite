@@ -54,7 +54,10 @@
       documents: Array,
       filepicker: Boolean,
       changeCurrentDocument: Function,
-      dbListener: Function,
+      dbListener: {
+        type: Function,
+        default: () => {}
+      },
     },
 
     methods: {

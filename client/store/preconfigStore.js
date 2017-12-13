@@ -31,6 +31,14 @@ const preconfigStore = (config) => {
     commit(mutations.SET_PDFFILLER_USER_ID, config.pdffiller.userId);
   }
 
+  if (config.showInregrationDocsTab) {
+    commit(mutations.SET_SHOW_INTEGRATION_DOCUMENTS_PAGE, config.showInregrationDocsTab);
+  }
+
+  if (config.integrationDocumentsTabName) {
+    commit(mutations.SET_TITLE_INTEGRATION_DOCUMENTS_PAGE, config.config.integrationDocumentsTabName);
+  }
+
   if (config.integration) {
     commit(mutations.SET_INTEGRATION_CONFIG, {
       config: config[config.integration],

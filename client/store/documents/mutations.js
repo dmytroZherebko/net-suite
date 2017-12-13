@@ -25,6 +25,7 @@ export default {
     state.currentDocument.id = null;
     state.currentDocument.name = null;
     state.currentDocument.type = null;
+    state.currentDocument.fillable = null;
     state.currentDocument.lastEdited = null;
   },
   [mutations.SET_OPEN_DOCUMENT_POPUP]: (state, payload) => {
