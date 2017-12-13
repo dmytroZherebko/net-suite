@@ -8,12 +8,13 @@ export const getIntegrationPageDocuments = async ({ commit, state, rootState }, 
   try {
     const currentPage = payload.currentPage || 1;
     commit(mutations.TOGGLE_LOADER);
-    const documents = await callApi(endpoints.DOCUMENTS, {
+    const documents = await callApi(`${rootState.integration.name}${endpoints.INTEGRATION_DOCUMENTS}`, {
       query: {
         page: currentPage,
-        per_page: state.perPage
+        per_page: state.perPage,
+        ...rootState.integration.config
       },
-      access_token: rootState.auth.access_token,
+      noPdfillerApi: true,
     });
 
     const formatted = documents.items.map((doc) => {
