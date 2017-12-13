@@ -19,6 +19,7 @@
     position: relative;
     display: flex;
     width: 133px;
+    height: 100%;
     box-sizing: border-box;
     padding: 15px;
     align-items: center;
@@ -27,6 +28,7 @@
     color: #666;
     text-transform: capitalize;
     text-decoration: none;
+    text-align: center;
 
     &_active {
       background: white;

@@ -30,6 +30,6 @@ export default {
     state.currentDocument.id = null;
     state.currentDocument.name = null;
     state.currentDocument.type = null;
-    state.currentDocument.lastEdited = null;
+    state.currentDocument.hidden = null;
   }
 };

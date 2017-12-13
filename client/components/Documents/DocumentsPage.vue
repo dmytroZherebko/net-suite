@@ -83,9 +83,7 @@
     },
 
     mounted() {
-      if (!this.documents.length) {
-        this.getPageDocuments();
-      }
+      this.getPageDocuments();
       if (!this.userInfo) {
         this.getUserInfo();
       }

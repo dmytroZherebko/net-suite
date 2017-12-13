@@ -61,9 +61,7 @@
     },
 
     mounted() {
-      if (!this.documents.length) {
-        this.getIntegrationPageDocuments();
-      }
+      this.getIntegrationPageDocuments();
     },
 
     methods: {
