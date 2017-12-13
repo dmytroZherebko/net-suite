@@ -33,14 +33,14 @@ integration or integration doesn`t have own components or files.
 - pdffiller.init global function that will call with config params for widget
 
 
-####Config example
+#### Config example
 ```js
 window.onload = function() {
     pdffiller.init({
       openDocumentMode: "full", // full - in local window, modal - in modal, window - in new window
-      openInJsEditor: true, // when true will open document in js editor
-      showIntegrationDocumentsTab: true, // true/false
-      integrationDocumentsTabName: 'Hubspot', //title for tab
+      openInJsEditor: false, // when true will open document in js editor
+      showIntegrationDocumentsTab: false, // true/false
+      integrationDocumentsTabName: 'Integration Docs', //title for tab
       integration: "hubspot", // integration name - also all not pdffiller api endpoints will start with this name
       hubspot: { // integration config will send as query string in all requests
         userId: "2222",
