@@ -29,4 +29,30 @@ integration or integration doesn`t have own components or files.
   - prod - `https://cdn.pdffiller.com/public-api-integration-widget/<build-number>/<file-name>`
   - dev - `https://d-cdn.pdffiller.com/public-api-integration-widget/<build-number>/<file-name>`
 - To init widget add style and js file to html and add `<div id="app"></div>`
-- some version can include pdffiller.init global function that will call with parameters for implicit auth flow
+- for pdffiller auth widget uses implicit flow
+- pdffiller.init global function that will call with config params for widget
+
+
+####Config example
+```js
+window.onload = function() {
+    pdffiller.init({
+      openDocumentMode: "full", // full - in local window, modal - in modal, window - in new window
+      openInJsEditor: true, // when true will open document in js editor
+      showIntegrationDocumentsTab: true, // true/false
+      integrationDocumentsTabName: 'Hubspot', //title for tab
+      integration: "hubspot", // integration name - also all not pdffiller api endpoints will start with this name
+      hubspot: { // integration config will send as query string in all requests
+        userId: "2222",
+        associatedObjectType: "LEADS",
+        associatedObjectId: "23232323",
+        portalId: "23232323"
+      },
+      pdffiller: { // config for pdffiller proxy calls
+        userId: "2323", // user id will set as header x-pdffiller-user-id
+        proxyUrl: "https://someservice.pdffiller.com/api/proxy" // url for calls to pdffiller api for which api call url will set as header x-proxy-url
+      },
+      baseApiUrl: "https://someservice.pdffiller.com/api/" // base url for not pdffiller api calls
+    });
+  };
+```
