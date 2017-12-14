@@ -15,6 +15,9 @@ export default {
   [mutations.SET_AUTH_PROCESS]: (state, payload) => {
     state.authorize_process = payload;
   },
+  [mutations.SET_X_AUTH_TOKEN]: (state, payload) => {
+    state.x_auth_token = payload;
+  },
   [mutations.SET_CLIENT_CRED]: (state, payload) => {
     state.redirect_uri = payload.redirect_uri;
     state.client_secret = payload.client_secret;

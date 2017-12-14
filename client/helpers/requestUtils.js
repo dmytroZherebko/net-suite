@@ -41,6 +41,10 @@ export const configureRequestParams = (url, params, file) => {
     params.headers.Accept = 'application/json';
   }
 
+  if (store.state.auth.x_auth_token) {
+    params.headers['x-auth-token'] = store.state.auth.x_auth_token;
+  }
+
   if (typeof params.body !== 'object' && !file) {
     params.headers['Content-Type'] = 'application/json';
   }

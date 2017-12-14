@@ -39,6 +39,10 @@ const preconfigStore = (config) => {
     commit(mutations.SET_TITLE_INTEGRATION_DOCUMENTS_PAGE, config.integrationDocumentsTabName);
   }
 
+  if (config.x_auth_token) {
+    commit(mutations.SET_X_AUTH_TOKEN, config.x_auth_token);
+  }
+
   if (config.integration) {
     commit(mutations.SET_INTEGRATION_CONFIG, {
       config: config[config.integration],

@@ -40,7 +40,8 @@ window.onload = function() {
       openDocumentMode: "full", // full - in local window, modal - in modal, window - in new window
       openInJsEditor: false, // when true will open document in js editor
       showIntegrationDocumentsTab: false, // true/false
-      integrationDocumentsTabName: 'Integration Docs', //title for tab
+      integrationDocumentsTabName: "Integration Docs", //title for tab
+      x_auth_token: "blablasometoken", // token for integration api calls if provide will set header x-auth-token
       integration: "hubspot", // integration name - also all not pdffiller api endpoints will start with this name
       hubspot: { // integration config will send as query string in all requests
         userId: "2222",
