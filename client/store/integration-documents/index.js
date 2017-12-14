@@ -3,7 +3,7 @@ import * as actions from './actions';
 
 export default {
   state: {
-    showIntegrationDocumentsPage: true,
+    showIntegrationDocumentsPage: false,
     integrationDocumentsPageName: 'Integration Documents',
     currentPage: null,
     documentsList: [],
