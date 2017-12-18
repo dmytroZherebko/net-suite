@@ -39,6 +39,8 @@ window.onload = function() {
     pdffiller.init({
       openDocumentMode: "full", // full - in local window, modal - in modal, window - in new window
       openInJsEditor: false, // when true will open document in js editor
+      s2s_callback_url: "https://someservice.pdffiller.com?param=param", // s2s callback url
+      l2g_callback_url: "https://someservice.pdffiller.com?param=param", // l2f callback url
       showIntegrationDocumentsTab: false, // true/false
       integrationDocumentsTabName: "Integration Docs", //title for tab
       x_auth_token: "blablasometoken", // token for integration api calls if provide will set header x-auth-token

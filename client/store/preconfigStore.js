@@ -49,6 +49,14 @@ const preconfigStore = (config) => {
       name: config.integration,
     });
   }
+
+  if (config.s2s_callback_url) {
+    commit(mutations.SET_S2S_CALLBACK_URL, config.s2s_callback_url);
+  }
+
+  if (config.l2f_callback_url) {
+    commit(mutations.SET_L2F_CALLBACK_URL, config.l2f_callback_url);
+  }
 };
 
 export default preconfigStore;
