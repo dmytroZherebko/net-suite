@@ -4,12 +4,12 @@ import constants from '../../constants';
 
 const { mutations, endpoints } = constants;
 
-export const createSendToSign = async({ commit, rootState, state}, payload) => { // eslint-disable-line
+export const createSendToSign = async({ commit, rootState }, payload) => { // eslint-disable-line
   try {
     const s2sData = removeUselessS2SKeys(payload);
 
     if (s2sData.callback_url) {
-      s2sData.callback_url = `${s2sData.callback_url}&project_id=${state.documents.currentDocument.id}`;
+      s2sData.callback_url = `${s2sData.callback_url}&project_id=${rootState.documents.currentDocument.id}`;
     }
 
     commit(mutations.TOGGLE_LOADER);
