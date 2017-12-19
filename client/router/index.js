@@ -22,7 +22,7 @@ const routes = [
   },
   {
     path: '/integration-documents',
-    name: 'documents',
+    name: 'integration-documents',
     component: IntegrationDocuments
   },
   {

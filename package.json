@@ -8,14 +8,34 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
     "lint": "./node_modules/.bin/eslint client/** -c ./.eslintrc",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "test": "./node_modules/.bin/jest",
+    "test-watch": "./node_modules/.bin/jest --watch"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "vue"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "./node_modules/vue-jest",
+      "^.+\\.js$": "./node_modules/babel-jest"
+    },
+    "mapCoverage": true,
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ]
   },
   "dependencies": {
+    "babel-jest": "^22.0.3",
     "downloadjs": "^1.4.7",
     "es6-promise": "^4.1.1",
+    "jest-localstorage-mock": "^2.1.0",
     "postcss-loader": "^2.0.6",
     "regenerator-runtime": "^0.11.0",
+    "save-dev": "^2.0.0",
     "vue": "^2.4.2",
+    "vue-jest": "^1.4.0",
     "vue-router": "^2.7.0",
     "vuex": "^2.4.0",
     "vuex-router-sync": "^4.2.0",
@@ -37,11 +57,13 @@
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
     "husky": "^0.14.3",
+    "jest": "^22.0.3",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
     "vue-loader": "^13.0.4",
     "vue-template-compiler": "^2.4.2",
+    "vue-test-utils": "^1.0.0-beta.8",
     "webpack": "^3.5.5",
     "webpack-dev-server": "^2.7.1"
   }

@@ -1,13 +1,13 @@
 import store from './index';
 import constants from '../constants';
 
-const { commit } = store;
+const { commit, dispatch } = store;
 const { mutations } = constants;
 
 const preconfigStore = (config) => {
   if (config.auth) {
-    commit('setClientCred', config.auth);
-    commit('checkAuthCode');
+    dispatch('setClientCred', config.auth);
+    dispatch('checkAuthCode');
   }
 
   if (config.openDocumentMode) {
@@ -23,12 +23,12 @@ const preconfigStore = (config) => {
     commit(mutations.SET_PROXY, true);
   }
 
-  if (config.baseApiUrl) {
-    commit(mutations.SET_BASE_URL, config.baseApiUrl);
-  }
-
   if (config.pdffiller && config.pdffiller.userId) {
     commit(mutations.SET_PDFFILLER_USER_ID, config.pdffiller.userId);
+  }
+
+  if (config.baseApiUrl) {
+    commit(mutations.SET_BASE_URL, config.baseApiUrl);
   }
 
   if (config.showIntegrationDocumentsTab) {
