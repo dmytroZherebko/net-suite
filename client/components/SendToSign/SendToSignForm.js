@@ -5,6 +5,9 @@ import SwitcherComponent from '../common/SwitcherComponent.vue';
 import SwitcherRadio from '../common/SwitcherRadio.vue';
 import TagsComponent from '../common/TagsComponent.vue';
 import FormSection from '../common/FormSection.vue';
+import constants from '../../constants';
+
+const { actions, getters } = constants;
 
 export default {
   components: {
@@ -39,8 +42,8 @@ export default {
 
   mounted() {
     if (!this.$route.params.s2s_id) {
-      this.formData = { ...this.getS2SDefaultParams() };
-      this.recipientTemplate = this.getS2SDefaultRecipient();
+      this.formData = { ...this[getters.GET_S2S_DEFAULT_PARAMS]() };
+      this.recipientTemplate = this[getters.GET_S2S_DEFAULT_RECIPIENT]();
       this.formData.document_id = this.currentDocumentId;
       this.formData.recipients = [];
       this.addDefaultRecipient();
@@ -48,8 +51,8 @@ export default {
   },
 
   methods: {
-    ...mapGetters(['getS2SDefaultParams', 'getS2SDefaultRecipient']),
-    ...mapActions(['createSendToSign']),
+    ...mapGetters([getters.GET_S2S_DEFAULT_PARAMS, getters.GET_S2S_DEFAULT_RECIPIENT]),
+    ...mapActions([actions.CREATE_S2S]),
     removeAdditionalDocument(index, recipientIndex) {
       this.formData.recipients[recipientIndex].additional_documents.splice(index, 1);
     },
@@ -106,7 +109,7 @@ export default {
     async submitS2SForm() {
       try {
         if (this.checkFormValid()) {
-          await this.createSendToSign(this.formData);
+          await this[actions.CREATE_S2S](this.formData);
           this.showResultModal = true;
         }
       } catch (err) { console.log(err); } // eslint-disable-line

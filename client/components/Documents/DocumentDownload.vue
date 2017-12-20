@@ -8,6 +8,9 @@
 
 <script>
   import { mapActions } from 'vuex';
+  import constants from '../../constants';
+
+  const { actions } = constants;
 
   export default {
     props: {
@@ -19,7 +22,10 @@
     },
 
     methods: {
-      ...mapActions(['downloadDocument'])
+      ...mapActions([actions.DOWNLOAD_DOCUMENT]),
+      downloadDocument() {
+        this[actions.DOWNLOAD_DOCUMENT]();
+      }
     },
   };
 </script>

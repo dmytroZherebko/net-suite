@@ -1,6 +1,6 @@
 import mutations from './mutations';
-import * as actions from './actions';
-import * as getters from './getters';
+import actions from './actions';
+import getters from './getters';
 
 export default {
   state: {

@@ -44,7 +44,7 @@
 </template>
 
 <script>
-  import { mapState, mapGetters, mapActions } from 'vuex';
+  import { mapState, mapActions } from 'vuex';
   import DocumentsList from '../common/DocumentsList.vue';
   import DeleteDocument from './DocumentDelete.vue';
   import OpenDocument from './DocumentOpen.vue';
@@ -72,42 +72,49 @@
 
     computed: {
       ...mapState({
+        documents: state => state.documents.documentsList,
         currentPage: state => state.documents.currentPage,
         totalItems: state => state.documents.total,
         perPage: state => state.documents.perPage,
         currentDocumentId: state => state.documents.currentDocument.id,
         userInfo: state => state.user.userInfo,
         filepicker: state => state.filepicker,
-        currentDocumentIsFillable: state => state.documents.currentDocument.fillable
+        currentDocumentIsFillable: state => state.documents.currentDocument.fillable,
       }),
-      ...mapGetters({
-        documents: 'getDocuments'
-      })
     },
 
     mounted() {
-      this.getPageDocuments();
+      this[actions.GET_PAGE_DOCUMENTS]();
       if (!this.userInfo) {
         this[actions.GET_USER_INFO]();
       }
     },
 
     methods: {
+      ...mapActions([
+        actions.GET_PAGE_DOCUMENTS,
+        actions.DELETE_DOCUMENT_BY_ID,
+        actions.RESET_CURRENT_DOCUMENT,
+        actions.SET_CURRENT_DOCUMENT,
+        actions.GET_USER_INFO,
+        actions.BROADCAST_DOCUMENT_INFO_TO_PARRENT,
+      ]),
+
       pageChanged(page) {
         if (page === this.currentPage) return;
-        this.getPageDocuments({ currentPage: page });
-        this.resetCurrentDocument();
+        this[actions.GET_PAGE_DOCUMENTS]({ currentPage: page });
+        this[actions.RESET_CURRENT_DOCUMENT]();
       },
 
       changeCurrentDocument(doc) {
         if (this.currentDocumentId !== doc.id) {
-          this.setCurrentDocument(doc);
+          this[actions.SET_CURRENT_DOCUMENT](doc);
         }
       },
 
       deleteDocument() {
-        this.deleteDocumentById(this.currentDocumentId);
-        this.resetCurrentDocument();
+        this[actions.DELETE_DOCUMENT_BY_ID]();
+        this[actions.RESET_CURRENT_DOCUMENT]();
       },
 
       dbListener(document) {
@@ -123,15 +130,6 @@
         this.showEditModal = false;
         this.currentDocumentName = null;
       },
-
-      ...mapActions([
-        'getPageDocuments',
-        'deleteDocumentById',
-        'resetCurrentDocument',
-        'setCurrentDocument',
-        actions.GET_USER_INFO,
-        'broadcastDocumentInfoToParent',
-      ])
     },
   };
 </script>

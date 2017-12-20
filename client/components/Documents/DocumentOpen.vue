@@ -34,6 +34,9 @@
 <script>
   import { mapActions, mapState } from 'vuex';
   import ModalComponent from '../common/ModalComponent.vue';
+  import constants from '../../constants';
+
+  const { actions } = constants;
 
   export default {
     props: {
@@ -51,12 +54,15 @@
     },
 
     methods: {
-      ...mapActions(['openDocumentEditor', 'closeDocumentEditor']),
+      ...mapActions([
+        actions.OPEN_DOCUMENT_EDITOR,
+        actions.CLOSE_DOCUMENT_EDITOR,
+      ]),
       openDocumentInEditor() {
-        this.openDocumentEditor();
+        this[actions.OPEN_DOCUMENT_EDITOR]();
       },
       closeModal() {
-        this.closeDocumentEditor();
+        this[actions.CLOSE_DOCUMENT_EDITOR]();
       },
       getModalClass() {
         return this.documentUrl ? 'modal_editor' : '';

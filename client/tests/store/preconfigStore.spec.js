@@ -2,7 +2,7 @@ import preconfigStore from '../../store/preconfigStore';
 import store from '../../store';
 import constants from '../../constants';
 
-const { mutations } = constants;
+const { mutations, actions } = constants;
 
 jest.mock('../../store', () => ({
   commit: jest.fn(),
@@ -23,8 +23,8 @@ describe('should preconfig store', () => {
     };
 
     preconfigStore(config);
-    expect(dispatch).toBeCalledWith('setClientCred', config.auth);
-    expect(dispatch).toBeCalledWith('checkAuthCode');
+    expect(dispatch).toBeCalledWith(actions.SET_CLIENT_CRED, config.auth);
+    expect(dispatch).toBeCalledWith(actions.CHECK_AUTH_CODE);
   });
 
   it('set open document mode', () => {

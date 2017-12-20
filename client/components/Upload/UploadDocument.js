@@ -1,5 +1,8 @@
 import { mapActions } from 'vuex';
 import ModalComponent from '../common/ModalComponent.vue';
+import constants from '../../constants';
+
+const { actions } = constants;
 
 export default {
   components: {
@@ -29,6 +32,11 @@ export default {
     };
   },
   methods: {
+    ...mapActions([
+      actions.UPLOAD_DOCUMENT,
+      actions.SET_ERROR
+    ]),
+
     closeModal() {
       this.showModal = false;
       this.uploadFileUrl.value = null;
@@ -59,7 +67,7 @@ export default {
         if (this.uploadFileUrl.value) {
           const url = this.uploadFileUrl.value;
           this.closeModal();
-          await this.uploadDocument(url);
+          await this[actions.UPLOAD_DOCUMENT](url);
           this.showSuccessUploadModal = true;
         } else {
           this.uploadFileUrl.error = true;
@@ -79,7 +87,7 @@ export default {
       try {
         if (file && this.validateFile(file)) {
           this.closeModal();
-          await this.uploadDocument(file);
+          await this[actions.UPLOAD_DOCUMENT](file);
           this.showSuccessUploadModal = true;
         }
       } catch (err) { console.log(err); } // eslint-disable-line
@@ -96,20 +104,16 @@ export default {
     validateFile(file) {
       const format = file.name.split('.').pop().toLowerCase();
       if (!/(ppt|pptx|doc|docx|pdf)/.test(format)) {
-        this.setError('PDFfiller supports PDF, Word, and PowerPoint files.');
+        this[actions.SET_ERROR]('PDFfiller supports PDF, Word, and PowerPoint files.');
         return false;
       }
 
       if (file.size > 26214400) {
-        this.setError('File size is limited to 25 Mb! Please select a smaller file.');
+        this[actions.SET_ERROR]('File size is limited to 25 Mb! Please select a smaller file.');
         return false;
       }
 
       return true;
     },
-    ...mapActions([
-      'uploadDocument',
-      'setError'
-    ])
   }
 };

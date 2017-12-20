@@ -2,12 +2,12 @@ import store from './index';
 import constants from '../constants';
 
 const { commit, dispatch } = store;
-const { mutations } = constants;
+const { mutations, actions } = constants;
 
 const preconfigStore = (config) => {
   if (config.auth) {
-    dispatch('setClientCred', config.auth);
-    dispatch('checkAuthCode');
+    dispatch(actions.SET_CLIENT_CRED, config.auth);
+    dispatch(actions.CHECK_AUTH_CODE);
   }
 
   if (config.openDocumentMode) {

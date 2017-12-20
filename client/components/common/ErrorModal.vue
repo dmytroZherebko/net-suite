@@ -19,6 +19,9 @@
 <script>
   import { mapState, mapActions } from 'vuex';
   import ModalComponent from './ModalComponent.vue';
+  import constants from '../../constants';
+
+  const { actions } = constants;
 
   export default {
     computed: {
@@ -30,9 +33,9 @@
 
     methods: {
       onClose() {
-        this.resetError();
+        this[actions.RESET_ERROR]();
       },
-      ...mapActions(['resetError'])
+      ...mapActions([actions.RESET_ERROR])
     },
 
     components: {

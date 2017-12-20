@@ -1,14 +1,21 @@
-export const getS2SDefaultParams = (state) => {
-  const params = { ...state.defaultParams };
-  return params;
-};
+import constants from '../../constants';
 
-export const getS2SDefaultRecipient = (state, getters, rootState) => {
-  const params = { ...state.defaultRecipient };
-  const email = rootState.user.userInfo && rootState.user.userInfo.email;
-  if (email) {
-    params.message_subject = params.message_subject + email;
+const { getters } = constants;
+
+
+export default {
+  [getters.GET_S2S_DEFAULT_PARAMS](state) {
+    const params = { ...state.defaultParams };
+    return params;
+  },
+
+  [getters.GET_S2S_DEFAULT_RECIPIENT](state, getters, rootState) { // eslint-disable-line
+    const params = { ...state.defaultRecipient };
+    const email = rootState.user.userInfo && rootState.user.userInfo.email;
+    if (email) {
+      params.message_subject = params.message_subject + email;
+    }
+
+    return params;
   }
-
-  return params;
 };

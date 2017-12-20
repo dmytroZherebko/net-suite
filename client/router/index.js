@@ -7,6 +7,9 @@ import Documents from '../components/Documents/DocumentsPage.vue';
 import IntegrationDocuments from '../components/IntegrationDocuments/DocumentsPage.vue';
 import LinkToFillForm from '../components/LinkToFill/LinkToFillFormTemplate.vue';
 import SendToSignForm from '../components/SendToSign/SendToSignFormTemplate.vue';
+import constants from '../constants';
+
+const { getters } = constants;
 
 Vue.use(VueRouter);
 
@@ -73,7 +76,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (!store.getters.checkAccessToPage(to.name)) {
+  if (!store.getters[getters.CHECK_ACCESS_TO_PAGE](to.name)) {
     next({ path: '/authorize', query: { redirect: to.fullPath } });
   } else {
     next();

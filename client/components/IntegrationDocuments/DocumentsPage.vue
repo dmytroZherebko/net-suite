@@ -36,6 +36,9 @@
   import { mapState, mapActions } from 'vuex';
   import DocumentsList from '../common/DocumentsList.vue';
   import ModalComponent from '../common/ModalComponent.vue';
+  import constants from '../../constants';
+
+  const { actions } = constants;
 
   export default {
     components: {
@@ -61,19 +64,19 @@
     },
 
     mounted() {
-      this.getIntegrationPageDocuments();
+      this[actions.GET_INTEGRATIONS_PAGE_DOCUMENTS]();
     },
 
     methods: {
       pageChanged(page) {
         if (page === this.currentPage) return;
-        this.getIntegrationPageDocuments({ currentPage: page });
-        this.resetIntegrationCurrentDocument();
+        this[actions.GET_INTEGRATIONS_PAGE_DOCUMENTS]({ currentPage: page });
+        this[actions.RESET_INTEGRATION_CURRENT_DOCUMENT]();
       },
 
       changeCurrentDocument(doc) {
         if (this.currentDocumentId !== doc.id) {
-          this.setIntegrationCurrentDocument(doc);
+          this[actions.SET_INTEGRATION_CURRENT_DOCUMENT](doc);
         }
       },
 
@@ -84,16 +87,16 @@
 
       async upload() {
         try {
-          await this.uploadIntegrationDocumentToPdffiller();
+          await this[actions.UPLOAD_INTEGRATION_DOCUMENT_TO_PDFFILLER]();
           this.showSuccessModal = true;
-        } catch (err) { console.log(err); }
+        } catch (err) { console.log(err); } // eslint-disable-line
       },
 
       ...mapActions([
-        'getIntegrationPageDocuments',
-        'resetIntegrationCurrentDocument',
-        'setIntegrationCurrentDocument',
-        'uploadIntegrationDocumentToPdffiller',
+        actions.GET_INTEGRATIONS_PAGE_DOCUMENTS,
+        actions.UPLOAD_INTEGRATION_DOCUMENT_TO_PDFFILLER,
+        actions.SET_INTEGRATION_CURRENT_DOCUMENT,
+        actions.RESET_INTEGRATION_CURRENT_DOCUMENT,
       ])
     },
   };

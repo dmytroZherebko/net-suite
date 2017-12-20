@@ -7,6 +7,10 @@ import FormSection from '../common/FormSection.vue';
 
 import ResultModal from './L2FResultModal.vue';
 
+import constants from '../../constants';
+
+const { getters, actions } = constants;
+
 export default {
   components: {
     ResultModal,
@@ -40,7 +44,7 @@ export default {
 
   mounted() {
     if (!this.$route.params.l2f_id) {
-      this.formData = { ...this.getL2FDefaultParams() };
+      this.formData = { ...this[getters.GET_L2F_DEFAULT_PARAMS]() };
       this.formData.document_id = this.currentDocumentId;
       this.formData.additional_documents = [];
       const defaultMail = this.formData.notification_emails[0];
@@ -49,8 +53,8 @@ export default {
   },
 
   methods: {
-    ...mapGetters(['getL2FDefaultParams']),
-    ...mapActions(['createLinkToFill']),
+    ...mapGetters([getters.GET_L2F_DEFAULT_PARAMS]),
+    ...mapActions([actions.CREATE_L2F]),
     addAdditionalDocument(value) {
       if (!value) return;
       if (value.length < 3) {
@@ -87,7 +91,7 @@ export default {
     },
     async createL2F() {
       try {
-        this.linkToFillUrl = await this.createLinkToFill({ ...this.formData });
+        this.linkToFillUrl = await this[actions.CREATE_L2F]({ ...this.formData });
         this.showSubmitModal = true;
       } catch (err) { console.log(err); } // eslint-disable-line
     },

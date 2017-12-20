@@ -21,6 +21,9 @@
 <script>
   import { mapActions } from 'vuex';
   import ModalComponent from '../common/ModalComponent.vue';
+  import constants from '../../constants';
+
+  const { actions } = constants;
 
   export default {
     props: {
@@ -44,7 +47,7 @@
 
     methods: {
       ...mapActions([
-        'updateDocumentName',
+        actions.UPDATE_DOCUMENT_NAME,
       ]),
       onDocumentNameChange(e) {
         const value = e.target.value;
@@ -59,7 +62,7 @@
       onEditNameConfirm() {
         if (!this.inputError) {
           this.closeEditNameModal();
-          this.updateDocumentName({
+          this[actions.UPDATE_DOCUMENT_NAME]({
             newName: this.value.trim()
           });
         }
