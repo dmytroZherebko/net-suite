@@ -1,0 +1,5 @@
+export default {
+  SET_ERROR: 'SET_ERROR',
+  RESET_ERROR: 'RESET_ERROR',
+  GET_USER_INFO: 'GET_USER_INFO',
+};

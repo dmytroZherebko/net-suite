@@ -50,6 +50,9 @@
   import OpenDocument from './DocumentOpen.vue';
   import EditName from './DocumentEditName.vue';
   import DownloadDocument from './DocumentDownload.vue';
+  import constants from '../../constants';
+
+  const { actions } = constants;
 
   export default {
     components: {
@@ -85,7 +88,7 @@
     mounted() {
       this.getPageDocuments();
       if (!this.userInfo) {
-        this.getUserInfo();
+        this[actions.GET_USER_INFO]();
       }
     },
 
@@ -126,7 +129,7 @@
         'deleteDocumentById',
         'resetCurrentDocument',
         'setCurrentDocument',
-        'getUserInfo',
+        actions.GET_USER_INFO,
         'broadcastDocumentInfoToParent',
       ])
     },

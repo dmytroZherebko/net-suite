@@ -1,13 +1,15 @@
 import callApi from '../../helpers/api';
 import constants from '../../constants';
 
-const { mutations, endpoints } = constants;
+const { mutations, endpoints, actions } = constants;
 
-export const getUserInfo = async({ commit, rootState, state }) => { // eslint-disable-line
-  if (!state.user_info) {
-    const user = await callApi(endpoints.USER_INFO, {
-      access_token: rootState.auth.access_token,
-    });
-    commit(mutations.SET_USER_INFO, user);
+export default {
+  async [actions.GET_USER_INFO]({ commit, rootState, state }) {
+    if (!state.userInfo) {
+      const user = await callApi(endpoints.USER_INFO, {
+        access_token: rootState.auth.access_token,
+      });
+      commit(mutations.SET_USER_INFO, user);
+    }
   }
 };

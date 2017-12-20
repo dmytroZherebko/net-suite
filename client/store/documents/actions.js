@@ -185,7 +185,7 @@ export const resetCurrentDocument = ({ commit }) => {
   commit(mutations.RESET_CURRENT_DOCUMENT);
 };
 
-export const broadcastDocumentInfoToParent = (store, document) => {
+export const broadcastDocumentInfoToParent = (context, document) => {
   if (window.opener) {
     window.opener.postMessage(JSON.stringify(document), '*');
   }

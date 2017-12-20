@@ -4,11 +4,19 @@ import constants from '../../constants';
 
 const { mutations } = constants;
 
-jest.mock('../../store');
+jest.mock('../../store', () => ({
+  commit: jest.fn(),
+  dispatch: jest.fn(),
+}));
 
 const { commit, dispatch } = store;
 
 describe('should preconfig store', () => {
+  afterEach(() => {
+    commit.mockClear();
+    dispatch.mockClear();
+  });
+
   it('set auth', () => {
     const config = {
       auth: {}
@@ -76,6 +84,15 @@ describe('should preconfig store', () => {
 
     preconfigStore(config);
     expect(commit).toBeCalledWith(mutations.SET_SHOW_INTEGRATION_DOCUMENTS_PAGE, config.showIntegrationDocumentsTab);
+  });
+
+  it('set show integration documents tab name', () => {
+    const config = {
+      integrationDocumentsTabName: 'name'
+    };
+
+    preconfigStore(config);
+    expect(commit).toBeCalledWith(mutations.SET_TITLE_INTEGRATION_DOCUMENTS_PAGE, config.integrationDocumentsTabName);
   });
 
   it('set x auth token', () => {

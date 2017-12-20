@@ -1,11 +1,13 @@
 import constants from '../constants';
 
-const mutations = constants.mutations;
+const { mutations, actions } = constants;
 
-export const setError = ({ commit }, payload) => {
-  commit(mutations.SET_ERROR, payload);
-};
+export default {
+  [actions.SET_ERROR]({ commit }, payload) {
+    commit(mutations.SET_ERROR, payload);
+  },
 
-export const resetError = ({ commit }) => {
-  commit(mutations.RESET_ERROR);
+  [actions.RESET_ERROR]({ commit }) {
+    commit(mutations.RESET_ERROR);
+  }
 };
