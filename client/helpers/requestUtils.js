@@ -2,10 +2,12 @@ import router from '../router';
 import store from '../store';
 import constants from '../constants';
 
+const { mutations, actions } = constants;
+
 export const handleError = async (data) => {
   if (data.status === 401) {
-    store.commit(constants.mutations.SET_ACCESS_TOKEN, null);
-    store.dispatch('checkAuthCode');
+    store.commit(mutations.SET_ACCESS_TOKEN, null);
+    store.dispatch(actions.CHECK_AUTH_CODE);
     router.push({ name: 'authorize', query: { redirect: router.currentRoute.fullPath } });
     throw new Error();
   }
