@@ -1,7 +1,7 @@
 <template>
     <div>
-        <button class="button button_menu margin-bottom" :disabled="!documentId" @click="openDocumentInEditor">
-            open
+        <button class="button button_menu margin-bottom" :disabled="disabled" @click="openDocumentInEditor">
+            {{title}}
         </button>
         <div v-if="openMode === 'full' && documentUrl"
              class="document-iframe_full-wrapper">
@@ -40,8 +40,12 @@
 
   export default {
     props: {
-      documentId: {
-        type: Number,
+      disabled: {
+        type: Boolean,
+        default: null
+      },
+      title: {
+        type: String,
         default: null
       },
     },

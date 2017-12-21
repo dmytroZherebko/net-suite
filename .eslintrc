@@ -24,6 +24,7 @@
     "linebreak-style": "off",
     "max-len": "off",
     "one-var": "off",
-    "no-mixed-operators": "off"
+    "no-mixed-operators": "off",
+    "no-prototype-builtins": "off"
   }
 }

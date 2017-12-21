@@ -12,27 +12,39 @@
                 :db-listener="dbListener"
         />
         <div class="documents-aside column-aside" v-if="!filepicker">
-            <open-document :document-id="currentDocumentId" />
-            <download-document :button-is-disable="!currentDocumentId" />
+            <open-document
+                    v-if="buttons.open.show"
+                    :disabled="!currentDocumentId"
+                    :title="buttons.delete.title"
+            />
+            <download-document
+                    v-if="buttons.download.show"
+                    :disabled="!currentDocumentId"
+                    :title="buttons.delete.title"
+            />
             <router-link
+                    v-if="buttons.l2f.show"
                     tag="button"
                     :disabled="!currentDocumentId"
                     class="button button_menu margin-bottom"
                     :to="{ path: '/link-to-fill/create', params: { prevPage: $route.fullPath }}"
             >
-                LinkToFill
+                {{ buttons.l2f.title }}
             </router-link>
             <router-link
+                    v-if="buttons.s2s.show"
                     tag="button"
                     :disabled="!currentDocumentId"
                     class="button button_menu margin-bottom"
                     :to="{ path: '/send-to-sign/create', params: { prevPage: $route.fullPath }}"
             >
-                SendToSign
+                {{ buttons.s2s.title }}
             </router-link>
             <delete-document
+                    v-if="buttons.delete.show"
                     :delete-document="deleteDocument"
-                    :button-is-disable="!currentDocumentId"
+                    :disabled="!currentDocumentId"
+                    :title="buttons.delete.title"
             />
         </div>
         <edit-name
@@ -79,6 +91,7 @@
         currentDocumentId: state => state.documents.currentDocument.id,
         userInfo: state => state.user.userInfo,
         filepicker: state => state.filepicker,
+        buttons: state => state.buttons,
         currentDocumentIsFillable: state => state.documents.currentDocument.fillable,
       }),
     },

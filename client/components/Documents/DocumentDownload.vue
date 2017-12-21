@@ -1,7 +1,7 @@
 <template>
     <div>
-        <button class="button button_menu margin-bottom" :disabled="buttonIsDisable" @click="downloadDocument">
-            download
+        <button class="button button_menu margin-bottom" :disabled="disabled" @click="downloadDocument">
+            {{title}}
         </button>
     </div>
 </template>
@@ -15,9 +15,12 @@
   export default {
     props: {
       deleteDocument: Function,
-      buttonIsDisable: {
+      disabled: {
         type: Boolean,
         default: true
+      },
+      title: {
+        type: String,
       },
     },
 

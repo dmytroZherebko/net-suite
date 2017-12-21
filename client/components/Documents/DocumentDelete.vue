@@ -1,7 +1,7 @@
 <template>
     <div>
-        <button class="button button_menu margin-bottom" :disabled="buttonIsDisable" @click="showConfirmationModal">
-            delete
+        <button class="button button_menu margin-bottom" :disabled="disabled" @click="showConfirmationModal">
+            {{title}}
         </button>
         <modal-component
                 :show-modal="showModal"
@@ -26,9 +26,12 @@
   export default {
     props: {
       deleteDocument: Function,
-      buttonIsDisable: {
+      disabled: {
         type: Boolean,
         default: true
+      },
+      title: {
+        type: String,
       },
     },
 

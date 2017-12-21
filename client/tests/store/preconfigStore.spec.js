@@ -136,4 +136,15 @@ describe('should preconfig store', () => {
     preconfigStore(config);
     expect(commit).toBeCalledWith(mutations.SET_L2F_CALLBACK_URL, config.l2f_callback_url);
   });
+
+  it('set buttons', () => {
+    const config = {
+      buttons: {
+        s2s: { show: false }
+      }
+    };
+
+    preconfigStore(config);
+    expect(commit).toBeCalledWith(mutations.UPDATE_BUTTONS_SETTINGS, config.buttons);
+  });
 });

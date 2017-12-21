@@ -57,6 +57,10 @@ const preconfigStore = (config) => {
   if (config.l2f_callback_url) {
     commit(mutations.SET_L2F_CALLBACK_URL, config.l2f_callback_url);
   }
+
+  if (config.buttons) {
+    commit(mutations.UPDATE_BUTTONS_SETTINGS, config.buttons);
+  }
 };
 
 export default preconfigStore;

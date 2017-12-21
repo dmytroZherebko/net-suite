@@ -9,6 +9,7 @@ import integrationDocuments from './integration-documents';
 import link2fill from './link2fill';
 import send2sign from './send2sign';
 import user from './user';
+import buttons from './buttons';
 
 Vue.use(Vuex);
 
@@ -37,6 +38,7 @@ export default new Vuex.Store({
     link2fill,
     send2sign,
     user,
+    buttons
   },
   mutations,
   actions,
