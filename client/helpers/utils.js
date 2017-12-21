@@ -33,6 +33,13 @@ const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((
 
 export const isEmailValid = email => emailReg.test(email);
 
+export const getFormatedDocuments = documents => documents.items.map((doc) => {
+  doc.name = getDocumentNameWithoutExtention(doc);
+  doc.updated = getDataFromTimeStamp(doc.updated * 1000);
+  doc.created = getDataFromTimeStamp(doc.created * 1000);
+  return doc;
+});
+
 export const copyToClipboard = (text) => {
   const textArea = document.createElement('textarea');
   textArea.style.position = 'fixed';

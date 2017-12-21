@@ -19,14 +19,14 @@ export default {
     state.currentDocument.name = payload.name;
     state.currentDocument.type = payload.type;
     state.currentDocument.fillable = payload.fillable;
-    state.currentDocument.lastEdited = payload.updated;
+    state.currentDocument.updated = payload.updated;
   },
   [mutations.RESET_CURRENT_DOCUMENT]: (state) => {
     state.currentDocument.id = null;
     state.currentDocument.name = null;
     state.currentDocument.type = null;
     state.currentDocument.fillable = null;
-    state.currentDocument.lastEdited = null;
+    state.currentDocument.updated = null;
   },
   [mutations.SET_OPEN_DOCUMENT_POPUP]: (state, payload) => {
     state.openDocument.showOpenDocumentPopUp = payload;

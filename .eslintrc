@@ -11,7 +11,8 @@
     "expect": true,
     "jest": true,
     "afterEach": true,
-    "ZOHO": true
+    "ZOHO": true,
+    "File": true
   },
   "rules": {
     "comma-dangle": "off",

@@ -1,5 +1,5 @@
 import callApi from '../../helpers/api';
-import { getDataFromTimeStamp, getDocumentNameWithoutExtention } from '../../helpers/utils';
+import { getFormatedDocuments } from '../../helpers/utils';
 import constants from '../../constants';
 
 const { mutations, endpoints, actions } = constants;
@@ -18,17 +18,13 @@ export default {
         noPdfillerApi: true,
       });
 
-      const formatted = documents.items.map((doc) => {
-        doc.name = getDocumentNameWithoutExtention(doc);
-        doc.updated = getDataFromTimeStamp(doc.updated * 1000);
-        doc.created = getDataFromTimeStamp(doc.created * 1000);
-        return doc;
-      });
+      const formatted = getFormatedDocuments(documents);
 
       commit(mutations.TOGGLE_LOADER);
       commit(mutations.SET_INTEGRATION_CURRENT_PAGE, currentPage);
       commit(mutations.SET_INTEGRATION_TOTAL_DOCUMENTS, documents.total);
       commit(mutations.LOAD_INTEGRATION_DOCUMENTS, formatted);
+
       if (payload.setFirstAsCurrent) {
         commit(mutations.SET_INTEGRATION_CURRENT_DOCUMENT, documents.items[0]);
       } else {
@@ -60,7 +56,7 @@ export default {
       if (err.message) {
         commit(mutations.SET_ERROR, err.message);
       }
-      throw new Error(err);
+      throw new Error();
     }
   },
 

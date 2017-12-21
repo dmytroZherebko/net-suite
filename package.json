@@ -24,7 +24,8 @@
     "mapCoverage": true,
     "setupFiles": [
       "jest-localstorage-mock"
-    ]
+    ],
+    "coveragePathIgnorePatterns": ["/node_modules/", "/client/router/"]
   },
   "dependencies": {
     "babel-jest": "^22.0.3",

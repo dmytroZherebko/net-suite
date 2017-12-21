@@ -1,7 +1,7 @@
 import downloadjs from 'downloadjs';
 
 import callApi from '../../helpers/api';
-import { getDataFromTimeStamp, getDocumentNameWithoutExtention } from '../../helpers/utils';
+import { getFormatedDocuments, getDocumentNameWithoutExtention, getDataFromTimeStamp } from '../../helpers/utils';
 import constants from '../../constants';
 
 const { mutations, endpoints, actions } = constants;
@@ -23,12 +23,7 @@ export default {
         access_token: rootState.auth.access_token,
       });
 
-      const formatted = documents.items.map((doc) => {
-        doc.name = getDocumentNameWithoutExtention(doc);
-        doc.updated = getDataFromTimeStamp(doc.updated * 1000);
-        doc.created = getDataFromTimeStamp(doc.created * 1000);
-        return doc;
-      });
+      const formatted = getFormatedDocuments(documents);
 
       commit(mutations.TOGGLE_LOADER);
       commit(mutations.SET_CURRENT_PAGE, currentPage);
@@ -114,7 +109,7 @@ export default {
       if (err.message) {
         commit(mutations.SET_ERROR, err.message);
       }
-      throw new Error(err);
+      throw new Error();
     }
   },
 
@@ -138,18 +133,19 @@ export default {
     }
   },
 
-  async [actions.UPDATE_DOCUMENT_NAME]({ commit, rootState, state }, { newName }) {
+  async [actions.UPDATE_DOCUMENT_NAME]({ commit, rootState, state }, { name }) {
     try {
       commit(mutations.TOGGLE_LOADER);
       const document = await callApi(`${endpoints.DOCUMENTS}/${state.currentDocument.id}`, {
         access_token: rootState.auth.access_token,
         method: 'PUT',
         body: JSON.stringify({
-          name: newName
+          name
         })
       });
       commit(mutations.UPDATE_NAME, { name: getDocumentNameWithoutExtention(document), documentId: state.currentDocument.id });
-      commit(mutations.SET_CURRENT_DOCUMENT, { ...document,
+      commit(mutations.SET_CURRENT_DOCUMENT, {
+        ...document,
         name: getDocumentNameWithoutExtention(document),
         updated: getDataFromTimeStamp(document.updated * 1000)
       });

@@ -28,11 +28,4 @@ describe('user actions', () => {
     expect(callApi).toBeCalledWith(endpoints.USER_INFO, expect.objectContaining({ access_token: null }));
     expect(mockContext.commit).toBeCalledWith(mutations.SET_USER_INFO, mockApiAnswer);
   });
-
-  it('shouldn`t set user info', async () => {
-    store.commit(mutations.SET_USER_INFO, { email: 'email' });
-    await storeActions[actions.GET_USER_INFO](mockContext);
-    expect(callApi).not.toBeCalled();
-    expect(mockContext.commit).not.toBeCalled();
-  });
 });

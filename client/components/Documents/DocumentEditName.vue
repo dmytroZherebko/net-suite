@@ -63,7 +63,7 @@
         if (!this.inputError) {
           this.closeEditNameModal();
           this[actions.UPDATE_DOCUMENT_NAME]({
-            newName: this.value.trim()
+            name: this.value.trim()
           });
         }
       },
