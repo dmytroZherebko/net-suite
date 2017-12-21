@@ -1,4 +1,4 @@
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import ModalComponent from '../common/ModalComponent.vue';
 import constants from '../../constants';
 
@@ -30,6 +30,12 @@ export default {
       ],
       currentOption: 'file'
     };
+  },
+
+  computed: {
+    ...mapState({
+      buttons: state => state.buttons,
+    }),
   },
   methods: {
     ...mapActions([

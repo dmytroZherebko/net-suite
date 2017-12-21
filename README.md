@@ -14,6 +14,7 @@ Widget for fast integration.
 - Vuex
 - ES6/ES7
 - Webpack
+- Jest
 
 # Features 
 - l2f
@@ -55,7 +56,10 @@ window.onload = function() {
         userId: "2323", // user id will set as header x-pdffiller-user-id
         proxyUrl: "https://someservice.pdffiller.com/api/proxy" // url for calls to pdffiller api for which api call url will set as header x-proxy-url
       },
-      baseApiUrl: "https://someservice.pdffiller.com/api/" // base url for not pdffiller api calls
+      baseApiUrl: "https://someservice.pdffiller.com/api/", // base url for not pdffiller api calls
+      buttons: { // reassign buttons config, buttons names s2s, l2f, open, download, delete, upload
+        s2s: { show: false, title: "bla" }
+      } 
     });
   };
 ```

@@ -1,7 +1,7 @@
 <template>
     <div class="column-aside">
-        <button class="button button_menu" @click="openModal">
-            Upload
+        <button class="button button_menu" @click="openModal" v-if="buttons.upload.show">
+            {{buttons.upload.title}}
         </button>
         <modal-component
                 :show-modal="showModal"
