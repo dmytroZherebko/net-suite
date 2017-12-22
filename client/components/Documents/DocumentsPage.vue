@@ -15,12 +15,12 @@
             <open-document
                     v-if="buttons.open.show"
                     :disabled="!currentDocumentId"
-                    :title="buttons.delete.title"
+                    :title="buttons.open.title"
             />
             <download-document
                     v-if="buttons.download.show"
                     :disabled="!currentDocumentId"
-                    :title="buttons.delete.title"
+                    :title="buttons.download.title"
             />
             <router-link
                     v-if="buttons.l2f.show"
