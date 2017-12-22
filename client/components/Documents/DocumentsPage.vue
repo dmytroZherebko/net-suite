@@ -27,7 +27,7 @@
                     tag="button"
                     :disabled="!currentDocumentId"
                     class="button button_menu margin-bottom"
-                    :to="{ path: '/link-to-fill/create', params: { prevPage: $route.fullPath }}"
+                    :to="{ path: '/link-to-fill/create', query: { prevPage: $route.fullPath }}"
             >
                 {{ buttons.l2f.title }}
             </router-link>
@@ -36,7 +36,7 @@
                     tag="button"
                     :disabled="!currentDocumentId"
                     class="button button_menu margin-bottom"
-                    :to="{ path: '/send-to-sign/create', params: { prevPage: $route.fullPath }}"
+                    :to="{ path: '/send-to-sign/create', query: { prevPage: $route.fullPath }}"
             >
                 {{ buttons.s2s.title }}
             </router-link>
@@ -51,6 +51,7 @@
                 v-model="currentDocumentName"
                 :close-edit-name-modal="closeEditNameModal"
                 :show-edit-modal="showEditModal"
+                :update-name-action="updateDocumentName"
         />
     </div>
 </template>
@@ -59,8 +60,8 @@
   import { mapState, mapActions } from 'vuex';
   import DocumentsList from '../common/DocumentsList.vue';
   import DeleteDocument from './DocumentDelete.vue';
-  import OpenDocument from './DocumentOpen.vue';
-  import EditName from './DocumentEditName.vue';
+  import OpenDocument from '../common/DocumentOpen.vue';
+  import EditName from '../common/DocumentEditName.vue';
   import DownloadDocument from './DocumentDownload.vue';
   import constants from '../../constants';
 
@@ -98,9 +99,10 @@
 
     mounted() {
       this[actions.GET_PAGE_DOCUMENTS]();
-      if (!this.userInfo) {
-        this[actions.GET_USER_INFO]();
-      }
+    },
+
+    beforeDestroy() {
+      this[actions.RESET_DOCUMENTS_STATE]();
     },
 
     methods: {
@@ -109,8 +111,9 @@
         actions.DELETE_DOCUMENT_BY_ID,
         actions.RESET_CURRENT_DOCUMENT,
         actions.SET_CURRENT_DOCUMENT,
-        actions.GET_USER_INFO,
         actions.BROADCAST_DOCUMENT_INFO_TO_PARRENT,
+        actions.RESET_DOCUMENTS_STATE,
+        actions.UPDATE_DOCUMENT_NAME,
       ]),
 
       pageChanged(page) {
@@ -143,6 +146,11 @@
         this.showEditModal = false;
         this.currentDocumentName = null;
       },
+
+      updateDocumentName(name) {
+        this[actions.UPDATE_DOCUMENT_NAME](name);
+        this.closeEditNameModal();
+      }
     },
   };
 </script>

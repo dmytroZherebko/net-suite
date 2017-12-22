@@ -16,7 +16,15 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    redirect: '/documents'
+    redirect: () => {
+      let redirectTo = null;
+      if (store.state.documents.showIntegrationDocumentsPage) {
+        redirectTo = 'integration-documents';
+      } else {
+        redirectTo = 'documents';
+      }
+      return redirectTo;
+    }
   },
   {
     path: '/documents',
@@ -43,7 +51,7 @@ const routes = [
     params: true,
     beforeEnter: (to, from, next) => {
       if (!store.state.documents.currentDocument.id) {
-        next({ path: '/documents' });
+        next(from);
       } else {
         next();
       }
@@ -59,7 +67,7 @@ const routes = [
     params: true,
     beforeEnter: (to, from, next) => {
       if (!store.state.documents.currentDocument.id) {
-        next({ path: '/documents' });
+        next(from);
       } else {
         next();
       }

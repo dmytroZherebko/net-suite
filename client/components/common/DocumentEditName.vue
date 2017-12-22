@@ -19,11 +19,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
   import ModalComponent from '../common/ModalComponent.vue';
-  import constants from '../../constants';
-
-  const { actions } = constants;
 
   export default {
     props: {
@@ -37,6 +33,10 @@
       closeEditNameModal: {
         type: Function,
         required: true
+      },
+      updateNameAction: {
+        type: Function,
+        required: true
       }
     },
     data() {
@@ -46,9 +46,6 @@
     },
 
     methods: {
-      ...mapActions([
-        actions.UPDATE_DOCUMENT_NAME,
-      ]),
       onDocumentNameChange(e) {
         const value = e.target.value;
         this.$emit('input', value);
@@ -61,8 +58,7 @@
 
       onEditNameConfirm() {
         if (!this.inputError) {
-          this.closeEditNameModal();
-          this[actions.UPDATE_DOCUMENT_NAME]({
+          this.updateNameAction({
             name: this.value.trim()
           });
         }

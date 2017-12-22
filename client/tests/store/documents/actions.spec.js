@@ -1,6 +1,6 @@
 import downloadjs from 'downloadjs';
 import store from '../../../store';
-import storeActions from '../../../store/documents/actions';
+import storeActions from '../../../store/documents/actions/docsActions';
 import callApi from '../../../helpers/api';
 import { getFormatedDocuments, getDocumentNameWithoutExtention, getDataFromTimeStamp } from '../../../helpers/utils';
 import constants from '../../../constants';

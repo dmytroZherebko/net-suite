@@ -27,7 +27,7 @@ export default {
         envelope_name: false,
         pin: false
       },
-      prevPage: this.$route.params.prevPage || '/documents',
+      prevPage: this.$route.query.prevPage || '/documents',
       showResultModal: false
     };
   },
@@ -40,11 +40,15 @@ export default {
     })
   },
 
-  mounted() {
+  async mounted() {
     if (!this.$route.params.s2s_id) {
+      let documentId = this.currentDocumentId;
+      if (this.prevPage === '/integration-documents') {
+        documentId = await this[actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER]();
+      }
       this.formData = { ...this[getters.GET_S2S_DEFAULT_PARAMS]() };
       this.recipientTemplate = this[getters.GET_S2S_DEFAULT_RECIPIENT]();
-      this.formData.document_id = this.currentDocumentId;
+      this.formData.document_id = documentId;
       this.formData.recipients = [];
       this.addDefaultRecipient();
     }
@@ -52,7 +56,10 @@ export default {
 
   methods: {
     ...mapGetters([getters.GET_S2S_DEFAULT_PARAMS, getters.GET_S2S_DEFAULT_RECIPIENT]),
-    ...mapActions([actions.CREATE_S2S]),
+    ...mapActions([
+      actions.CREATE_S2S,
+      actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER,
+    ]),
     removeAdditionalDocument(index, recipientIndex) {
       this.formData.recipients[recipientIndex].additional_documents.splice(index, 1);
     },

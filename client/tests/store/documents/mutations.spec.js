@@ -19,7 +19,8 @@ const docObject = {
   name: 'name',
   type: 'pdf',
   fillable: false,
-  updated: 'bla'
+  updated: 'bla',
+  hidden: 'bla',
 };
 
 describe('integrations documents mutations', () => {
@@ -54,7 +55,19 @@ describe('integrations documents mutations', () => {
       type: null,
       fillable: null,
       updated: null,
+      hidden: null,
     }));
+  });
+
+  it('should set show integration documents page', () => {
+    storeMutations[mutations.SET_SHOW_INTEGRATION_DOCUMENTS_PAGE](state, true);
+    expect(state.showIntegrationDocumentsPage).toBeTruthy();
+  });
+
+  it('should set integration documents page title', () => {
+    const name = 'name';
+    storeMutations[mutations.SET_TITLE_INTEGRATION_DOCUMENTS_PAGE](state, name);
+    expect(state.integrationDocumentsPageName).toBe(name);
   });
 
   it('should set open document popup documents', () => {

@@ -1,8 +1,11 @@
 import mutations from './mutations';
-import actions from './actions';
+import actions from './actions/';
+import getters from './getters';
 
 export default {
   state: {
+    showIntegrationDocumentsPage: true,
+    integrationDocumentsPageName: 'Integration Documents',
     currentPage: null,
     documentsList: [],
     total: null,
@@ -12,15 +15,17 @@ export default {
       id: null,
       type: null,
       fillable: null,
-      lastEdited: null
+      updated: null,
+      hidden: null
     },
     openDocument: {
       openDocumentMode: 'full', // can be window, modal and full
       showOpenDocumentPopUp: false,
       documentUrl: null
     },
-    showOpenDocumentPopUp: false,
+    showEditIntegrationDocumentModal: false,
   },
   mutations,
   actions,
+  getters,
 };

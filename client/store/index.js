@@ -5,7 +5,6 @@ import mutations from './mutations';
 import actions from './actions';
 import auth from './auth';
 import documents from './documents';
-import integrationDocuments from './integration-documents';
 import link2fill from './link2fill';
 import send2sign from './send2sign';
 import user from './user';
@@ -34,7 +33,6 @@ export default new Vuex.Store({
   modules: {
     auth,
     documents,
-    integrationDocuments,
     link2fill,
     send2sign,
     user,

@@ -6,4 +6,6 @@ export default {
   LINK_TO_FILL: '/v2/fillable_forms',
   SEND_TO_SIGN: '/v2/signature_requests',
   INTEGRATION_DOCUMENTS: '/templates',
+  INTEGRATION_CREATE_PROJECT: '/create-project',
+  UPDATE_INTEGRATION_FILE_CONTENT: '/update-file-content',
 };

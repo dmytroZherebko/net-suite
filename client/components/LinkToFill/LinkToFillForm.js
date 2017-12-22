@@ -26,7 +26,7 @@ export default {
         additional_documents: [],
         notification_emails: []
       },
-      prevPage: this.$route.params.prevPage || '/documents',
+      prevPage: this.$route.query.prevPage || '/documents',
       notificationEmailError: false,
       additionalDocumentError: false,
       linkToFillUrl: null,
@@ -42,10 +42,14 @@ export default {
     })
   },
 
-  mounted() {
+  async mounted() {
     if (!this.$route.params.l2f_id) {
+      let documentId = this.currentDocumentId;
+      if (this.prevPage === '/integration-documents') {
+        documentId = await this[actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER]();
+      }
       this.formData = { ...this[getters.GET_L2F_DEFAULT_PARAMS]() };
-      this.formData.document_id = this.currentDocumentId;
+      this.formData.document_id = documentId;
       this.formData.additional_documents = [];
       const defaultMail = this.formData.notification_emails[0];
       this.formData.notification_emails = [defaultMail];

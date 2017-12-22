@@ -1,8 +1,8 @@
 import downloadjs from 'downloadjs';
 
-import callApi from '../../helpers/api';
-import { getFormatedDocuments, getDocumentNameWithoutExtention, getDataFromTimeStamp } from '../../helpers/utils';
-import constants from '../../constants';
+import callApi from '../../../helpers/api';
+import { getFormatedDocuments, getDocumentNameWithoutExtention, getDataFromTimeStamp } from '../../../helpers/utils';
+import constants from '../../../constants';
 
 const { mutations, endpoints, actions } = constants;
 
@@ -11,17 +11,14 @@ let editorWindow;
 let doneListener;
 
 export default {
-  async [actions.GET_PAGE_DOCUMENTS]({ commit, state, rootState }, payload = {}) {
+  async [actions.GET_PAGE_DOCUMENTS]({ commit, state, getters }, payload = {}) {
     try {
       const currentPage = payload.currentPage || 1;
       commit(mutations.TOGGLE_LOADER);
-      const documents = await callApi(endpoints.DOCUMENTS, {
-        query: {
-          page: currentPage,
-          per_page: state.perPage
-        },
-        access_token: rootState.auth.access_token,
-      });
+      const documents = await callApi(
+        getters[constants.getters.GET_DOCUMENTS_REQUEST_URL],
+        getters[constants.getters.GET_DOCUMENTS_REQUEST_PARAMS](currentPage)
+      );
 
       const formatted = getFormatedDocuments(documents);
 
@@ -45,8 +42,15 @@ export default {
 
   async [actions.OPEN_DOCUMENT_EDITOR]({ commit, rootState, state, dispatch }) {
     try {
+      let documentId = null;
+      if (rootState.route.name === 'integration-documents') {
+        documentId = await dispatch(actions.GET_INTEGRATION_DOCUMENT_PDFFILLER_ID);
+      } else {
+        documentId = state.currentDocument.id;
+      }
+
       commit(mutations.TOGGLE_LOADER);
-      let url = endpoints.DOCUMENT_LINK.replace('{document_id}', state.currentDocument.id);
+      let url = endpoints.DOCUMENT_LINK.replace('{document_id}', documentId);
       url = rootState.openInJsEditor ? `${url}&editor_type=JS_NEW` : url;
       const { location } = await callApi(url, {
         access_token: rootState.auth.access_token,
@@ -64,13 +68,16 @@ export default {
       doneListener = (e) => {
         if (e.data === 'editorDone') {
           dispatch(actions.CLOSE_DOCUMENT_EDITOR);
+          if (rootState.route.name === 'integration-documents') {
+            dispatch(actions.UPDATE_INTEGRATION_FILE_CONTENT, documentId);
+          }
         }
       };
 
       window.addEventListener('message', doneListener);
     } catch (err) {
-      commit(mutations.TOGGLE_LOADER);
-      if (err.message) {
+      if (err.message && err.message !== 'closePopUp') {
+        commit(mutations.TOGGLE_LOADER);
         commit(mutations.SET_ERROR, err.message);
       }
     }
@@ -181,6 +188,11 @@ export default {
 
   [actions.RESET_CURRENT_DOCUMENT]({ commit }) {
     commit(mutations.RESET_CURRENT_DOCUMENT);
+  },
+
+  [actions.RESET_DOCUMENTS_STATE]({ commit }) {
+    commit(mutations.RESET_CURRENT_DOCUMENT);
+    commit(mutations.RESET_LOADED_DOCUMENTS);
   },
 
   [actions.BROADCAST_DOCUMENT_INFO_TO_PARRENT](context, document) {
