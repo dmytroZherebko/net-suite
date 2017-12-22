@@ -76,7 +76,18 @@ const routes = [
       hideNavBar: true
     },
   },
-  { path: '*', redirect: '/documents' }
+  {
+    path: '*',
+    redirect: () => {
+      let redirectTo = null;
+      if (store.state.documents.showIntegrationDocumentsPage) {
+        redirectTo = 'integration-documents';
+      } else {
+        redirectTo = 'documents';
+      }
+      return redirectTo;
+    }
+  }
 ];
 
 const router = new VueRouter({

@@ -4,8 +4,8 @@ Widget for fast integration.
 
 ## npm command
 
-- `npm run dev` - develop with watch and webpack-dev-server
-- `npm run build` - build js and css to docs/ folder
+- `npm run dev` - develop with watch and webpack-dev-server(up server on 3000 port)
+- `npm run build` - build js and css to build/ folder
 
 ## Stack
 
@@ -29,8 +29,7 @@ integration or integration doesn`t have own components or files.
 - Static build file:
   - prod - `https://cdn.pdffiller.com/public-api-integration-widget/<build-number>/<file-name>`
   - dev - `https://d-cdn.pdffiller.com/public-api-integration-widget/<build-number>/<file-name>`
-- To init widget add style and js file to html and add `<div id="app"></div>`
-- for pdffiller auth widget uses implicit flow
+- To init widget add link to style and js file to html and add `<div id="app"></div>` and then call in your js `pdfffiller.init(config)`
 - pdffiller.init global function that will call with config params for widget
 
 
@@ -38,6 +37,10 @@ integration or integration doesn`t have own components or files.
 ```js
 window.onload = function() {
     pdffiller.init({
+      auth: { // config for auth need for implicit flow
+        redirect_uri: 'uri',
+        client_id: 'id',
+      },
       openDocumentMode: "full", // full - in local window, modal - in modal, window - in new window
       openInJsEditor: false, // when true will open document in js editor
       s2s_callback_url: "https://someservice.pdffiller.com?param=param", // s2s callback url

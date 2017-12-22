@@ -16,22 +16,22 @@
                     :title="buttons.editIntegration.title"
             />
             <router-link
-                    v-if="buttons.l2f.show"
+                    v-if="buttons.l2fIntegration.show"
                     tag="button"
-                    :disabled="!currentDocumentId"
+                    :disabled="documentIsHidden || !currentDocumentId"
                     class="button button_menu margin-bottom"
                     :to="{ path: '/link-to-fill/create', query: { prevPage: $route.fullPath }}"
             >
-                {{ buttons.l2f.title }}
+                {{ buttons.l2fIntegration.title }}
             </router-link>
             <router-link
-                    v-if="buttons.s2s.show"
+                    v-if="buttons.s2sIntegration.show"
                     tag="button"
-                    :disabled="!currentDocumentId"
+                    :disabled="documentIsHidden || !currentDocumentId"
                     class="button button_menu margin-bottom"
                     :to="{ path: '/send-to-sign/create', query: { prevPage: $route.fullPath }}"
             >
-                {{ buttons.s2s.title }}
+                {{ buttons.s2sIntegration.title }}
             </router-link>
             <button
                     v-if="buttons.uploadToPDFfiller.show"
@@ -152,6 +152,7 @@
         this[actions.REJECT_INTEGRATION_DOC_NAME_POPUP]();
       },
       updateDocumentName(name) {
+        this.currentDocumentName = this.currentDocumentStoreName;
         this[actions.ACCEPT_INTEGRATION_DOC_NAME_POPUP](name);
       }
     },
