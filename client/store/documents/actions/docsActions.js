@@ -108,6 +108,7 @@ export default {
       });
 
       commit(mutations.TOGGLE_LOADER);
+      commit(mutations.RESET_CURRENT_DOCUMENT);
       return dispatch(actions.GET_PAGE_DOCUMENTS, {
         currentPage: state.currentPage
       });
