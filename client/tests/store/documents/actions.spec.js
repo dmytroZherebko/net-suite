@@ -9,12 +9,21 @@ jest.mock('../../../helpers/api');
 jest.mock('../../../helpers/utils');
 jest.mock('downloadjs');
 
-const { mutations, actions, endpoints } = constants;
+const { mutations, actions, endpoints, getters } = constants;
 
 const mockContext = {
   commit: jest.fn(),
   dispatch: jest.fn(),
-  rootState: store.state,
+  getters: {
+    [getters.GET_DOCUMENTS_REQUEST_URL]: 'url',
+    [getters.GET_DOCUMENTS_REQUEST_PARAMS]: () => 'url'
+  },
+  rootState: {
+    ...store.state,
+    route: {
+      name: 'name'
+    }
+  },
   state: {
     ...store.state.documents,
     currentDocument: {
@@ -56,13 +65,10 @@ describe('documents actions', () => {
 
     await storeActions[actions.GET_PAGE_DOCUMENTS](mockContext, payload);
 
-    expect(callApi).toBeCalledWith(endpoints.DOCUMENTS, expect.objectContaining({
-      query: {
-        page: payload.currentPage,
-        per_page: mockContext.state.perPage,
-      },
-      access_token: mockContext.rootState.auth.access_token,
-    }));
+    expect(callApi).toBeCalledWith(
+      mockContext.getters[getters.GET_DOCUMENTS_REQUEST_URL],
+      mockContext.getters[getters.GET_DOCUMENTS_REQUEST_PARAMS]()
+    );
 
     expect(mockContext.commit).toBeCalledWith(mutations.SET_CURRENT_PAGE, payload.currentPage);
     expect(mockContext.commit).toBeCalledWith(mutations.SET_TOTAL_DOCUMENTS, mockApiAnswer.total);
@@ -121,6 +127,7 @@ describe('documents actions', () => {
       location: 'url'
     };
     callApi.mockImplementation(() => Promise.resolve(responseMock));
+    mockContext.dispatch.mockImplementation(() => Promise.resolve({ projectId: 1 }));
     global.addEventListener = jest.fn();
 
     await storeActions[actions.OPEN_DOCUMENT_EDITOR](mockContext);
@@ -138,11 +145,11 @@ describe('documents actions', () => {
     };
     callApi.mockImplementation(() => Promise.resolve(responseMock));
     global.addEventListener = jest.fn();
-    store.commit(mutations.SET_EDITOR_MODE, true);
+    mockContext.rootState.openInJsEditor = true;
 
     await storeActions[actions.OPEN_DOCUMENT_EDITOR](mockContext);
 
-    store.commit(mutations.SET_EDITOR_MODE, false);
+    mockContext.rootState.openInJsEditor = false;
     expect(callApi).toBeCalledWith(expect.stringContaining('editor_type=JS_NEW'), expect.objectContaining({
       access_token: mockContext.rootState.auth.access_token,
     }));
