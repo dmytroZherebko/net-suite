@@ -84,25 +84,17 @@ export default {
     }
   },
 
-  async [actions.UPDATE_INTEGRATION_FILE_CONTENT]({ commit, state, rootState }, projectId) {
-    try {
-      await callApi(`${rootState.integration.name}${endpoints.UPDATE_INTEGRATION_FILE_CONTENT}`, {
-        method: 'POST',
-        noPdfillerApi: true,
-        query: {
-          ...rootState.integration.config,
-        },
-        body: JSON.stringify({
-          fileId: state.currentDocument.id,
-          projectId,
-        })
-      });
-    } catch (err) {
-      commit(mutations.TOGGLE_LOADER);
-      if (err.message) {
-        commit(mutations.SET_ERROR, err.message);
-      }
-      throw new Error();
-    }
+  async [actions.UPDATE_INTEGRATION_FILE_CONTENT]({ state, rootState }, projectId) {
+    await callApi(`${rootState.integration.name}${endpoints.UPDATE_INTEGRATION_FILE_CONTENT}`, {
+      method: 'POST',
+      noPdfillerApi: true,
+      query: {
+        ...rootState.integration.config,
+      },
+      body: JSON.stringify({
+        fileId: state.currentDocument.id,
+        projectId,
+      })
+    });
   }
 };

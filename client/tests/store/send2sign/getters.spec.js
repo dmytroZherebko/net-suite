@@ -2,9 +2,6 @@ import store from '../../../store';
 import storeGetters from '../../../store/send2sign/getters';
 import constants from '../../../constants';
 
-jest.mock('../../../helpers/api');
-jest.mock('../../../helpers/utils');
-
 const { getters, mutations } = constants;
 
 const mockState = {

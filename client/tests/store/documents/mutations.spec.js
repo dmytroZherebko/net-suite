@@ -30,6 +30,11 @@ describe('integrations documents mutations', () => {
     expect(state.documentsList).toBe(docsMock);
   });
 
+  it('should reset loaded documents', () => {
+    storeMutations[mutations.RESET_LOADED_DOCUMENTS](state);
+    expect(state.documentsList.length).toBe(0);
+  });
+
   it('should set current page', () => {
     const number = 1;
     storeMutations[mutations.SET_CURRENT_PAGE](state, number);
@@ -40,6 +45,11 @@ describe('integrations documents mutations', () => {
     const number = 10;
     storeMutations[mutations.SET_TOTAL_DOCUMENTS](state, number);
     expect(state.total).toBe(number);
+  });
+
+  it('should set edit integration document name pop up', () => {
+    storeMutations[mutations.SET_EDIT_INTEGRATION_DOCUMENT_NAME_POPUP](state, true);
+    expect(state.showEditIntegrationDocumentModal).toBe(true);
   });
 
   it('should set current documents', () => {

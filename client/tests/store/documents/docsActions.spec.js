@@ -127,7 +127,7 @@ describe('documents actions', () => {
       location: 'url'
     };
     callApi.mockImplementation(() => Promise.resolve(responseMock));
-    mockContext.dispatch.mockImplementation(() => Promise.resolve({ projectId: 1 }));
+    mockContext.dispatch.mockImplementation(() => Promise.resolve(1));
     global.addEventListener = jest.fn();
 
     await storeActions[actions.OPEN_DOCUMENT_EDITOR](mockContext);
@@ -136,6 +136,25 @@ describe('documents actions', () => {
       access_token: mockContext.rootState.auth.access_token,
     }));
 
+    expect(global.addEventListener).toBeCalledWith('message', expect.any(Function));
+  });
+
+  it('should open document editor for integration document', async () => {
+    const responseMock = {
+      location: 'url'
+    };
+    callApi.mockImplementation(() => Promise.resolve(responseMock));
+    mockContext.dispatch.mockImplementation(() => Promise.resolve(1));
+    mockContext.rootState.route.name = 'integration-documents';
+    global.addEventListener = jest.fn();
+
+    await storeActions[actions.OPEN_DOCUMENT_EDITOR](mockContext);
+
+    expect(callApi).toBeCalledWith(endpoints.DOCUMENT_LINK.replace('{document_id}', docObject.id), expect.objectContaining({
+      access_token: mockContext.rootState.auth.access_token,
+    }));
+
+    expect(mockContext.dispatch).toBeCalledWith(actions.GET_INTEGRATION_DOCUMENT_PDFFILLER_ID);
     expect(global.addEventListener).toBeCalledWith('message', expect.any(Function));
   });
 
@@ -351,6 +370,13 @@ describe('documents actions', () => {
     storeActions[actions.RESET_CURRENT_DOCUMENT](mockContext);
 
     expect(mockContext.commit).toBeCalledWith(mutations.RESET_CURRENT_DOCUMENT);
+  });
+
+  it('should reset current documents state', () => {
+    storeActions[actions.RESET_DOCUMENTS_STATE](mockContext);
+
+    expect(mockContext.commit).toBeCalledWith(mutations.RESET_CURRENT_DOCUMENT);
+    expect(mockContext.commit).toBeCalledWith(mutations.RESET_LOADED_DOCUMENTS);
   });
 
   it('should broadcast current document', () => {

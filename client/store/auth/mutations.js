@@ -20,7 +20,6 @@ export default {
   },
   [mutations.SET_CLIENT_CRED]: (state, payload) => {
     state.redirect_uri = payload.redirect_uri;
-    state.client_secret = payload.client_secret;
     state.client_id = payload.client_id;
   }
 };

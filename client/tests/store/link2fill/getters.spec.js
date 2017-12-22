@@ -2,9 +2,6 @@ import store from '../../../store';
 import storeGetters from '../../../store/link2fill/getters';
 import constants from '../../../constants';
 
-jest.mock('../../../helpers/api');
-jest.mock('../../../helpers/utils');
-
 const { getters, mutations } = constants;
 
 const mockState = {
