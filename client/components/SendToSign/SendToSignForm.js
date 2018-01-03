@@ -80,10 +80,14 @@ export default {
     },
 
     addRecipient() {
+      this.collapseAppRecipients();
+      this.addDefaultRecipient();
+    },
+
+    collapseAppRecipients() {
       this.formData.recipients.forEach((rec) => {
         rec.isCollapsed = true;
       });
-      this.addDefaultRecipient();
     },
 
     deleteRecipient(index) {
@@ -162,22 +166,28 @@ export default {
       for (let i = 0; i < len; i++) {
         const recipient = recipients[i];
         if (recipient.name.length === 0) {
-          recipient.errors.name = true;
+          this.setRecipientFieldError(recipient, 'name');
           return false;
         }
 
         if (!isEmailValid(recipient.email)) {
-          recipient.errors.email = true;
+          this.setRecipientFieldError(recipient, 'email');
           return false;
         }
 
         if (this.formData.method === 'sendtoeach' && this.formData.security_pin === 'enhanced' && !recipient.phone_authenticate) {
-          recipient.errors.phone_authenticate = true;
+          this.setRecipientFieldError(recipient, 'phone_authenticate');
           return false;
         }
       }
 
       return true;
+    },
+
+    setRecipientFieldError(recipient, field) {
+      recipient.errors[field] = true;
+      this.collapseAppRecipients();
+      recipient.isCollapsed = false;
     },
 
     validateRecipientsOrder() {
