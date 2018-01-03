@@ -28,6 +28,7 @@ export default {
       },
       prevPage: this.$route.query.prevPage || '/documents',
       notificationEmailError: false,
+      redirectUrlError: false,
       additionalDocumentError: false,
       linkToFillUrl: null,
       showSubmitModal: false
@@ -63,6 +64,16 @@ export default {
       actions.CREATE_L2F,
       actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER,
     ]),
+
+    updateRedirectUrl(e) {
+      const value = e.target.value;
+      if (!/^http(s)?:\/\//.test(value)) {
+        this.redirectUrlError = true;
+      } else {
+        this.redirectUrlError = false;
+      }
+    },
+
     addAdditionalDocument(value) {
       if (!value) return;
       if (value.length < 3) {
@@ -97,13 +108,16 @@ export default {
 
     async createL2F() {
       try {
+        if (this.redirectUrlError) { return; }
         this.linkToFillUrl = await this[actions.CREATE_L2F]({ ...this.formData });
         this.showSubmitModal = true;
       } catch (err) { console.log(err); } // eslint-disable-line
     },
+
     copyUrl() {
       copyToClipboard(this.linkToFillUrl);
     },
+
     closeSubmitModal() {
       this.showSubmitModal = false;
       this.linkToFillUrl = null;

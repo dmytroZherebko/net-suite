@@ -121,9 +121,11 @@
             <form-section
                     title="Redirect After Submission">
                 <input class="input"
+                       :class="{'input_invalid': redirectUrlError}"
                        slot="form-control"
                        type="text"
-                       v-model="formData.redirect_url">
+                       :value="formData.redirect_url"
+                       @input="updateRedirectUrl">
             </form-section>
 
             <form-section

@@ -71,6 +71,7 @@
                     <input type="text"
                            slot="form-control"
                            class="input"
+                           maxlength="6"
                            :class="{'input_invalid': formErrors.pin}"
                            @input="resetFormError('pin')"
                            v-model="formData.pin"
@@ -162,6 +163,7 @@
                                    slot="form-control"
                                    class="input"
                                    v-model="recipient.phone_authenticate"
+                                   :class="{'input_invalid': recipient.errors.phone_authenticate}"
                             >
                         </form-section>
 

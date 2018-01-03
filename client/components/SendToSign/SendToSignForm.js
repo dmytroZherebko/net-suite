@@ -142,7 +142,7 @@ export default {
         if (this.formData.sign_in_order && !this.validateRecipientsOrder()) {
           return false;
         }
-        return this.validateRecipientsNameAndEmail();
+        return this.validateRecipients();
       }
 
       if (this.formData.method === 'sendtoeach') {
@@ -151,11 +151,11 @@ export default {
           return false;
         }
 
-        return this.validateRecipientsNameAndEmail();
+        return this.validateRecipients();
       }
     },
 
-    validateRecipientsNameAndEmail() {
+    validateRecipients() {
       const recipients = this.formData.recipients;
       const len = recipients.length;
 
@@ -168,6 +168,11 @@ export default {
 
         if (!isEmailValid(recipient.email)) {
           recipient.errors.email = true;
+          return false;
+        }
+
+        if (this.formData.method === 'sendtoeach' && this.formData.security_pin === 'enhanced' && !recipient.phone_authenticate) {
+          recipient.errors.phone_authenticate = true;
           return false;
         }
       }
