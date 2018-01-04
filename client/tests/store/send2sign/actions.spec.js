@@ -36,6 +36,7 @@ describe('send2sign actions', () => {
       method: 'POST',
       body: JSON.stringify(payload)
     }));
+    expect(removeUselessS2SKeys).toBeCalledWith(payload);
   });
 
   it('should update callback url added current document before create s2s', async () => {

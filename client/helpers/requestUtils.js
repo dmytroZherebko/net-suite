@@ -2,7 +2,7 @@ import router from '../router';
 import store from '../store';
 import constants from '../constants';
 
-const { mutations, actions } = constants;
+const { mutations, actions, errors } = constants;
 
 export const handleError = async (data) => {
   if (data.status === 401) {
@@ -13,7 +13,7 @@ export const handleError = async (data) => {
   }
 
   if (data.status === 413) {
-    throw new Error('File size is limited to 25 Mb! Please select a smaller file.');
+    throw new Error(errors.BIG_FILE);
   }
 
   if (data.status >= 400) {

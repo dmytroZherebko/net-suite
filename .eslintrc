@@ -12,7 +12,9 @@
     "jest": true,
     "afterEach": true,
     "ZOHO": true,
-    "File": true
+    "File": true,
+    "beforeAll": true,
+    "beforeEach": true
   },
   "rules": {
     "comma-dangle": "off",

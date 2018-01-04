@@ -1,88 +1,66 @@
 import store from '../../../store';
-import storeActions from '../../../store/link2fill/actions';
-import callApi from '../../../helpers/api';
+import storeActions from '../../../store/auth/actions';
+import { parseQueryString } from '../../../helpers/utils';
 import constants from '../../../constants';
 
-jest.mock('../../../helpers/api');
 jest.mock('../../../helpers/utils');
 
-const { mutations, actions, endpoints } = constants;
+const { mutations, actions } = constants;
 
 const mockContext = {
   commit: jest.fn(),
-  rootState: store.state,
+  state: {
+    ...store.state.auth,
+    authorize: false,
+    state: 'state',
+    redirect_uri: '*'
+  },
 };
 
-describe('l2f actions', () => {
+describe('auth actions', () => {
   afterEach(() => {
-    callApi.mockClear();
+    mockContext.commit.mockClear();
   });
 
-  it('should create l2f', async () => {
-    const mockApiAnswer = {};
+  it('should set creds', () => {
     const payload = {
-      ...store.state.link2fill.defaultParams
+      client_id: 'id'
     };
 
-    callApi.mockImplementation(() => Promise.resolve(mockApiAnswer));
+    storeActions[actions.SET_CLIENT_CRED](mockContext, payload);
 
-    await storeActions[actions.CREATE_L2F](mockContext, payload);
-
-    expect(callApi).toBeCalledWith(endpoints.LINK_TO_FILL, expect.objectContaining({
-      access_token: null,
-      method: 'POST',
-      body: JSON.stringify(payload)
-    }));
+    expect(mockContext.commit).toBeCalledWith(mutations.SET_CLIENT_CRED, payload);
   });
 
-  it('should update callback url added current document', async () => {
-    const url = 'url';
-    const currentDocument = {
-      id: 1
+  it('should set postmessage listener', () => {
+    global.location = {
+      hash: '11token=11'
     };
-
-    store.commit(mutations.SET_CURRENT_DOCUMENT, currentDocument);
-    store.commit(mutations.SET_L2F_CALLBACK_URL, url);
-
-    const mockApiAnswer = {};
-    const payload = {
-      ...store.state.link2fill.defaultParams
-    };
-
-    callApi.mockImplementation(() => Promise.resolve(mockApiAnswer));
-
-    await storeActions[actions.CREATE_L2F](mockContext, payload);
-    expect(callApi).toBeCalledWith(endpoints.LINK_TO_FILL, expect.objectContaining({
-      access_token: null,
-      method: 'POST',
-      body: JSON.stringify(payload)
+    global.addEventListener = jest.fn();
+    parseQueryString.mockImplementation(() => ({
+      access_token: '11',
     }));
 
-    expect(payload.callback_url).toBe(`${url}&project_id=${currentDocument.id}`);
+    storeActions[actions.CHECK_AUTH_CODE](mockContext);
+
+    expect(global.addEventListener).toBeCalledWith('message', expect.any(Function));
   });
 
-  it('should catch error', async () => {
-    const payload = {
-      ...store.state.link2fill.defaultParams
+  it('should check auth code and add listener for post message event', () => {
+    global.location = {
+      hash: '11token=11'
     };
-    const errorMessage = 'error';
-    const error = new Error(errorMessage);
-
-    callApi.mockImplementation(() => Promise.reject(error));
-
-    try {
-      await storeActions[actions.CREATE_L2F](mockContext, payload);
-    } catch (err) {
-      if (err.message) {
-        expect(1).toBe(err.message);
-      }
-    }
-
-    expect(callApi).toBeCalledWith(endpoints.LINK_TO_FILL, expect.objectContaining({
-      access_token: null,
-      method: 'POST',
-      body: JSON.stringify(payload)
+    global.parent = {
+      postMessage: () => {}
+    };
+    parseQueryString.mockImplementation(() => ({
+      access_token: '11',
+      state: mockContext.state.state
     }));
-    expect(mockContext.commit).toBeCalledWith(mutations.SET_ERROR, errorMessage);
+
+    storeActions[actions.CHECK_AUTH_CODE](mockContext);
+
+    expect(parseQueryString).toBeCalledWith(global.location.hash.substr(2));
+    expect(mockContext.commit).toBeCalledWith(mutations.SET_AUTH_PROCESS, true);
   });
 });

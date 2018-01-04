@@ -2,7 +2,7 @@ import downloadjs from 'downloadjs';
 import store from '../../../store';
 import storeActions from '../../../store/documents/actions/docsActions';
 import callApi from '../../../helpers/api';
-import { getFormatedDocuments, getDocumentNameWithoutExtention, getDataFromTimeStamp } from '../../../helpers/utils';
+import { getFormatedDocuments, getDocumentNameWithoutExtension, getDataFromTimeStamp } from '../../../helpers/utils';
 import constants from '../../../constants';
 
 jest.mock('../../../helpers/api');
@@ -41,7 +41,7 @@ const docObject = {
   updated: '111'
 };
 
-getDocumentNameWithoutExtention.mockImplementation(() => docObject.name);
+getDocumentNameWithoutExtension.mockImplementation(() => docObject.name);
 getDataFromTimeStamp.mockImplementation(() => docObject.updated);
 
 describe('documents actions', () => {

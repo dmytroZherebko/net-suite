@@ -3,6 +3,7 @@ import { handleError, configureRequestParams, getQueryString } from './requestUt
 const callApi = async (url, params, file) => { // eslint-disable-line
   if (params.query) {
     url = `${url}?${getQueryString(params.query)}`;
+    delete params.query;
   }
 
   const requestParams = configureRequestParams(url, params, file);

@@ -20,7 +20,7 @@ export const getDataFromTimeStamp = (timestamp) => {
   return `${month < 10 ? `0${month}` : month}/${day < 10 ? `0${day}` : day}/${date.getFullYear()}`;
 };
 
-export const getDocumentNameWithoutExtention = ({ name, type }) => {
+export const getDocumentNameWithoutExtension = ({ name, type }) => {
   let formatedName = name.split('.');
   if (formatedName[formatedName.length - 1].toLowerCase() === type) {
     formatedName.pop();
@@ -34,7 +34,7 @@ const emailReg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((
 export const isEmailValid = email => emailReg.test(email);
 
 export const getFormatedDocuments = documents => documents.items.map((doc) => {
-  doc.name = getDocumentNameWithoutExtention(doc);
+  doc.name = getDocumentNameWithoutExtension(doc);
   doc.updated = getDataFromTimeStamp(doc.updated * 1000);
   doc.created = getDataFromTimeStamp(doc.created * 1000);
   return doc;

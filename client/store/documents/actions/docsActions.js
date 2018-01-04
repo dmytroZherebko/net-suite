@@ -1,7 +1,7 @@
 import downloadjs from 'downloadjs';
 
 import callApi from '../../../helpers/api';
-import { getFormatedDocuments, getDocumentNameWithoutExtention, getDataFromTimeStamp } from '../../../helpers/utils';
+import { getFormatedDocuments, getDocumentNameWithoutExtension, getDataFromTimeStamp } from '../../../helpers/utils';
 import constants from '../../../constants';
 
 const { mutations, endpoints, actions } = constants;
@@ -151,10 +151,10 @@ export default {
           name
         })
       });
-      commit(mutations.UPDATE_NAME, { name: getDocumentNameWithoutExtention(document), documentId: state.currentDocument.id });
+      commit(mutations.UPDATE_NAME, { name: getDocumentNameWithoutExtension(document), documentId: state.currentDocument.id });
       commit(mutations.SET_CURRENT_DOCUMENT, {
         ...document,
-        name: getDocumentNameWithoutExtention(document),
+        name: getDocumentNameWithoutExtension(document),
         updated: getDataFromTimeStamp(document.updated * 1000)
       });
       commit(mutations.TOGGLE_LOADER);
