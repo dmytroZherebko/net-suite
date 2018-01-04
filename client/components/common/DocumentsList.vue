@@ -33,7 +33,7 @@
         <pagination-component :current-page="currentPage"
                               :items-per-page="itemsPerPage"
                               :total-items="totalItems"
-                              @page-changed="pageChanged"/>
+                              @page-changed="pageChanged" />
     </div>
 </template>
 

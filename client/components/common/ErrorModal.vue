@@ -32,10 +32,10 @@
     },
 
     methods: {
+      ...mapActions([actions.RESET_ERROR]),
       onClose() {
         this[actions.RESET_ERROR]();
       },
-      ...mapActions([actions.RESET_ERROR])
     },
 
     components: {
