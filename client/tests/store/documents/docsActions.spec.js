@@ -144,7 +144,7 @@ describe('documents actions', () => {
       location: 'url'
     };
     callApi.mockImplementation(() => Promise.resolve(responseMock));
-    mockContext.dispatch.mockImplementation(() => Promise.resolve(1));
+    mockContext.dispatch.mockImplementation(() => Promise.resolve({ projectId: docObject.id, fileId: docObject.id }));
     mockContext.rootState.route.name = 'integration-documents';
     global.addEventListener = jest.fn();
 

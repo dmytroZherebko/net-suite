@@ -42,15 +42,16 @@ export default {
 
   async [actions.OPEN_DOCUMENT_EDITOR]({ commit, rootState, state, dispatch }) {
     try {
+      let documentIds = null;
       let documentId = null;
       if (rootState.route.name === 'integration-documents') {
-        documentId = await dispatch(actions.GET_INTEGRATION_DOCUMENT_PDFFILLER_ID);
+        documentIds = await dispatch(actions.GET_INTEGRATION_DOCUMENT_PDFFILLER_ID);
       } else {
         documentId = state.currentDocument.id;
       }
 
       commit(mutations.TOGGLE_LOADER);
-      let url = endpoints.DOCUMENT_LINK.replace('{document_id}', documentId);
+      let url = endpoints.DOCUMENT_LINK.replace('{document_id}', documentId || documentIds.projectId);
       url = rootState.openInJsEditor ? `${url}&editor_type=JS_NEW` : url;
       const { location } = await callApi(url, {
         access_token: rootState.auth.access_token,
@@ -69,7 +70,7 @@ export default {
         if (e.data === 'editorDone') {
           dispatch(actions.CLOSE_DOCUMENT_EDITOR);
           if (rootState.route.name === 'integration-documents') {
-            dispatch(actions.UPDATE_INTEGRATION_FILE_CONTENT, documentId);
+            dispatch(actions.UPDATE_INTEGRATION_FILE_CONTENT, documentIds);
           }
         }
       };

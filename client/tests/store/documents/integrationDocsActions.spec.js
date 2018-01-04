@@ -110,11 +110,12 @@ describe('documents integration actions', () => {
 
   it('should update integtation file content', async () => {
     const responseMock = {
-      projectId: 1
+      fileId: 1,
+      projectId: 1,
     };
     callApi.mockImplementation(() => Promise.resolve(responseMock));
 
-    await storeActions[actions.UPDATE_INTEGRATION_FILE_CONTENT](mockContext, 1);
+    await storeActions[actions.UPDATE_INTEGRATION_FILE_CONTENT](mockContext, responseMock);
 
     expect(callApi).toBeCalledWith(
       `${mockContext.rootState.integration.name}${endpoints.UPDATE_INTEGRATION_FILE_CONTENT}`,
@@ -124,10 +125,7 @@ describe('documents integration actions', () => {
         query: {
           ...mockContext.rootState.integration.config,
         },
-        body: JSON.stringify({
-          fileId: mockContext.state.currentDocument.id,
-          projectId: 1
-        })
+        body: JSON.stringify(responseMock)
       })
     );
   });
@@ -146,12 +144,14 @@ describe('documents integration actions', () => {
 
   it('should get id document prew show popup', async () => {
     const name = { name: 'name' };
-    mockContext.dispatch.mockImplementation(() => Promise.resolve(1));
-    const projectId = await storeActions[actions.GET_INTEGRATION_DOCUMENT_PDFFILLER_ID](mockContext, name);
+    const mockResponse = { projectId: 1, fileId: 1 };
+    mockContext.dispatch.mockImplementation(() => Promise.resolve(mockResponse));
+    const { projectId, fileId } = await storeActions[actions.GET_INTEGRATION_DOCUMENT_PDFFILLER_ID](mockContext, name);
 
     expect(mockContext.dispatch).toBeCalledWith(actions.WAITING_FOR_INTEGRATION_DOCUMENT_NEW_NAME);
-    expect(mockContext.dispatch).toBeCalledWith(actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER, 1);
+    expect(mockContext.dispatch).toBeCalledWith(actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER, mockResponse);
     expect(mockContext.commit).toBeCalledWith(mutations.SET_EDIT_INTEGRATION_DOCUMENT_NAME_POPUP, true);
-    expect(projectId).toBe(1);
+    expect(projectId).toBe(mockResponse.projectId);
+    expect(fileId).toBe(mockResponse.fileId);
   });
 });

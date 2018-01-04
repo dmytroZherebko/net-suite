@@ -32,9 +32,9 @@ export default {
   async [actions.GET_INTEGRATION_DOCUMENT_PDFFILLER_ID]({ commit, dispatch }) {
     commit(mutations.SET_EDIT_INTEGRATION_DOCUMENT_NAME_POPUP, true);
     const name = await dispatch(actions.WAITING_FOR_INTEGRATION_DOCUMENT_NEW_NAME);
-    const projectId = await dispatch(actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER, name);
+    const { projectId, fileId } = await dispatch(actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER, name);
 
-    return projectId;
+    return { projectId, fileId };
   },
 
   [actions.ACCEPT_INTEGRATION_DOC_NAME_POPUP]({ commit }, name) { // hide pop up and resolve promise with new document name
@@ -59,7 +59,7 @@ export default {
   async [actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER]({ commit, state, rootState }, { name } = {}) {
     try {
       commit(mutations.TOGGLE_LOADER);
-      const { projectId } = await callApi(`${rootState.integration.name}${endpoints.INTEGRATION_CREATE_PROJECT}`, {
+      const { projectId, fileId } = await callApi(`${rootState.integration.name}${endpoints.INTEGRATION_CREATE_PROJECT}`, {
         method: 'POST',
         noPdfillerApi: true,
         query: {
@@ -74,7 +74,7 @@ export default {
 
       commit(mutations.TOGGLE_LOADER);
 
-      return projectId;
+      return { projectId, fileId };
     } catch (err) {
       commit(mutations.TOGGLE_LOADER);
       if (err.message) {
@@ -84,17 +84,14 @@ export default {
     }
   },
 
-  async [actions.UPDATE_INTEGRATION_FILE_CONTENT]({ state, rootState }, projectId) {
+  async [actions.UPDATE_INTEGRATION_FILE_CONTENT]({ rootState }, documentIds) {
     await callApi(`${rootState.integration.name}${endpoints.UPDATE_INTEGRATION_FILE_CONTENT}`, {
       method: 'POST',
       noPdfillerApi: true,
       query: {
         ...rootState.integration.config,
       },
-      body: JSON.stringify({
-        fileId: state.currentDocument.id,
-        projectId,
-      })
+      body: JSON.stringify(documentIds)
     });
   }
 };
