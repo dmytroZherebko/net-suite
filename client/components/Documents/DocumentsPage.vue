@@ -98,11 +98,8 @@
     },
 
     mounted() {
-      this[actions.GET_PAGE_DOCUMENTS]();
-    },
-
-    beforeDestroy() {
       this[actions.RESET_DOCUMENTS_STATE]();
+      this[actions.GET_PAGE_DOCUMENTS]();
     },
 
     methods: {

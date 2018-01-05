@@ -44,7 +44,8 @@ export default {
     if (!this.$route.params.s2s_id) {
       let documentId = this.currentDocumentId;
       if (this.prevPage === '/integration-documents') {
-        documentId = await this[actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER]();
+        const documentIds = await this[actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER]();
+        documentId = documentIds.projectId;
       }
       this.formData = { ...this[getters.GET_S2S_DEFAULT_PARAMS]() };
       this.recipientTemplate = this[getters.GET_S2S_DEFAULT_RECIPIENT]();
