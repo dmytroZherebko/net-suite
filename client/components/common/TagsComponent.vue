@@ -48,7 +48,7 @@
     },
     methods: {
       addNewTagItem(e) {
-        if (this.tagsList.length < 5) {
+        if (this.tagsList.length < this.maxItems) {
           this.$emit('add-tag-item', e.target.value);
           this.$nextTick(() => {
             if (!this.hasError) {
