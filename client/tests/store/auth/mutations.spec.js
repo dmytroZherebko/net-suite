@@ -18,12 +18,18 @@ describe('auth mutations', () => {
     const token = 'token';
     storeMutations[mutations.SET_ACCESS_TOKEN](state, token);
     expect(state.access_token).toBe(token);
-    expect(state.authorize).toBe(true);
+    expect(state.authorize).toBeTruthy();
   });
 
   it('should set auth process', () => {
     storeMutations[mutations.SET_AUTH_PROCESS](state, true);
     expect(state.authorize_process).toBeTruthy();
+  });
+
+  it('should set authorize', () => {
+    state.authorize = false;
+    storeMutations[mutations.SET_AUTHORIZE](state, true);
+    expect(state.authorize).toBeTruthy();
   });
 
   it('should set x auth token', () => {

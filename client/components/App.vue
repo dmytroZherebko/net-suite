@@ -3,7 +3,7 @@
         <nav-menu-component></nav-menu-component>
         <loader-component></loader-component>
         <error-component></error-component>
-        <router-view></router-view>
+        <router-view :key="$route.path"></router-view>
     </div>
 </template>
 

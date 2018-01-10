@@ -9,7 +9,7 @@ import ResultModal from './L2FResultModal.vue';
 
 import constants from '../../constants';
 
-const { getters, actions } = constants;
+const { getters, actions, routes } = constants;
 
 export default {
   components: {
@@ -45,7 +45,7 @@ export default {
   async mounted() {
     if (!this.$route.params.l2f_id) {
       let documentId = this.currentDocumentId;
-      if (this.prevPage === '/integration-documents') {
+      if (this.prevPage === routes.L2F_CREATE.path) {
         const documentIds = await this[actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER]();
         documentId = documentIds.projectId;
       }

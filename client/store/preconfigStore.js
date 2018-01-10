@@ -8,6 +8,8 @@ const preconfigStore = (config) => {
   if (config.auth) {
     dispatch(actions.SET_CLIENT_CRED, config.auth);
     dispatch(actions.CHECK_AUTH_CODE);
+  } else {
+    commit(mutations.SET_AUTHORIZE, true); // if no auth credential we can`t use implicit flow, so expected that integration use own auth on backend
   }
 
   if (config.openDocumentMode) {

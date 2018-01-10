@@ -27,6 +27,13 @@ describe('should preconfig store', () => {
     expect(dispatch).toBeCalledWith(actions.CHECK_AUTH_CODE);
   });
 
+  it('set authorize when no auth in config', () => {
+    const config = {};
+
+    preconfigStore(config);
+    expect(commit).toBeCalledWith(mutations.SET_AUTHORIZE, true);
+  });
+
   it('set open document mode', () => {
     const config = {
       openDocumentMode: 'full'

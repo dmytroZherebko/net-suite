@@ -24,6 +24,9 @@
     "mapCoverage": true,
     "setupFiles": [
       "jest-localstorage-mock"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/client/route"
     ]
   },
   "dependencies": {

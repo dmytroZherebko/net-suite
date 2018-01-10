@@ -384,7 +384,7 @@ describe('documents actions', () => {
       postMessage: jest.fn()
     };
 
-    storeActions[actions.BROADCAST_DOCUMENT_INFO_TO_PARRENT](mockContext, docObject);
+    storeActions[actions.BROADCAST_DOCUMENT_INFO_TO_PARENT](mockContext, docObject);
 
     expect(global.opener.postMessage).toBeCalledWith(JSON.stringify(docObject), '*');
   });

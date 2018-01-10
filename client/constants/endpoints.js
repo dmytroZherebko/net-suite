@@ -8,4 +8,5 @@ export default {
   INTEGRATION_DOCUMENTS: '/templates',
   INTEGRATION_CREATE_PROJECT: '/create-project',
   UPDATE_INTEGRATION_FILE_CONTENT: '/update-file-content',
+  UPLOAD_TO_INTEGRATION: '/upload',
 };

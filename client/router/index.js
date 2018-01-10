@@ -4,12 +4,12 @@ import VueRouter from 'vue-router';
 import store from '../store';
 import AuthorizePage from '../components/Auhtorize/AuthorizePage.vue';
 import Documents from '../components/Documents/DocumentsPage.vue';
-import IntegrationDocuments from '../components/IntegrationDocuments/DocumentsPage.vue';
 import LinkToFillForm from '../components/LinkToFill/LinkToFillFormTemplate.vue';
 import SendToSignForm from '../components/SendToSign/SendToSignFormTemplate.vue';
 import constants from '../constants';
 
 const { getters } = constants;
+const routesConstants = constants.routes;
 
 Vue.use(VueRouter);
 
@@ -19,34 +19,34 @@ const routes = [
     redirect: () => {
       let redirectTo = null;
       if (store.state.documents.showIntegrationDocumentsPage) {
-        redirectTo = 'integration-documents';
+        redirectTo = routesConstants.INTEGRATION_DOCUMENTS.name;
       } else {
-        redirectTo = 'documents';
+        redirectTo = routesConstants.DOCUMENTS.name;
       }
       return redirectTo;
     }
   },
   {
-    path: '/documents',
-    name: 'documents',
+    path: routesConstants.DOCUMENTS.path,
+    name: routesConstants.DOCUMENTS.name,
     component: Documents
   },
   {
-    path: '/integration-documents',
-    name: 'integration-documents',
-    component: IntegrationDocuments
+    path: routesConstants.INTEGRATION_DOCUMENTS.path,
+    name: routesConstants.INTEGRATION_DOCUMENTS.name,
+    component: Documents
   },
   {
-    name: 'authorize',
-    path: '/authorize',
+    name: routesConstants.AUTH.name,
+    path: routesConstants.AUTH.path,
     component: AuthorizePage,
     meta: {
       hideNavBar: true
     },
   },
   {
-    name: 'link_to_fill_create',
-    path: '/link-to-fill/create',
+    name: routesConstants.L2F_CREATE.name,
+    path: routesConstants.L2F_CREATE.path,
     component: LinkToFillForm,
     params: true,
     beforeEnter: (to, from, next) => {
@@ -61,8 +61,8 @@ const routes = [
     },
   },
   {
-    name: 'send_to_sign_create',
-    path: '/send-to-sign/create',
+    name: routesConstants.S2S_CREATE.name,
+    path: routesConstants.S2S_CREATE.path,
     component: SendToSignForm,
     params: true,
     beforeEnter: (to, from, next) => {
@@ -81,9 +81,9 @@ const routes = [
     redirect: () => {
       let redirectTo = null;
       if (store.state.documents.showIntegrationDocumentsPage) {
-        redirectTo = 'integration-documents';
+        redirectTo = routesConstants.INTEGRATION_DOCUMENTS.name;
       } else {
-        redirectTo = 'documents';
+        redirectTo = routesConstants.DOCUMENTS.name;
       }
       return redirectTo;
     }
@@ -96,7 +96,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (!store.getters[getters.CHECK_ACCESS_TO_PAGE](to.name)) {
-    next({ path: '/authorize', query: { redirect: to.fullPath } });
+    next({ path: routesConstants.AUTH.path, query: { redirect: to.fullPath } });
   } else {
     next();
   }

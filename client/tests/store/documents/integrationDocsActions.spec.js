@@ -154,4 +154,33 @@ describe('documents integration actions', () => {
     expect(projectId).toBe(mockResponse.projectId);
     expect(fileId).toBe(mockResponse.fileId);
   });
+
+  it('should upload document to integration with correct params', async () => {
+    callApi.mockImplementation(() => Promise.resolve());
+    await storeActions[actions.UPLOAD_DOCUMENT_TO_INTEGRATION](mockContext);
+
+    expect(callApi).toBeCalledWith(
+      `${mockContext.rootState.integration.name}${endpoints.UPLOAD_TO_INTEGRATION}/${mockContext.rootState.documents.currentDocument.id}`,
+      expect.objectContaining({
+        method: 'POST',
+        noPdfillerApi: true,
+        query: {
+          ...mockContext.rootState.integration.config,
+        },
+      })
+    );
+  });
+
+  it('should catch error when upload document to integration', async () => {
+    const errorMessage = 'error';
+    const error = new Error(errorMessage);
+
+    callApi.mockImplementation(() => Promise.reject(error));
+
+    try {
+      await storeActions[actions.UPLOAD_DOCUMENT_TO_INTEGRATION](mockContext);
+    } catch (err) { console.log(err); }
+
+    expect(mockContext.commit).toBeCalledWith(mutations.SET_ERROR, errorMessage);
+  });
 });

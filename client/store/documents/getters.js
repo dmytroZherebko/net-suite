@@ -1,10 +1,10 @@
 import constants from '../../constants';
 
-const { getters, endpoints } = constants;
+const { getters, endpoints, routes } = constants;
 
 export default {
   [getters.GET_DOCUMENTS_REQUEST_URL](state, getters, rootState) { // eslint-disable-line
-    const url = rootState.route.name === 'integration-documents' ?
+    const url = rootState.route.name === routes.INTEGRATION_DOCUMENTS.name ?
       `${rootState.integration.name}${endpoints.INTEGRATION_DOCUMENTS}` :
       endpoints.DOCUMENTS;
     return url;
@@ -21,7 +21,7 @@ export default {
 
       if (rootState.route.name === 'documents') {
         params.access_token = rootState.auth.access_token;
-      } else if (rootState.route.name === 'integration-documents') {
+      } else if (rootState.route.name === routes.INTEGRATION_DOCUMENTS.name) {
         params.noPdfillerApi = true;
         params.query = {
           ...params.query,

@@ -60,7 +60,7 @@ window.onload = function() {
         proxyUrl: "https://someservice.pdffiller.com/api/proxy" // url for calls to pdffiller api for which api call url will set as header x-proxy-url
       },
       baseApiUrl: "https://someservice.pdffiller.com/api/", // base url for not pdffiller api calls
-      // reassign buttons config, buttons names: - my docs page: s2s, l2f, open, download, delete
+      // reassign buttons config, buttons names: - my docs page: s2s, l2f, open, download, delete, uploadToIntegration
       //                                         - navbar: upload
       //                                         - integration docs page: uploadToPDFfiller, editIntegration, s2sIntegration, l2fIntegration
       buttons: {

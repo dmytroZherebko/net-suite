@@ -3,6 +3,7 @@ import mutations from './mutations';
 import actions from './actions';
 import getters from './getters';
 import errors from './errorMessages';
+import routes from './routes';
 
 export default {
   endpoints,
@@ -10,4 +11,5 @@ export default {
   actions,
   getters,
   errors,
+  routes,
 };

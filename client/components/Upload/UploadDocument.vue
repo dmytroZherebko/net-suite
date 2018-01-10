@@ -24,82 +24,98 @@
                         </li>
                     </ul>
                     <div class="upload-section">
-                        <div v-if="currentOption === 'file'">
-                            <form
-                                  novalidate
-                                  @submit.prevent=""
-                            >
-                                <label class="upload-section__file"
-                                       :class="checkOnDragBlock()"
-                                       @dragenter.prevent="onDragEnter"
-                                       @dragleave="onDragLeave"
-                                       @drop.prevent="onDrop"
-                                       @dragover.prevent=""
-                                >
-                                    <h3 class="upload-section__title">
-                                        Drag and Drop Document Here to Get Started!
-                                    </h3>
-                                    <p class="upload-section__description">
-                                        Use the button below to upload your document to PDFfiller.
-                                        PDFfiller supports PDF, Word, PowerPoint, and Text formats.
-                                    </p>
-                                    <input
-                                            type="file"
-                                            accept=".ppt, .pptx, .doc, .docx, .pdf"
-                                            class="upload-section__input-file"
-                                            @change="onChooseFile"
-                                    >
-                                    <div class="button button_primary upload-section__upload-button">
-                                        Browse for a Document on Your Computer
-                                    </div>
-                                </label>
-                            </form>
-                        </div>
-                        <div v-if="currentOption === 'url'">
-                            <form
-                                    novalidate
-                                    @submit.prevent="onUrlUploadSubmit"
-                            >
-                                <h3 class="upload-section__title">
-                                    Add Documents from the Web
-                                </h3>
-                                <p class="upload-section__description">
-                                    Enter the URL of a document hosted online to add it to PDFfiller.
-                                </p>
-                                <p class="upload-section__description">
-                                    PDFfiller supports PDF, Word, and PowerPoint files. Max file size: 25 Mb!
-                                </p>
-                                <div class="upload-section__input-wrapper">
-                                    <input
-                                            type="text"
-                                            class="input"
-                                            :class="checkUrlError()"
-                                            placeholder="http://"
-                                            v-model.trim="uploadFileUrl.value"
-                                            @input="onChangeUrlValue"
-                                    >
-                                    <button class="button button_primary upload-section__button">
-                                        Upload
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                        <upload-as-file
+                                v-if="currentOption === 'file'"
+                                :uploadFile="uploadFile"
+                        />
+                        <upload-as-url
+                                v-if="currentOption === 'url'"
+                                :uploadFile="uploadFile"
+                        />
                     </div>
                 </div>
             </div>
         </modal-component>
-        <modal-component
-                :show-modal="showSuccessUploadModal"
-                modal-title="Successful upload"
-                modal-type="alert"
-                @modal-close="closeSuccessModal"
-                @modal-ok="closeSuccessModal"
-        >
-            <div class="modal-body text-center" slot="modal-body">
-                File was successfully uploaded.
-            </div>
-        </modal-component>
+        <success-upload-modal
+                :show-upload-modal="showSuccessUploadModal"
+                :close-success-upload-modal="closeSuccessModal"
+        />
     </div>
 </template>
 
-<script src="./UploadDocument.js"></script>
+<script>
+  import { mapActions, mapState } from 'vuex';
+  import ModalComponent from '../common/ModalComponent.vue';
+  import SuccessUploadModal from '../common/SuccessUploadModal.vue';
+  import UploadAsUrl from './UploadAsUrl.vue';
+  import UploadAsFile from './UploadAsFile.vue';
+  import constants from '../../constants';
+
+  const { actions } = constants;
+
+  export default {
+    components: {
+      ModalComponent,
+      UploadAsUrl,
+      UploadAsFile,
+      SuccessUploadModal,
+    },
+
+    data() {
+      return {
+        showModal: false,
+        showSuccessUploadModal: false,
+        uploadOptions: [
+          {
+            title: 'Upload Document',
+            type: 'file'
+          },
+          {
+            title: 'Enter URL of Document',
+            type: 'url'
+          }
+        ],
+        currentOption: 'file'
+      };
+    },
+
+    computed: {
+      ...mapState({
+        buttons: state => state.buttons,
+      }),
+    },
+    methods: {
+      ...mapActions([
+        actions.UPLOAD_DOCUMENT,
+      ]),
+
+      openModal() {
+        this.showModal = true;
+      },
+
+      closeModal() {
+        this.showModal = false;
+      },
+
+      closeSuccessModal() {
+        this.showSuccessUploadModal = false;
+      },
+
+      changeUploadOption(type) {
+        this.currentOption = type;
+      },
+
+      checkOptionIsActive(type) {
+        return type === this.currentOption ? 'upload-options__item_active' : '';
+      },
+
+      async uploadFile(file) {
+        try {
+          this.closeModal();
+          await this[actions.UPLOAD_DOCUMENT](file);
+          this.showSuccessUploadModal = true;
+        } catch (err) { console.log(err); } // eslint-disable-line
+      },
+    }
+  };
+</script>

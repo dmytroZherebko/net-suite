@@ -7,7 +7,7 @@ import TagsComponent from '../common/TagsComponent.vue';
 import FormSection from '../common/FormSection.vue';
 import constants from '../../constants';
 
-const { actions, getters } = constants;
+const { actions, getters, routes } = constants;
 
 export default {
   components: {
@@ -43,7 +43,7 @@ export default {
   async mounted() {
     if (!this.$route.params.s2s_id) {
       let documentId = this.currentDocumentId;
-      if (this.prevPage === '/integration-documents') {
+      if (this.prevPage === routes.S2S_CREATE.path) {
         const documentIds = await this[actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER]();
         documentId = documentIds.projectId;
       }

@@ -2,13 +2,13 @@ import router from '../router';
 import store from '../store';
 import constants from '../constants';
 
-const { mutations, actions, errors } = constants;
+const { mutations, actions, errors, routes } = constants;
 
 export const handleError = async (data) => {
   if (data.status === 401) {
     store.commit(mutations.SET_ACCESS_TOKEN, null);
     store.dispatch(actions.CHECK_AUTH_CODE);
-    router.push({ name: 'authorize', query: { redirect: router.currentRoute.fullPath } });
+    router.push({ name: routes.AUTH.name, query: { redirect: router.currentRoute.fullPath } });
     throw new Error();
   }
 

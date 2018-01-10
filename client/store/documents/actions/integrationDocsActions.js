@@ -3,7 +3,7 @@ import constants from '../../../constants';
 
 const { mutations, endpoints, actions } = constants;
 
-// mock function that will replaced when will created promise
+// mock function that will replaced when promise will created
 let resolveNamePopUpPromise = () => {};
 let rejectNamePopUpPromise = () => {};
 
@@ -93,5 +93,27 @@ export default {
       },
       body: JSON.stringify(documentIds)
     });
+  },
+
+  async [actions.UPLOAD_DOCUMENT_TO_INTEGRATION]({ commit, rootState }) {
+    try {
+      commit(mutations.TOGGLE_LOADER);
+
+      await callApi(`${rootState.integration.name}${endpoints.UPLOAD_TO_INTEGRATION}/${rootState.documents.currentDocument.id}`, {
+        method: 'POST',
+        noPdfillerApi: true,
+        query: {
+          ...rootState.integration.config,
+        }
+      });
+
+      commit(mutations.TOGGLE_LOADER);
+    } catch (err) {
+      commit(mutations.TOGGLE_LOADER);
+      if (err.message) {
+        commit(mutations.SET_ERROR, err.message);
+      }
+      throw new Error(err);
+    }
   }
 };

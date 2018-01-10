@@ -4,7 +4,7 @@ import callApi from '../../../helpers/api';
 import { getFormatedDocuments, getDocumentNameWithoutExtension, getDataFromTimeStamp } from '../../../helpers/utils';
 import constants from '../../../constants';
 
-const { mutations, endpoints, actions } = constants;
+const { mutations, endpoints, actions, routes } = constants;
 
 // variables for close open window
 let editorWindow;
@@ -44,7 +44,7 @@ export default {
     try {
       let documentIds = null;
       let documentId = null;
-      if (rootState.route.name === 'integration-documents') {
+      if (rootState.route.name === routes.INTEGRATION_DOCUMENTS.name) {
         documentIds = await dispatch(actions.GET_INTEGRATION_DOCUMENT_PDFFILLER_ID);
       } else {
         documentId = state.currentDocument.id;
@@ -69,7 +69,7 @@ export default {
       doneListener = (e) => {
         if (e.data === 'editorDone') {
           dispatch(actions.CLOSE_DOCUMENT_EDITOR);
-          if (rootState.route.name === 'integration-documents') {
+          if (rootState.route.name === routes.INTEGRATION_DOCUMENTS.name) {
             dispatch(actions.UPDATE_INTEGRATION_FILE_CONTENT, documentIds);
           }
         }
@@ -197,7 +197,7 @@ export default {
     commit(mutations.RESET_LOADED_DOCUMENTS);
   },
 
-  [actions.BROADCAST_DOCUMENT_INFO_TO_PARRENT](context, document) {
+  [actions.BROADCAST_DOCUMENT_INFO_TO_PARENT](context, document) {
     if (window.opener) {
       window.opener.postMessage(JSON.stringify(document), '*');
     }

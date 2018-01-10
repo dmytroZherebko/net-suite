@@ -1,8 +1,10 @@
 <template>
     <div>
-        <button class="button button_menu margin-bottom" :disabled="disabled" @click="openDocumentInEditor">
-            {{title}}
-        </button>
+        <button-component
+                :disabled="disabled"
+                :buttonAction="openDocumentInEditor"
+                :title="title"
+        />
         <div v-if="openMode === 'full' && documentUrl"
              class="document-iframe_full-wrapper">
             <iframe
@@ -34,6 +36,7 @@
 <script>
   import { mapActions, mapState } from 'vuex';
   import ModalComponent from '../common/ModalComponent.vue';
+  import ButtonComponent from '../common/ButtonComponent.vue';
   import constants from '../../constants';
 
   const { actions } = constants;
@@ -73,7 +76,8 @@
       }
     },
     components: {
-      ModalComponent
+      ModalComponent,
+      ButtonComponent,
     }
   };
 </script>

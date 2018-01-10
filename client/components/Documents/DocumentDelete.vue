@@ -1,15 +1,17 @@
 <template>
     <div>
-        <button class="button button_menu margin-bottom" :disabled="disabled" @click="showConfirmationModal">
-            {{title}}
-        </button>
+        <button-component
+                :disabled="disabled"
+                :buttonAction="showConfirmationModal"
+                :title="title"
+        />
         <modal-component
                 :show-modal="showModal"
                 modal-title="Delete Document"
                 modal-type="confirm"
                 @modal-close="onClose"
                 @modal-ok="onDelete"
-                @modal-cancel="onCancel"
+                @modal-cancel="onClose"
         >
             <div slot="modal-body" class="modal-body">
                 <p class="text-center">
@@ -22,10 +24,18 @@
 
 <script>
   import ModalComponent from '../common/ModalComponent.vue';
+  import ButtonComponent from '../common/ButtonComponent.vue';
 
   export default {
+    components: {
+      ModalComponent,
+      ButtonComponent
+    },
     props: {
-      deleteDocument: Function,
+      deleteDocument: {
+        type: Function,
+        required: true
+      },
       disabled: {
         type: Boolean,
         default: true
@@ -52,13 +62,6 @@
       onClose() {
         this.showModal = false;
       },
-      onCancel() {
-        this.showModal = false;
-      }
-    },
-
-    components: {
-      ModalComponent
     }
   };
 </script>

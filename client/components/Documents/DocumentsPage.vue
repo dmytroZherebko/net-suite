@@ -11,46 +11,11 @@
                 :change-current-document="changeCurrentDocument"
                 :db-listener="dbListener"
         />
-        <div class="documents-aside column-aside" v-if="!filepicker">
-            <open-document
-                    v-if="buttons.open.show"
-                    :disabled="!currentDocumentId"
-                    :title="buttons.open.title"
-            />
-            <download-document
-                    v-if="buttons.download.show"
-                    :disabled="!currentDocumentId"
-                    :title="buttons.download.title"
-            />
-            <router-link
-                    v-if="buttons.l2f.show"
-                    tag="button"
-                    :disabled="!currentDocumentId"
-                    class="button button_menu margin-bottom"
-                    :to="{ path: '/link-to-fill/create', query: { prevPage: $route.fullPath }}"
-            >
-                {{ buttons.l2f.title }}
-            </router-link>
-            <router-link
-                    v-if="buttons.s2s.show"
-                    tag="button"
-                    :disabled="!currentDocumentId"
-                    class="button button_menu margin-bottom"
-                    :to="{ path: '/send-to-sign/create', query: { prevPage: $route.fullPath }}"
-            >
-                {{ buttons.s2s.title }}
-            </router-link>
-            <delete-document
-                    v-if="buttons.delete.show"
-                    :delete-document="deleteDocument"
-                    :disabled="!currentDocumentId"
-                    :title="buttons.delete.title"
-            />
-        </div>
+        <documents-aside />
         <edit-name
                 v-model="currentDocumentName"
                 :close-edit-name-modal="closeEditNameModal"
-                :show-edit-modal="showEditModal"
+                :show-edit-modal="showEditModal || showEditDocumentNameModal"
                 :update-name-action="updateDocumentName"
         />
     </div>
@@ -59,27 +24,23 @@
 <script>
   import { mapState, mapActions } from 'vuex';
   import DocumentsList from '../common/DocumentsList.vue';
-  import DeleteDocument from './DocumentDelete.vue';
-  import OpenDocument from '../common/DocumentOpen.vue';
+  import DocumentsAside from './DocumentsAside.vue';
   import EditName from '../common/DocumentEditName.vue';
-  import DownloadDocument from './DocumentDownload.vue';
   import constants from '../../constants';
 
-  const { actions } = constants;
+  const { actions, routes } = constants;
 
   export default {
     components: {
       DocumentsList,
-      DeleteDocument,
-      OpenDocument,
+      DocumentsAside,
       EditName,
-      DownloadDocument,
     },
 
     data() {
       return {
         currentDocumentName: null,
-        showEditModal: false
+        showEditModal: false // showEditModal using for page documents
       };
     },
 
@@ -90,10 +51,10 @@
         totalItems: state => state.documents.total,
         perPage: state => state.documents.perPage,
         currentDocumentId: state => state.documents.currentDocument.id,
-        userInfo: state => state.user.userInfo,
         filepicker: state => state.filepicker,
-        buttons: state => state.buttons,
-        currentDocumentIsFillable: state => state.documents.currentDocument.fillable,
+        currentDocumentStoreName: state => state.documents.currentDocument.name,
+        showEditDocumentNameModal: state => state.documents.showEditIntegrationDocumentModal, // state.documents.showEditIntegrationDocumentModal for page integration when open document
+        buttons: state => state.buttons
       }),
     },
 
@@ -105,12 +66,13 @@
     methods: {
       ...mapActions([
         actions.GET_PAGE_DOCUMENTS,
-        actions.DELETE_DOCUMENT_BY_ID,
         actions.RESET_CURRENT_DOCUMENT,
         actions.SET_CURRENT_DOCUMENT,
-        actions.BROADCAST_DOCUMENT_INFO_TO_PARRENT,
+        actions.BROADCAST_DOCUMENT_INFO_TO_PARENT,
         actions.RESET_DOCUMENTS_STATE,
         actions.UPDATE_DOCUMENT_NAME,
+        actions.ACCEPT_INTEGRATION_DOC_NAME_POPUP,
+        actions.REJECT_INTEGRATION_DOC_NAME_POPUP,
       ]),
 
       pageChanged(page) {
@@ -122,31 +84,35 @@
       changeCurrentDocument(doc) {
         if (this.currentDocumentId !== doc.id) {
           this[actions.SET_CURRENT_DOCUMENT](doc);
+          this.currentDocumentName = doc.name;
         }
       },
 
-      deleteDocument() {
-        this[actions.DELETE_DOCUMENT_BY_ID]();
-        this[actions.RESET_CURRENT_DOCUMENT]();
-      },
-
       dbListener(document) {
+        if (this.$route.name !== routes.DOCUMENTS.name) return;
         if (this.filepicker) {
-          this.broadcastDocumentInfoToParent(document);
+          this[actions.BROADCAST_DOCUMENT_INFO_TO_PARENT](document);
         } else {
-          this.currentDocumentName = document.name;
           this.showEditModal = true;
         }
       },
 
       closeEditNameModal() {
         this.showEditModal = false;
-        this.currentDocumentName = null;
+        this.currentDocumentName = this.currentDocumentStoreName;
+        if (this.$route.name !== routes.DOCUMENTS.name) {
+          this[actions.REJECT_INTEGRATION_DOC_NAME_POPUP]();
+        }
       },
 
       updateDocumentName(name) {
-        this[actions.UPDATE_DOCUMENT_NAME](name);
-        this.closeEditNameModal();
+        if (this.$route.name !== routes.DOCUMENTS.name) {
+          this.currentDocumentName = this.currentDocumentStoreName;
+          this[actions.ACCEPT_INTEGRATION_DOC_NAME_POPUP](name);
+        } else {
+          this[actions.UPDATE_DOCUMENT_NAME](name);
+          this.closeEditNameModal();
+        }
       }
     },
   };
