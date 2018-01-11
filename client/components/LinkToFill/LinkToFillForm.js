@@ -54,14 +54,15 @@ export default {
       }
       this.formData = { ...this.defaultL2FConfig };
       this.formData.document_id = documentId;
-      this.formData.additional_documents = [];
-      const defaultMail = this.formData.notification_emails[0];
-      this.formData.notification_emails = [defaultMail];
+      this.formData.additional_documents = [...this.formData.additional_documents];
     }
   },
 
   methods: {
-    ...mapActions([actions.CREATE_L2F]),
+    ...mapActions([
+      actions.CREATE_L2F,
+      actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER,
+    ]),
     addAdditionalDocument(value) {
       if (!value) return;
       if (value.length < 3) {
@@ -75,27 +76,25 @@ export default {
       this.formData.additional_documents.splice(index, 1);
     },
     resetNotificationEmailError() {
-      if (this.notificationEmailError) {
-        this.notificationEmailError = false;
-      }
+      this.notificationEmailError = false;
     },
     resetAdditionalDocumentError() {
-      if (this.additionalDocumentError) {
-        this.additionalDocumentError = false;
-      }
+      this.additionalDocumentError = false;
     },
-    removeNotificationEmail(index) {
-      this.formData.notification_emails.splice(index, 1);
-    },
-    addNotificationEmail(value) {
-      if (!value) return;
 
-      if (isEmailValid(value)) {
-        this.formData.notification_emails.push({ email: value });
+    addNotificationEmail(email) {
+      if (!email) return;
+      if (isEmailValid(email)) {
+        this.formData.notification_emails.push({ email });
       } else {
         this.notificationEmailError = true;
       }
     },
+
+    removeNotificationEmail(index) {
+      this.formData.notification_emails.splice(index, 1);
+    },
+
     async createL2F() {
       try {
         this.linkToFillUrl = await this[actions.CREATE_L2F]({ ...this.formData });
@@ -107,8 +106,8 @@ export default {
     },
     closeSubmitModal() {
       this.showSubmitModal = false;
-      this.$router.push(this.prevPage);
       this.linkToFillUrl = null;
+      this.$router.push(this.prevPage);
     }
   }
 };

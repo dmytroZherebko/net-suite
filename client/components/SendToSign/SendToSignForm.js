@@ -63,18 +63,7 @@ export default {
       actions.CREATE_S2S,
       actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER,
     ]),
-    removeAdditionalDocument(index, recipientIndex) {
-      this.formData.recipients[recipientIndex].additional_documents.splice(index, 1);
-    },
-    addAdditionalDocument(value, recipientIndex) {
-      if (!value) return;
-      if (value.length < 3) {
-        this.formData.recipients[recipientIndex].errors.additional_documents = true;
-        return;
-      }
 
-      this.formData.recipients[recipientIndex].additional_documents.push(value);
-    },
     addDefaultRecipient() {
       this.formData.recipients.push({
         ...this.s2sRecipientDefaultParams,
@@ -90,10 +79,6 @@ export default {
       });
     },
 
-    toggleRecipientSection(recipientIndex) {
-      this.formData.recipients[recipientIndex].isCollapsed = !this.formData.recipients[recipientIndex].isCollapsed;
-    },
-
     addRecipient() {
       this.formData.recipients.forEach((rec) => {
         rec.isCollapsed = true;
@@ -106,6 +91,24 @@ export default {
       this.formData.recipients.forEach((rec, recIndex) => {
         rec.order = recIndex + 1;
       });
+    },
+
+    addAdditionalDocument(value, recipientIndex) {
+      if (!value) return;
+      if (value.length < 3) {
+        this.formData.recipients[recipientIndex].errors.additional_documents = true;
+        return;
+      }
+
+      this.formData.recipients[recipientIndex].additional_documents.push(value);
+    },
+
+    removeAdditionalDocument(index, recipientIndex) {
+      this.formData.recipients[recipientIndex].additional_documents.splice(index, 1);
+    },
+
+    toggleRecipientSection(recipientIndex) {
+      this.formData.recipients[recipientIndex].isCollapsed = !this.formData.recipients[recipientIndex].isCollapsed;
     },
 
     resetFormError(field) {
@@ -148,10 +151,8 @@ export default {
           return false;
         }
 
-        if (!this.validateRecipientsNameAndEmail()) return false;
+        return this.validateRecipientsNameAndEmail();
       }
-
-      return true;
     },
 
     validateRecipientsNameAndEmail() {

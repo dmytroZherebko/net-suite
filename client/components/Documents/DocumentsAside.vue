@@ -90,6 +90,7 @@
         actions.RESET_CURRENT_DOCUMENT,
         actions.DOWNLOAD_DOCUMENT,
         actions.UPLOAD_INTEGRATION_DOCUMENT_TO_PDFFILLER,
+        actions.UPLOAD_DOCUMENT_TO_INTEGRATION,
       ]),
 
       deleteDocument() {

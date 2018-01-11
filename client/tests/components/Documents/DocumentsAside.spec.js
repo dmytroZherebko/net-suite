@@ -24,6 +24,7 @@ const storeConfig = {
     [actions.DELETE_DOCUMENT_BY_ID]: jest.fn(),
     [actions.DOWNLOAD_DOCUMENT]: jest.fn(),
     [actions.UPLOAD_INTEGRATION_DOCUMENT_TO_PDFFILLER]: jest.fn(),
+    [actions.UPLOAD_DOCUMENT_TO_INTEGRATION]: jest.fn(),
   },
   getters: {
     [getters.GET_BUTTONS_FOR_PAGE]: () => ({
@@ -65,6 +66,7 @@ describe('DocumentsAside component', () => {
     storeConfig.actions[actions.DELETE_DOCUMENT_BY_ID].mockClear();
     storeConfig.actions[actions.DOWNLOAD_DOCUMENT].mockClear();
     storeConfig.actions[actions.UPLOAD_INTEGRATION_DOCUMENT_TO_PDFFILLER].mockClear();
+    storeConfig.actions[actions.UPLOAD_DOCUMENT_TO_INTEGRATION].mockClear();
   });
 
   it('should call DELETE_DOCUMENT_BY_ID and RESET_CURRENT_DOCUMENT actions when call deleteDocument function', () => {
@@ -78,9 +80,15 @@ describe('DocumentsAside component', () => {
     expect(storeConfig.actions[actions.DOWNLOAD_DOCUMENT]).toBeCalled();
   });
 
-  it('should call UPLOAD_INTEGRATION_DOCUMENT_TO_PDFFILLER actions when call uploadFromIntegration function', async () => {
+  it('should call UPLOAD_INTEGRATION_DOCUMENT_TO_PDFFILLER action when call uploadFromIntegration function', async () => {
     await wrapper.vm.uploadFromIntegration();
     expect(storeConfig.actions[actions.UPLOAD_INTEGRATION_DOCUMENT_TO_PDFFILLER]).toBeCalled();
+    expect(wrapper.vm.showSuccessUploadToIntegrationModal).toBeTruthy();
+  });
+
+  it('should call UPLOAD_DOCUMENT_TO_INTEGRATION action when call uploadToIntegration function', async () => {
+    await wrapper.vm.uploadToIntegration();
+    expect(storeConfig.actions[actions.UPLOAD_DOCUMENT_TO_INTEGRATION]).toBeCalled();
     expect(wrapper.vm.showSuccessUploadToIntegrationModal).toBeTruthy();
   });
 
