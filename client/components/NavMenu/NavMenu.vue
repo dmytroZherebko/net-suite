@@ -21,7 +21,7 @@
       ...mapState({
         filepicker: state => state.filepicker,
         showIntegDocs: state => state.documents.showIntegrationDocumentsPage,
-        showMyDocs: state => state.documents.showMyDocumentsPage,
+        showMyDocs: state => state.documents.showMyDocumentsTab,
         integDocsTitle: state => state.documents.integrationDocumentsPageName,
       })
     },

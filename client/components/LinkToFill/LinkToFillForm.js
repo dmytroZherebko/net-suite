@@ -39,17 +39,20 @@ export default {
       currentDocumentId: state => state.documents.currentDocument.id,
       currentDocumentName: state => state.documents.currentDocument.name,
       currentDocumentType: state => state.documents.currentDocument.type,
-    })
+    }),
+    ...mapGetters({
+      defaultL2FConfig: getters.GET_L2F_DEFAULT_PARAMS
+    }),
   },
 
   async mounted() {
     if (!this.$route.params.l2f_id) {
       let documentId = this.currentDocumentId;
-      if (this.prevPage === routes.L2F_CREATE.path) {
+      if (this.prevPage === routes.INTEGRATION_DOCUMENTS.path) {
         const documentIds = await this[actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER]();
         documentId = documentIds.projectId;
       }
-      this.formData = { ...this[getters.GET_L2F_DEFAULT_PARAMS]() };
+      this.formData = { ...this.defaultL2FConfig };
       this.formData.document_id = documentId;
       this.formData.additional_documents = [];
       const defaultMail = this.formData.notification_emails[0];
@@ -58,7 +61,6 @@ export default {
   },
 
   methods: {
-    ...mapGetters([getters.GET_L2F_DEFAULT_PARAMS]),
     ...mapActions([actions.CREATE_L2F]),
     addAdditionalDocument(value) {
       if (!value) return;

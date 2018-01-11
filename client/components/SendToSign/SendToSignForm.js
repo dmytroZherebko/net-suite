@@ -37,18 +37,21 @@ export default {
       currentDocumentId: state => state.documents.currentDocument.id,
       currentDocumentName: state => state.documents.currentDocument.name,
       currentDocumentType: state => state.documents.currentDocument.type,
-    })
+    }),
+    ...mapGetters({
+      s2sDefaultParams: getters.GET_S2S_DEFAULT_PARAMS,
+      s2sRecipientDefaultParams: getters.GET_S2S_DEFAULT_RECIPIENT
+    }),
   },
 
   async mounted() {
     if (!this.$route.params.s2s_id) {
       let documentId = this.currentDocumentId;
-      if (this.prevPage === routes.S2S_CREATE.path) {
+      if (this.prevPage === routes.INTEGRATION_DOCUMENTS.path) {
         const documentIds = await this[actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER]();
         documentId = documentIds.projectId;
       }
-      this.formData = { ...this[getters.GET_S2S_DEFAULT_PARAMS]() };
-      this.recipientTemplate = this[getters.GET_S2S_DEFAULT_RECIPIENT]();
+      this.formData = { ...this.s2sDefaultParams };
       this.formData.document_id = documentId;
       this.formData.recipients = [];
       this.addDefaultRecipient();
@@ -56,7 +59,6 @@ export default {
   },
 
   methods: {
-    ...mapGetters([getters.GET_S2S_DEFAULT_PARAMS, getters.GET_S2S_DEFAULT_RECIPIENT]),
     ...mapActions([
       actions.CREATE_S2S,
       actions.CREATE_INTEGRATION_DOCUMENT_IN_PDFFILLER,
@@ -75,7 +77,7 @@ export default {
     },
     addDefaultRecipient() {
       this.formData.recipients.push({
-        ...this.recipientTemplate,
+        ...this.s2sRecipientDefaultParams,
         additional_documents: [],
         isCollapsed: false,
         order: this.formData.recipients.length + 1,
