@@ -90,7 +90,16 @@ describe('should preconfig store', () => {
     };
 
     preconfigStore(config);
-    expect(commit).toBeCalledWith(mutations.SET_SHOW_INTEGRATION_DOCUMENTS_PAGE, config.showIntegrationDocumentsTab);
+    expect(commit).toBeCalledWith(mutations.SET_SHOW_INTEGRATION_DOCUMENTS_TAB, config.showIntegrationDocumentsTab);
+  });
+
+  it('set show my documents tab', () => {
+    const config = {
+      showMyDocumentsTab: true
+    };
+
+    preconfigStore(config);
+    expect(commit).toBeCalledWith(mutations.SET_SHOW_MY_DOCUMENTS_TAB, config.showMyDocumentsTab);
   });
 
   it('set show integration documents tab name', () => {

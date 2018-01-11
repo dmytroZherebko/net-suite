@@ -5,6 +5,7 @@ import getters from './getters';
 export default {
   state: {
     showIntegrationDocumentsPage: true,
+    showMyDocumentsTab: true,
     integrationDocumentsPageName: 'Integration Documents',
     currentPage: null,
     documentsList: [],

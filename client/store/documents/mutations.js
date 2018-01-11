@@ -17,8 +17,11 @@ export default {
       state.total = payload;
     }
   },
-  [mutations.SET_SHOW_INTEGRATION_DOCUMENTS_PAGE]: (state, payload) => {
+  [mutations.SET_SHOW_INTEGRATION_DOCUMENTS_TAB]: (state, payload) => {
     state.showIntegrationDocumentsPage = payload;
+  },
+  [mutations.SET_SHOW_MY_DOCUMENTS_TAB]: (state, payload) => {
+    state.showMyDocumentsTab = payload;
   },
   [mutations.SET_TITLE_INTEGRATION_DOCUMENTS_PAGE]: (state, payload) => {
     state.integrationDocumentsPageName = payload;

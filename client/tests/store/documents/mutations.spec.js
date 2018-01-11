@@ -70,8 +70,13 @@ describe('integrations documents mutations', () => {
   });
 
   it('should set show integration documents page', () => {
-    storeMutations[mutations.SET_SHOW_INTEGRATION_DOCUMENTS_PAGE](state, true);
+    storeMutations[mutations.SET_SHOW_INTEGRATION_DOCUMENTS_TAB](state, true);
     expect(state.showIntegrationDocumentsPage).toBeTruthy();
+  });
+
+  it('should set show my documents page', () => {
+    storeMutations[mutations.SET_SHOW_MY_DOCUMENTS_TAB](state, true);
+    expect(state.showMyDocumentsTab).toBeTruthy();
   });
 
   it('should set integration documents page title', () => {

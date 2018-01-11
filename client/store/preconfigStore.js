@@ -34,7 +34,11 @@ const preconfigStore = (config) => {
   }
 
   if (config.showIntegrationDocumentsTab) {
-    commit(mutations.SET_SHOW_INTEGRATION_DOCUMENTS_PAGE, config.showIntegrationDocumentsTab);
+    commit(mutations.SET_SHOW_INTEGRATION_DOCUMENTS_TAB, config.showIntegrationDocumentsTab);
+  }
+
+  if (config.showMyDocumentsTab) {
+    commit(mutations.SET_SHOW_MY_DOCUMENTS_TAB, config.showMyDocumentsTab);
   }
 
   if (config.integrationDocumentsTabName) {

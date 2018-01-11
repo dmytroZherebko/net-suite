@@ -46,6 +46,7 @@ window.onload = function() {
       s2s_callback_url: "https://someservice.pdffiller.com?param=param", // s2s callback url
       l2g_callback_url: "https://someservice.pdffiller.com?param=param", // l2f callback url
       showIntegrationDocumentsTab: false, // true/false
+      showMyDocumentsTab: true, // true/false
       integrationDocumentsTabName: "Integration Docs", //title for tab
       x_auth_token: "blablasometoken", // token for integration api calls if provide will set header x-auth-token
       integration: "hubspot", // integration name - also all not pdffiller api endpoints will start with this name

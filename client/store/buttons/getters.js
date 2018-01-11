@@ -19,7 +19,7 @@ export default {
       },
       uploadToIntegration: {
         ...state.uploadToIntegration,
-        show: rootState.route.name === routes.INTEGRATION_DOCUMENTS.name && state.uploadToIntegration.show
+        show: rootState.route.name === routes.DOCUMENTS.name && state.uploadToIntegration.show
       },
     };
 
