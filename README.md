@@ -6,6 +6,7 @@ Widget for fast integration.
 
 - `npm run dev` - develop with watch and webpack-dev-server(up server on 3000 port)
 - `npm run build` - build js and css to build/ folder
+- `npm test` - to run all unit tests
 
 ## Stack
 

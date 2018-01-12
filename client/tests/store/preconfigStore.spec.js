@@ -86,7 +86,7 @@ describe('should preconfig store', () => {
 
   it('set show integration documents tab', () => {
     const config = {
-      showIntegrationDocumentsTab: true
+      showIntegrationDocumentsTab: false
     };
 
     preconfigStore(config);
@@ -95,7 +95,7 @@ describe('should preconfig store', () => {
 
   it('set show my documents tab', () => {
     const config = {
-      showMyDocumentsTab: true
+      showMyDocumentsTab: false
     };
 
     preconfigStore(config);
