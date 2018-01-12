@@ -96,17 +96,20 @@ export default {
     });
   },
 
-  async [actions.UPLOAD_DOCUMENT]({ commit, state, dispatch, rootState }, file) {
+  async [actions.UPLOAD_DOCUMENT]({ commit, state, dispatch, getters }, file) {
     try {
       const formData = new FormData();
       formData.append('file', file);
       commit(mutations.TOGGLE_LOADER);
 
-      await callApi(endpoints.DOCUMENTS, {
-        access_token: rootState.auth.access_token,
-        method: 'POST',
-        body: formData
-      });
+      await callApi(
+        getters[constants.getters.GET_UPLOAD_DOCUMENT_REQUEST_URL],
+        {
+          ...getters[constants.getters.GET_UPLOAD_DOCUMENT_REQUEST_PARAMS],
+          method: 'POST',
+          body: formData
+        }
+      );
 
       commit(mutations.TOGGLE_LOADER);
       commit(mutations.RESET_CURRENT_DOCUMENT);

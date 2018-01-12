@@ -16,7 +16,9 @@ const mockContext = {
   dispatch: jest.fn(),
   getters: {
     [getters.GET_DOCUMENTS_REQUEST_URL]: 'url',
-    [getters.GET_DOCUMENTS_REQUEST_PARAMS]: () => 'url'
+    [getters.GET_DOCUMENTS_REQUEST_PARAMS]: () => 'url',
+    [getters.GET_UPLOAD_DOCUMENT_REQUEST_URL]: 'url',
+    [getters.GET_UPLOAD_DOCUMENT_REQUEST_PARAMS]: {}
   },
   rootState: {
     ...store.state,
@@ -226,11 +228,14 @@ describe('documents actions', () => {
 
     await storeActions[actions.UPLOAD_DOCUMENT](mockContext, mockFile);
 
-    expect(callApi).toBeCalledWith(endpoints.DOCUMENTS, expect.objectContaining({
-      access_token: mockContext.rootState.auth.access_token,
-      method: 'POST',
-      body: expect.any(Object)
-    }));
+    expect(callApi).toBeCalledWith(
+      mockContext.getters[getters.GET_UPLOAD_DOCUMENT_REQUEST_URL],
+      expect.objectContaining({
+        ...mockContext.getters[getters.GET_UPLOAD_DOCUMENT_REQUEST_PARAMS],
+        method: 'POST',
+        body: expect.any(Object)
+      })
+    );
 
     expect(mockContext.dispatch).toBeCalledWith(actions.GET_PAGE_DOCUMENTS, {
       currentPage: mockContext.state.currentPage

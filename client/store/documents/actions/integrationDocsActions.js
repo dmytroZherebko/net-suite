@@ -99,7 +99,7 @@ export default {
     try {
       commit(mutations.TOGGLE_LOADER);
 
-      await callApi(`${rootState.integration.name}${endpoints.UPLOAD_TO_INTEGRATION}/${rootState.documents.currentDocument.id}`, {
+      await callApi(`${rootState.integration.name}${endpoints.UPLOAD_TO_INTEGRATION_BY_ID}/${rootState.documents.currentDocument.id}`, {
         method: 'POST',
         noPdfillerApi: true,
         query: {

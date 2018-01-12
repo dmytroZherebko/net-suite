@@ -160,7 +160,7 @@ describe('documents integration actions', () => {
     await storeActions[actions.UPLOAD_DOCUMENT_TO_INTEGRATION](mockContext);
 
     expect(callApi).toBeCalledWith(
-      `${mockContext.rootState.integration.name}${endpoints.UPLOAD_TO_INTEGRATION}/${mockContext.rootState.documents.currentDocument.id}`,
+      `${mockContext.rootState.integration.name}${endpoints.UPLOAD_TO_INTEGRATION_BY_ID}/${mockContext.rootState.documents.currentDocument.id}`,
       expect.objectContaining({
         method: 'POST',
         noPdfillerApi: true,

@@ -7,10 +7,10 @@
             Add Documents from the Web
         </h3>
         <p class="upload-section__description">
-            Enter the URL of a document hosted online to add it to PDFfiller.
+            Enter the URL of a document hosted online to download it.
         </p>
         <p class="upload-section__description">
-            PDFfiller supports PDF, Word, and PowerPoint files. Max file size: 25 Mb!
+            Supprted formats are PDF, Word, and PowerPoint files. Max file size: 25 Mb!
         </p>
         <div class="upload-section__input-wrapper">
             <input

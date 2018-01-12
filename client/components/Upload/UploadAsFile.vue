@@ -12,8 +12,8 @@
                 Drag and Drop Document Here to Get Started!
             </h3>
             <p class="upload-section__description">
-                Use the button below to upload your document to PDFfiller.
-                PDFfiller supports PDF, Word, PowerPoint, and Text formats.
+                Use the button below to upload your document.
+                Supported formats are PDF, Word and PowerPoint.
             </p>
             <input
                     type="file"
