@@ -67,6 +67,10 @@ const preconfigStore = (config) => {
   if (config.hasOwnProperty('buttons')) {
     commit(mutations.UPDATE_BUTTONS_SETTINGS, config.buttons);
   }
+
+  if (config.hasOwnProperty('unavailableDocumentMessage')) {
+    commit(mutations.SET_UNAVAILABLE_DOCUMENT_MESSAGE, config.unavailableDocumentMessage);
+  }
 };
 
 export default preconfigStore;

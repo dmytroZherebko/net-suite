@@ -85,6 +85,12 @@ describe('integrations documents mutations', () => {
     expect(state.integrationDocumentsPageName).toBe(name);
   });
 
+  it('should set unavailable document message', () => {
+    const message = 'message';
+    storeMutations[mutations.SET_UNAVAILABLE_DOCUMENT_MESSAGE](state, message);
+    expect(state.unavailableDocumentMessage).toBe(message);
+  });
+
   it('should set open document popup documents', () => {
     storeMutations[mutations.SET_OPEN_DOCUMENT_POPUP](state, true);
     expect(state.openDocument.showOpenDocumentPopUp).toBe(true);

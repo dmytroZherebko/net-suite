@@ -20,6 +20,9 @@ export default {
   [mutations.SET_SHOW_INTEGRATION_DOCUMENTS_TAB]: (state, payload) => {
     state.showIntegrationDocumentsPage = payload;
   },
+  [mutations.SET_UNAVAILABLE_DOCUMENT_MESSAGE]: (state, payload) => {
+    state.unavailableDocumentMessage = payload;
+  },
   [mutations.SET_SHOW_MY_DOCUMENTS_TAB]: (state, payload) => {
     state.showMyDocumentsTab = payload;
   },

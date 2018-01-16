@@ -7,17 +7,18 @@ export default {
     showIntegrationDocumentsPage: true,
     showMyDocumentsTab: true,
     integrationDocumentsPageName: 'Integration Documents',
+    unavailableDocumentMessage: 'You can\'t work with this document, it is unavailable.',
     currentPage: null,
     documentsList: [],
     total: null,
     perPage: 9,
     currentDocument: {
       name: null,
-      id: null,
+      id: 1,
       type: null,
       fillable: null,
       updated: null,
-      hidden: null
+      hidden: true
     },
     openDocument: {
       openDocumentMode: 'full', // can be window, modal and full

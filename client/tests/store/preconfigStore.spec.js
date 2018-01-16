@@ -11,13 +11,13 @@ jest.mock('../../store', () => ({
 
 const { commit, dispatch } = store;
 
-describe('should preconfig store', () => {
+describe('preconfig store', () => {
   afterEach(() => {
     commit.mockClear();
     dispatch.mockClear();
   });
 
-  it('set auth', () => {
+  it('should set auth', () => {
     const config = {
       auth: {}
     };
@@ -27,14 +27,14 @@ describe('should preconfig store', () => {
     expect(dispatch).toBeCalledWith(actions.CHECK_AUTH_CODE);
   });
 
-  it('set authorize when no auth in config', () => {
+  it('should set authorize when no auth in config', () => {
     const config = {};
 
     preconfigStore(config);
     expect(commit).toBeCalledWith(mutations.SET_AUTHORIZE, true);
   });
 
-  it('set open document mode', () => {
+  it('should set open document mode', () => {
     const config = {
       openDocumentMode: 'full'
     };
@@ -43,7 +43,7 @@ describe('should preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_OPEN_DOCUMENT_MODE, config.openDocumentMode);
   });
 
-  it('set open in js editor', () => {
+  it('should set open in js editor', () => {
     const config = {
       openInJsEditor: true
     };
@@ -52,7 +52,7 @@ describe('should preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_EDITOR_MODE, config.openInJsEditor);
   });
 
-  it('set pdffiller proxy url', () => {
+  it('should set pdffiller proxy url', () => {
     const config = {
       pdffiller: {
         proxyUrl: 'url'
@@ -64,7 +64,7 @@ describe('should preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_PROXY, true);
   });
 
-  it('set auth', () => {
+  it('should set auth', () => {
     const config = {
       pdffiller: {
         userId: 'url'
@@ -75,7 +75,7 @@ describe('should preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_PDFFILLER_USER_ID, config.pdffiller.userId);
   });
 
-  it('set base api url', () => {
+  it('should set base api url', () => {
     const config = {
       baseApiUrl: 'full'
     };
@@ -84,7 +84,7 @@ describe('should preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_BASE_URL, config.baseApiUrl);
   });
 
-  it('set show integration documents tab', () => {
+  it('should set show integration documents tab', () => {
     const config = {
       showIntegrationDocumentsTab: false
     };
@@ -93,7 +93,7 @@ describe('should preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_SHOW_INTEGRATION_DOCUMENTS_TAB, config.showIntegrationDocumentsTab);
   });
 
-  it('set show my documents tab', () => {
+  it('should set show my documents tab', () => {
     const config = {
       showMyDocumentsTab: false
     };
@@ -102,7 +102,16 @@ describe('should preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_SHOW_MY_DOCUMENTS_TAB, config.showMyDocumentsTab);
   });
 
-  it('set show integration documents tab name', () => {
+  it('should set set unavailableDocumentMessage', () => {
+    const config = {
+      unavailableDocumentMessage: 'message'
+    };
+
+    preconfigStore(config);
+    expect(commit).toBeCalledWith(mutations.SET_UNAVAILABLE_DOCUMENT_MESSAGE, config.unavailableDocumentMessage);
+  });
+
+  it('should set show integration documents tab name', () => {
     const config = {
       integrationDocumentsTabName: 'name'
     };
@@ -111,7 +120,7 @@ describe('should preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_TITLE_INTEGRATION_DOCUMENTS_PAGE, config.integrationDocumentsTabName);
   });
 
-  it('set x auth token', () => {
+  it('should set x auth token', () => {
     const config = {
       x_auth_token: 'token'
     };
@@ -120,7 +129,7 @@ describe('should preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_X_AUTH_TOKEN, config.x_auth_token);
   });
 
-  it('set integration config', () => {
+  it('should set integration config', () => {
     const config = {
       integration: 'token',
       token: {
@@ -135,7 +144,7 @@ describe('should preconfig store', () => {
     });
   });
 
-  it('set s2s_callback_url', () => {
+  it('should set s2s_callback_url', () => {
     const config = {
       s2s_callback_url: 'token'
     };
@@ -144,7 +153,7 @@ describe('should preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_S2S_CALLBACK_URL, config.s2s_callback_url);
   });
 
-  it('set l2f_callback_url', () => {
+  it('should set l2f_callback_url', () => {
     const config = {
       l2f_callback_url: 'token'
     };
@@ -153,7 +162,7 @@ describe('should preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_L2F_CALLBACK_URL, config.l2f_callback_url);
   });
 
-  it('set buttons', () => {
+  it('should set buttons', () => {
     const config = {
       buttons: {
         s2s: { show: false }

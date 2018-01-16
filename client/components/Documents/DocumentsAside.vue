@@ -42,6 +42,11 @@
                 :buttonAction="uploadFromIntegration"
                 :title="buttons.uploadToPDFfiller.title"
         />
+        <div class="notification notification_warning"
+             v-if="documentIsHidden && currentDocumentId"
+        >
+            {{unavailableDocumentMessage}}
+        </div>
         <success-upload-modal
                 :show-upload-modal="showSuccessUploadToIntegrationModal"
                 :close-success-upload-modal="closeSuccessUploadToIntegrationModal"
@@ -77,6 +82,7 @@
       ...mapState({
         currentDocumentId: state => state.documents.currentDocument.id,
         documentIsHidden: state => state.documents.currentDocument.hidden,
+        unavailableDocumentMessage: state => state.documents.unavailableDocumentMessage,
         filepicker: state => state.filepicker,
       }),
       ...mapGetters({
