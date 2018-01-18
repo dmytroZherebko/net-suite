@@ -31,9 +31,7 @@
             </div>
         </modal-component>
         <modal-component
-                v-else
                 :show-modal="showUpdateOpenedDocumentPopUp"
-                :modalClass="getModalClass()"
                 modal-title="Updating document"
                 @modal-close="closeUpdatedDocumentPopUp"
                 @modal-ok="closeUpdatedDocumentPopUp"
