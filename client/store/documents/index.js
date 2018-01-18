@@ -8,6 +8,8 @@ export default {
     showMyDocumentsTab: true,
     integrationDocumentsPageName: 'Integration Documents',
     unavailableDocumentMessage: 'You can\'t work with this document, it is unavailable.',
+    updateOpenedDocumentMessage: 'We update opened file. It can take some time.',
+    showUpdateOpenedDocumentPopUp: false,
     currentPage: null,
     documentsList: [],
     total: null,

@@ -96,6 +96,17 @@ describe('integrations documents mutations', () => {
     expect(state.openDocument.showOpenDocumentPopUp).toBe(true);
   });
 
+  it('should set showUpdateOpenedDocumentPopUp', () => {
+    storeMutations[mutations.SET_SHOW_UPDATE_OPENED_DOCUMENT_POP_UP](state, true);
+    expect(state.showUpdateOpenedDocumentPopUp).toBeTruthy();
+  });
+
+  it('should set open document url', () => {
+    const message = 'message';
+    storeMutations[mutations.SET_UPDATE_OPENED_DOCUMENT_MESSAGE](state, message);
+    expect(state.updateOpenedDocumentMessage).toBe(message);
+  });
+
   it('should set open document url', () => {
     const url = 'url';
     storeMutations[mutations.SET_OPEN_DOCUMENT_URL](state, url);

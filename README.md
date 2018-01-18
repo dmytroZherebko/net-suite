@@ -48,7 +48,8 @@ window.onload = function() {
       l2g_callback_url: "https://someservice.pdffiller.com?param=param", // l2f callback url
       showIntegrationDocumentsTab: false, // true/false
       showMyDocumentsTab: true, // true/false
-      integrationDocumentsTabName: "Integration Docs", //title for tab
+      integrationDocumentsTabName: "Integration Docs", // title for tab
+      updateOpenedDocumentMessage: "We update integration file", // message that will show for user after he close editor in integration tab(after editorDone event)
       unavailableDocumentMessage: "You can't work with this document, it is hidden by Hubspot", // message for unavailable documents
       x_auth_token: "blablasometoken", // token for integration api calls if provide will set header x-auth-token
       integration: "hubspot", // integration name - also all not pdffiller api endpoints will start with this name

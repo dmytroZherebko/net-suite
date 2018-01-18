@@ -30,6 +30,18 @@
                 Your document is open in editor. If you close pop-up editor window will closed.
             </div>
         </modal-component>
+        <modal-component
+                v-else
+                :show-modal="showUpdateOpenedDocumentPopUp"
+                :modalClass="getModalClass()"
+                modal-title="Updating document"
+                @modal-close="closeUpdatedDocumentPopUp"
+                @modal-ok="closeUpdatedDocumentPopUp"
+        >
+            <div slot="modal-body" class="modal-body text-center">
+                {{updateOpenedDocumentMessage}}
+            </div>
+        </modal-component>
     </div>
 </template>
 
@@ -57,6 +69,8 @@
         showOpenDocumentPopUp: state => state.documents.openDocument.showOpenDocumentPopUp,
         openMode: state => state.documents.openDocument.openDocumentMode,
         documentUrl: state => state.documents.openDocument.documentUrl,
+        updateOpenedDocumentMessage: state => state.documents.updateOpenedDocumentMessage,
+        showUpdateOpenedDocumentPopUp: state => state.documents.showUpdateOpenedDocumentPopUp,
       })
     },
 
@@ -64,6 +78,7 @@
       ...mapActions([
         actions.OPEN_DOCUMENT_EDITOR,
         actions.CLOSE_DOCUMENT_EDITOR,
+        actions.HIDE_UPDATE_OPENED_DOCUMENT_POP_UP,
       ]),
       openDocumentInEditor() {
         this[actions.OPEN_DOCUMENT_EDITOR]();
@@ -73,6 +88,9 @@
       },
       getModalClass() {
         return this.documentUrl ? 'modal_editor' : '';
+      },
+      closeUpdatedDocumentPopUp() {
+        this[actions.HIDE_UPDATE_OPENED_DOCUMENT_POP_UP]();
       }
     },
     components: {

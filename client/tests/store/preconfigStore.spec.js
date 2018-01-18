@@ -120,6 +120,15 @@ describe('preconfig store', () => {
     expect(commit).toBeCalledWith(mutations.SET_TITLE_INTEGRATION_DOCUMENTS_PAGE, config.integrationDocumentsTabName);
   });
 
+  it('should set update opened document message', () => {
+    const config = {
+      updateOpenedDocumentMessage: 'name'
+    };
+
+    preconfigStore(config);
+    expect(commit).toBeCalledWith(mutations.SET_UPDATE_OPENED_DOCUMENT_MESSAGE, config.updateOpenedDocumentMessage);
+  });
+
   it('should set x auth token', () => {
     const config = {
       x_auth_token: 'token'

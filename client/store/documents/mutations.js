@@ -20,6 +20,12 @@ export default {
   [mutations.SET_SHOW_INTEGRATION_DOCUMENTS_TAB]: (state, payload) => {
     state.showIntegrationDocumentsPage = payload;
   },
+  [mutations.SET_SHOW_UPDATE_OPENED_DOCUMENT_POP_UP]: (state, payload) => {
+    state.showUpdateOpenedDocumentPopUp = payload;
+  },
+  [mutations.SET_UPDATE_OPENED_DOCUMENT_MESSAGE]: (state, payload) => {
+    state.updateOpenedDocumentMessage = payload;
+  },
   [mutations.SET_UNAVAILABLE_DOCUMENT_MESSAGE]: (state, payload) => {
     state.unavailableDocumentMessage = payload;
   },

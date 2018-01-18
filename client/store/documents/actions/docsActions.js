@@ -71,6 +71,7 @@ export default {
           dispatch(actions.CLOSE_DOCUMENT_EDITOR);
           if (rootState.route.name === routes.INTEGRATION_DOCUMENTS.name) {
             dispatch(actions.UPDATE_INTEGRATION_FILE_CONTENT, documentIds);
+            commit(mutations.SET_SHOW_UPDATE_OPENED_DOCUMENT_POP_UP, true);
           }
         }
       };
@@ -204,5 +205,9 @@ export default {
     if (window.opener) {
       window.opener.postMessage(JSON.stringify(document), '*');
     }
-  }
+  },
+
+  [actions.HIDE_UPDATE_OPENED_DOCUMENT_POP_UP]({ commit }) {
+    commit(mutations.SET_SHOW_UPDATE_OPENED_DOCUMENT_POP_UP, false);
+  },
 };

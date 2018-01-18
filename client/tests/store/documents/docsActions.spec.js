@@ -365,6 +365,12 @@ describe('documents actions', () => {
     expect(mockContext.commit).toBeCalledWith(mutations.SET_ERROR, errorMessage);
   });
 
+  it('should hide update opened document pop up', () => {
+    storeActions[actions.HIDE_UPDATE_OPENED_DOCUMENT_POP_UP](mockContext);
+
+    expect(mockContext.commit).toBeCalledWith(mutations.SET_SHOW_UPDATE_OPENED_DOCUMENT_POP_UP, false);
+  });
+
   it('should set current document', () => {
     storeActions[actions.SET_CURRENT_DOCUMENT](mockContext, docObject);
 
