@@ -77,6 +77,20 @@ describe('LinkToFillFormTemplate component', () => {
     storeConfig.actions[actions.CREATE_L2F].mockClear();
   });
 
+  it('should update redirect url and set redirectUrlError to false | updateRedirectUrl', () => {
+    const event = { target: { value: 'https://url' } };
+    wrapper.vm.updateRedirectUrl(event);
+    expect(wrapper.vm.formData.redirect_uri).toBe(event.target.value);
+    expect(wrapper.vm.redirectUrlError).toBeFalsy();
+  });
+
+  it('should update redirect url and set redirectUrlError to true | updateRedirectUrl', () => {
+    const event = { target: { value: 'url' } };
+    wrapper.vm.updateRedirectUrl(event);
+    expect(wrapper.vm.formData.redirect_uri).toBe(event.target.value);
+    expect(wrapper.vm.redirectUrlError).toBeTruthy();
+  });
+
   it('should add additional document to list | addAdditionalDocument', () => {
     const document = 'document';
     wrapper.vm.addAdditionalDocument(document);
@@ -139,7 +153,15 @@ describe('LinkToFillFormTemplate component', () => {
     expect(wrapper.vm.formData.notification_emails.length).toBe(0);
   });
 
-  it('should call action create l2f | createL2F function', async () => {
+  it('shouldn`t call action create l2f when redirect_uri has error | createL2F function', async () => {
+    wrapper.setData({ redirectUrlError: true });
+    await wrapper.vm.createL2F();
+    expect(storeConfig.actions[actions.CREATE_L2F]).not.toBeCalled();
+    expect(wrapper.vm.showSubmitModal).toBeFalsy();
+  });
+
+  it('should call action create l2f when redirect_uri hasn`t error | createL2F function', async () => {
+    wrapper.setData({ redirectUrlError: false });
     await wrapper.vm.createL2F();
     expect(storeConfig.actions[actions.CREATE_L2F]).toBeCalledWith(expect.any(Object), { ...wrapper.vm.formData }, undefined);
     expect(wrapper.vm.showSubmitModal).toBeTruthy();

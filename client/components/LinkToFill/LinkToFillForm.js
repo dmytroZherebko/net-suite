@@ -67,6 +67,8 @@ export default {
 
     updateRedirectUrl(e) {
       const value = e.target.value;
+      this.formData.redirect_uri = value;
+
       if (!/^http(s)?:\/\//.test(value)) {
         this.redirectUrlError = true;
       } else {

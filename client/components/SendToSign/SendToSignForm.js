@@ -143,9 +143,11 @@ export default {
           this.formErrors.envelope_name = true;
           return false;
         }
+
         if (this.formData.sign_in_order && !this.validateRecipientsOrder()) {
           return false;
         }
+
         return this.validateRecipients();
       }
 

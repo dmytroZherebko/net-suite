@@ -204,30 +204,45 @@ describe('SendToSignFormTemplate component', () => {
     wrapper.vm.deleteRecipient(1);
   });
 
-  it('should return false and set error to true when no recipient name | validateRecipientsNameAndEmail', () => {
-    expect(wrapper.vm.validateRecipientsNameAndEmail()).toBeFalsy();
+  it('should return false and set error to true when no recipient name | validateRecipients', () => {
+    expect(wrapper.vm.validateRecipients()).toBeFalsy();
     expect(wrapper.vm.formData.recipients[0].errors.name).toBeTruthy();
   });
 
-  it('should return false and set error to true when not valid recipient email | validateRecipientsNameAndEmail', () => {
+  it('should return false and set error to true when not valid recipient email | validateRecipients', () => {
     wrapper.vm.formData.recipients[0].name = 'name';
     isEmailValid.mockImplementation(() => false);
-    expect(wrapper.vm.validateRecipientsNameAndEmail()).toBeFalsy();
+    expect(wrapper.vm.validateRecipients()).toBeFalsy();
     expect(wrapper.vm.formData.recipients[0].errors.email).toBeTruthy();
   });
 
-  it('should return true when name and email is valid | validateRecipientsNameAndEmail', () => {
+  it('should return true when name and email is valid | validateRecipients', () => {
     isEmailValid.mockImplementation(() => true);
-    expect(wrapper.vm.validateRecipientsNameAndEmail()).toBeTruthy();
+    expect(wrapper.vm.validateRecipients()).toBeTruthy();
+  });
+
+  it('should return false when securiti_pin enhanced and no phone_authenticate number | validateRecipients', () => {
+    isEmailValid.mockImplementation(() => true);
+    wrapper.vm.formData.security_pin = 'enhanced';
+    wrapper.vm.formData.recipients[0].phone_authenticate = '';
+    expect(wrapper.vm.validateRecipients()).toBeFalsy();
+    expect(wrapper.vm.formData.recipients[0].errors.phone_authenticate).toBeTruthy();
+    wrapper.vm.formData.security_pin = 'standard';
+  });
+
+  it('should return true when securiti_pin enhanced and no phone_authenticate number | validateRecipients', () => {
+    isEmailValid.mockImplementation(() => true);
+    wrapper.vm.formData.recipients[0].phone_authenticate = '111';
+    expect(wrapper.vm.validateRecipients()).toBeTruthy();
   });
 
   it('should return true for s2e when all data is valid | checkFormValid', () => {
-    jest.spyOn(wrapper.vm, 'validateRecipientsNameAndEmail').mockImplementation(() => true);
+    jest.spyOn(wrapper.vm, 'validateRecipients').mockImplementation(() => true);
     expect(wrapper.vm.checkFormValid()).toBeTruthy();
   });
 
-  it('should return false for s2e when validateRecipientsNameAndEmail function return false | checkFormValid', () => {
-    jest.spyOn(wrapper.vm, 'validateRecipientsNameAndEmail').mockImplementation(() => false);
+  it('should return false for s2e when validateRecipients function return false | checkFormValid', () => {
+    jest.spyOn(wrapper.vm, 'validateRecipients').mockImplementation(() => false);
     expect(wrapper.vm.checkFormValid()).toBeFalsy();
   });
 
@@ -239,7 +254,7 @@ describe('SendToSignFormTemplate component', () => {
   });
 
   it('should return true for s2e when security_pin enhanced and pin is presented | checkFormValid', () => {
-    jest.spyOn(wrapper.vm, 'validateRecipientsNameAndEmail').mockImplementation(() => true);
+    jest.spyOn(wrapper.vm, 'validateRecipients').mockImplementation(() => true);
     wrapper.vm.formData.security_pin = 'enhanced';
     wrapper.vm.formData.pin = '1';
     expect(wrapper.vm.checkFormValid()).toBeTruthy();
@@ -250,8 +265,8 @@ describe('SendToSignFormTemplate component', () => {
     expect(wrapper.vm.checkFormValid()).toBeTruthy();
   });
 
-  it('should return false for s2g validateRecipientsNameAndEmail function return false | checkFormValid', () => {
-    jest.spyOn(wrapper.vm, 'validateRecipientsNameAndEmail').mockImplementation(() => false);
+  it('should return false for s2g validateRecipients function return false | checkFormValid', () => {
+    jest.spyOn(wrapper.vm, 'validateRecipients').mockImplementation(() => false);
     expect(wrapper.vm.checkFormValid()).toBeFalsy();
   });
 
@@ -262,6 +277,7 @@ describe('SendToSignFormTemplate component', () => {
   });
 
   it('should return false for s2g when sign_in_order and validateRecipientsOrder return false | checkFormValid', () => {
+    wrapper.vm.formData.envelope_name = 'any';
     jest.spyOn(wrapper.vm, 'validateRecipientsOrder').mockImplementation(() => false);
     wrapper.vm.formData.sign_in_order = true;
     expect(wrapper.vm.checkFormValid()).toBeFalsy();
