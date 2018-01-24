@@ -16,7 +16,7 @@
                 {{ this.$route.params.l2f_id ? "Edit LinkToFill" : `Create new LinkToFill for ${currentDocumentName}.${currentDocumentType} document`}}
             </h2>
             <form-section
-                    title="Access level for the fill request document">
+                    title="Set Access Privileges">
                 <switcher-radio
                         slot="form-control"
                         v-model="formData.access"
@@ -26,7 +26,7 @@
             </form-section>
 
             <form-section
-                    title="Document access permission">
+                    title="Set Access Permissions">
                 <switcher-radio
                         slot="form-control"
                         v-model="formData.status"
@@ -36,7 +36,7 @@
             </form-section>
 
             <form-section
-                    title="User Can Get a Copy">
+                    title="Allow User to Get a Copy">
                 <switcher-component
                         v-model="formData.allow_downloads"
                         slot="form-control"
@@ -44,7 +44,7 @@
             </form-section>
 
             <form-section
-                    title="Require email from recipient">
+                    title="Verify by Email">
                 <switcher-component
                         v-model="formData.email_required"
                         slot="form-control"
@@ -52,7 +52,7 @@
             </form-section>
 
             <form-section
-                    title="Require name from recipient">
+                    title="Verify by Name">
                 <switcher-component
                         v-model="formData.name_required"
                         slot="form-control"
@@ -74,7 +74,7 @@
             </form-section>
 
             <form-section
-                    title="Prevent closing document before filling all fields">
+                    title="Enforce Required Fields">
                 <switcher-component
                         v-model="formData.enforce_required_fields"
                         slot="form-control"
@@ -98,7 +98,7 @@
             </form-section>
 
             <form-section
-                    title="Send Notification to">
+                    title="Send Notifications to">
                 <tags-component
                         slot="form-control"
                         :tags-list="formData.notification_emails"
@@ -113,7 +113,7 @@
             </form-section>
 
             <form-section
-                    title="Shows welcome agreement each time when user will open LinkToFill">
+                    title="Always Show Welcome Agreement">
                 <switcher-component v-model="formData.welcome_screen"
                                     slot="form-control" />
             </form-section>
@@ -140,7 +140,7 @@
             </form-section>
 
             <form-section
-                    title="After filling the form it will be copied to the owner as the fillable form">
+                    title="Send to Owner as Fillable Form">
                 <switcher-component v-model="formData.reusable"
                                     slot="form-control" />
             </form-section>

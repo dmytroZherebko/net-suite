@@ -3,7 +3,7 @@ import getters from './getters';
 
 export default {
   state: {
-    open: { show: true, title: 'Open' },
+    open: { show: true, title: 'Edit' },
     s2s: { show: true, title: 'SendToSign' },
     l2f: { show: true, title: 'LinkToFill' },
     download: { show: true, title: 'Download' },

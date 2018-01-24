@@ -17,7 +17,7 @@
                 :show-buttons="false"
                 :show-header="!documentUrl"
                 :modalClass="getModalClass()"
-                modal-title="Editor is open"
+                modal-title="Editor has been opened."
                 :close-by-outside-click="false"
                 @modal-close="closeModal"
         >
@@ -27,7 +27,7 @@
                 ></iframe>
             </div>
             <div slot="modal-body" class="modal-body text-center" v-else>
-                Your document is open in editor. If you close pop-up editor window will closed.
+                Your document has been opened in the editor. Closing this pop-up will result in closing the editor tab.
             </div>
         </modal-component>
         <modal-component
